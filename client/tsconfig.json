@@ -21,10 +21,6 @@
     // Import .json files
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*", "src/*.d.ts"],
-      "@features/*": ["src/features/*"],
-    }
   },
   "include": ["src/**/*"]
 }
