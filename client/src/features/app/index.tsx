@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoadingSpinner from '../common/loading-spinner';
-import PublicRoutes from './public-routes';
+import PublicRoutes from './PublicRoutes';
 import Login from '../login';
 
 const Register = lazy(() => import('../register'));

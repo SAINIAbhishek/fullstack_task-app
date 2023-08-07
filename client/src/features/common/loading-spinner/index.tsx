@@ -1,9 +1,23 @@
 import React from 'react';
 
-const LoadingSpinner = () => {
+type Props = {
+  size?: 'sm';
+  color?: string;
+};
+
+const LoadingSpinner = ({ size, color = 'border-blue-500' }: Props) => {
+  const spinnerSize =
+    size === 'sm'
+      ? `h-6 w-6 border-t-2 ${color}`
+      : `h-8 w-8 border-t-4 ${color}`;
+
   return (
-    <div className="flex justify-center items-center h-16">
-      <div className="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-8 w-8"></div>
+    <div
+      className={`flex justify-center items-center ${
+        size === 'sm' ? 'h-10' : 'h-16'
+      }`}>
+      <div
+        className={`animate-spin rounded-full ${spinnerSize} border-solid`}></div>
     </div>
   );
 };

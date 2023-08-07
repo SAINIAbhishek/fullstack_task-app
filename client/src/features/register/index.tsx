@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import Form from './form';
+import RegisterForm from './RegisterForm';
 
 const Register = () => {
   return (
@@ -17,7 +17,7 @@ const Register = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
               Create an account
             </h1>
-            <Form />
+            <RegisterForm />
           </div>
         </div>
       </div>

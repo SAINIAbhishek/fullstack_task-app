@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import Form from './form';
+import LoginForm from './LoginForm';
 
 const Login = () => {
   return (
@@ -17,7 +17,7 @@ const Login = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
               Sign in to your account
             </h1>
-            <Form />
+            <LoginForm />
           </div>
         </div>
       </div>
