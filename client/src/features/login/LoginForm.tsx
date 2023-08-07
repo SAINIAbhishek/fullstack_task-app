@@ -11,10 +11,7 @@ const validationSchema = yup.object().shape({
     .email('Email is invalid')
     .required('Email is required')
     .trim(),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(8, 'Password is too short - should be 8 characters minimum'),
+  password: yup.string().required('Password is required'),
 });
 
 const initialValues: LoginType = {
@@ -51,7 +48,7 @@ const LoginForm = () => {
             <label
               htmlFor="email"
               className="block mb-2 text-sm font-medium text-white">
-              Your email
+              Email Address
             </label>
             <Field
               type="email"
@@ -65,7 +62,7 @@ const LoginForm = () => {
                   ? 'border-red-500'
                   : 'focus:ring-blue-500'
               }`}
-              placeholder="Your Email Address"
+              placeholder="Enter your email address"
             />
             <ErrorMessage
               name="email"
