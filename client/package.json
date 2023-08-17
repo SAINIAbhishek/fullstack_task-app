@@ -12,6 +12,7 @@
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
@@ -27,7 +28,7 @@
     "eslint:fix": "npm run eslint --fix",
     "prettier": "prettier . --write",
     "install:packages": "npm i",
-    "update:packages": "npm update i",
+    "upgrade:packages": "npm update --save-dev && npm update --save",
     "fix:packages": "npm audit fix --force"
   },
   "browserslist": {

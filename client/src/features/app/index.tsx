@@ -1,11 +1,15 @@
 import React from 'react';
 import AppRoutes from './Routes';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
-    <div className="min-h-screen text-slate-600 bg-slate-900 xl:text-base sm:text-sm text-xs">
-      <AppRoutes />
-    </div>
+    <>
+      <Toaster position="bottom-left" />
+      <div className="min-h-screen text-slate-600 bg-slate-900 xl:text-base sm:text-sm text-xs">
+        <AppRoutes />
+      </div>
+    </>
   );
 }
 

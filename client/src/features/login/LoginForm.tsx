@@ -127,7 +127,7 @@ const LoginForm = () => {
             type="submit"
             disabled={!(dirty && isValid)}
             className={`w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center bg-primary-600 hover:bg-primary-700 px-5 ${
-              isSubmitting ? 'py-1' : 'py-2.5'
+              isSubmitting ? '' : 'py-2.5'
             }`}>
             {isSubmitting ? (
               <LoadingSpinner size="sm" color="border-white" />
