@@ -1,5 +1,5 @@
 import { DB } from './index';
-import Logger from '../middelware/Logger';
+import Logger from '../middleware/Logger';
 import * as mongoose from 'mongoose';
 
 // Build the connection string

@@ -7,7 +7,7 @@
     "start": "npm run build && npm run serve",
     "serve": "node -r dotenv/config build/server.js",
     "build": "npm run clean && npm run build-ts",
-    "watch": "npx concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch": "npx concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold,red.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "nodemon -r dotenv/config build/server.js",
     "clean": "rimraf ./build",
     "build-ts": "tsc",
@@ -26,7 +26,7 @@
     "helmet": "^6.0.0",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.2",
+    "mongoose": "^7.4.3",
     "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
