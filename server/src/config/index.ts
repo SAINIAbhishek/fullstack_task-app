@@ -9,6 +9,8 @@ export const DB = {
   port: process.env.DB_PORT || '',
   minPoolSize: parseInt(process.env.DB_MIN_POOL_SIZE || '5'),
   maxPoolSize: parseInt(process.env.DB_MAX_POOL_SIZE || '10'),
+  connectTimeoutMS: parseInt(process.env.DB_CONNECT_TIMEOUT_MS || '60000'),
+  socketTimeoutMS: parseInt(process.env.DB_SOCKET_TIMEOUT_MS || '45000'),
 };
 
 export const TOKEN_INFO = {
