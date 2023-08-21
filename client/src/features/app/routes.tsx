@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoadingSpinner from '../ui/loading-spinner';
 import LoginPage from '../../pages/login-page';
 
-const RegisterPage = lazy(() => import('../register'));
+const RegisterPage = lazy(() => import('../../pages/register-page'));
 
 const AppRoutes = () => {
   return (
