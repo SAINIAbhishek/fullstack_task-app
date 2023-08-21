@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { ErrorMessage, Field, Formik } from 'formik';
-import { LoginType } from './LoginType';
-import LoadingSpinner from '../common/loading-spinner';
+import { LoginType } from './login-type';
+import LoadingSpinner from '../ui/loading-spinner';
 
 const validationSchema = yup.object().shape({
   email: yup

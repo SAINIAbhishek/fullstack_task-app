@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    // Target latest version of ECMAScript.
-    "target": "esnext",
+    // Code should be emitted and consumed in terms of module systems
+    "module": "esnext",
+    // Target version of ECMAScript.
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
     // Process & infer types from .js files.
@@ -20,7 +22,11 @@
     "jsx": "react",
     // Import .json files
     "resolveJsonModule": true,
-    "baseUrl": ".",
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
   },
-  "include": ["src/**/*"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
