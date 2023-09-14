@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LoadingSpinner from '../ui/loading-spinner';
+import LoadingSpinner from '../shared/loading-spinner';
 import LoginPage from '../../pages/login-page';
 
 const RegisterPage = lazy(() => import('../../pages/register-page'));
