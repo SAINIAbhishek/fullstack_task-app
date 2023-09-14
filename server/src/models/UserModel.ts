@@ -41,19 +41,10 @@ const UserSchema = new Schema<User>(
       minlength: 8,
       maxlength: 255,
     },
-    createdAt: {
-      type: Schema.Types.Date,
-      required: true,
-      select: false,
-    },
-    updatedAt: {
-      type: Schema.Types.Date,
-      required: true,
-      select: false,
-    },
   },
   {
     versionKey: false,
+    timestamps: true,
   }
 );
 

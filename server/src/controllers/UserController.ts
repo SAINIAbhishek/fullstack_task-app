@@ -1,4 +1,4 @@
-import asyncHandler from '../helpers/AsyncHandler';
+import asyncHandler from 'express-async-handler';
 import Logger from '../middleware/Logger';
 import { SuccessResponse } from '../middleware/ApiResponse';
 

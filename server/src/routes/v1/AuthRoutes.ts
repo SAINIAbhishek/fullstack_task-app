@@ -8,14 +8,15 @@ import {
 
 const router = express.Router();
 
-router.post(
-  '/register',
-  validator(USER_JOI_REGISTER_SCHEMA),
-  UserController.register
-);
+router
+  .route('/register')
+  .post(validator(USER_JOI_REGISTER_SCHEMA), UserController.register);
 
-router.post('/login', validator(USER_JOI_LOGIN_SCHEMA), UserController.login);
+router
+  .route('/login')
+  .post(validator(USER_JOI_LOGIN_SCHEMA), UserController.login);
 
-router.post('/test', UserController.login);
+// http://localhost:3001/api/v1/oauth/test
+router.get('/test', UserController.login);
 
 export default router;
