@@ -66,13 +66,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       `500 - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`
     );
 
-    Logger.error(err);
-
     if (ENVIRONMENT === 'development') {
-      return res.status(500).send(err);
+      Logger.error(err);
+      res.status(500).json({ error: err.message });
+    } else {
+      ApiError.handle(new InternalError(), res);
     }
-
-    ApiError.handle(new InternalError(), res);
   }
 });
 
