@@ -127,11 +127,7 @@ export class AccessTokenErrorResponse extends ApiResponse {
 }
 
 export class TokenRefreshResponse extends ApiResponse {
-  constructor(
-    message = 'Token Issued',
-    private accessToken: string,
-    private refreshToken: string
-  ) {
+  constructor(message = 'Token Issued', private accessToken: string) {
     super(StatusCode.SUCCESS, ResponseStatus.SUCCESS, message);
   }
 

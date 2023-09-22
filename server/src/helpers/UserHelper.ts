@@ -1,11 +1,18 @@
 import User, { UserModel } from '../models/UserModel';
+import { Types } from 'mongoose';
 
 const fullName = (firstname?: string, lastname?: string) => {
   return `${firstname || ''}${lastname ? ' ' + lastname : ''}`;
 };
 
-const findByEmail = async (email: string): Promise<User | null> => {
-  return UserModel.findOne({ email: email }).lean().exec();
+const findById = async (id: Types.ObjectId): Promise<User | null> => {
+  return UserModel.findOne({ _id: id, status: true })
+    .select('-password')
+    .exec();
 };
 
-export default { findByEmail, fullName };
+const findByEmail = async (email: string): Promise<User | null> => {
+  return UserModel.findOne({ email: email }).exec();
+};
+
+export default { findByEmail, fullName, findById };
