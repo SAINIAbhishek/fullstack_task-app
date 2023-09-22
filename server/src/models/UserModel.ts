@@ -1,5 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 import Joi from 'joi';
+import UserHelper from '../helpers/UserHelper';
 
 export const DOCUMENT_NAME = 'User';
 export const COLLECTION_NAME = 'users';
@@ -49,6 +50,16 @@ const UserSchema = new Schema<User>(
 );
 
 UserSchema.index({ email: 1 });
+
+// a virtual property for name
+UserSchema.virtual('name').get(function () {
+  return UserHelper.fullName(this.firstname, this.lastname);
+});
+
+// ensuring the virtual property is included when converting the document to JSON
+UserSchema.set('toJSON', {
+  virtuals: true,
+});
 
 export const USER_JOI_REGISTER_SCHEMA: Joi.ObjectSchema = Joi.object({
   firstname: Joi.string().max(200),
