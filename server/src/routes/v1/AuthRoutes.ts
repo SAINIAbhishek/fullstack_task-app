@@ -1,11 +1,14 @@
 import express from 'express';
-import validator from '../../helpers/Validator';
+import validator, { ValidationSource } from '../../helpers/Validator';
 import {
   USER_JOI_LOGIN_SCHEMA,
   USER_JOI_REGISTER_SCHEMA,
 } from '../../models/UserModel';
 import AuthController from '../../controllers/AuthController';
-import { AUTH_JOI_REFRESH_TOKEN_SCHEMA } from '../../helpers/AuthHelper';
+import {
+  AUTH_JOI_REFRESH_TOKEN_SCHEMA,
+  AUTH_JOI_SCHEMA,
+} from '../../helpers/AuthHelper';
 
 const router = express.Router();
 
@@ -21,7 +24,11 @@ router.route('/logout').post(AuthController.logout);
 
 router
   .route('/refresh')
-  .post(validator(AUTH_JOI_REFRESH_TOKEN_SCHEMA), AuthController.refreshToken);
+  .post(
+    validator(AUTH_JOI_SCHEMA, ValidationSource.HEADER),
+    validator(AUTH_JOI_REFRESH_TOKEN_SCHEMA),
+    AuthController.refreshToken
+  );
 
 // http://localhost:3001/api/v1/oauth/test
 router.get('/test', AuthController.test);

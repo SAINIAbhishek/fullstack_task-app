@@ -6,12 +6,23 @@ import { TOKEN_INFO } from '../config';
 import UserHelper from './UserHelper';
 import crypto from 'crypto';
 import { Types } from 'mongoose';
+import { JoiAuthBearer } from './Validator';
 
 const generateTokenKey = () => {
   return crypto.randomBytes(64).toString('hex');
 };
 
-const validateTokenData = (payload: JwtPayload): boolean => {
+const getAccessToken = (authorization?: string) => {
+  if (!authorization) throw new AuthFailureError('Invalid Authorization');
+  if (!authorization.startsWith('Bearer '))
+    throw new AuthFailureError('Invalid Authorization');
+  return authorization.split(' ')[1];
+};
+
+const validateTokenData = (
+  payload: JwtPayload,
+  message = 'Invalid Token'
+): boolean => {
   if (
     !payload ||
     !payload.iss ||
@@ -21,7 +32,7 @@ const validateTokenData = (payload: JwtPayload): boolean => {
     payload.aud !== TOKEN_INFO.audience ||
     !Types.ObjectId.isValid(payload.sub)
   )
-    throw new AuthFailureError('Invalid Token');
+    throw new AuthFailureError(message);
   return true;
 };
 
@@ -76,8 +87,13 @@ export const AUTH_JOI_REFRESH_TOKEN_SCHEMA: Joi.ObjectSchema = Joi.object({
   refreshToken: Joi.string().required().min(1),
 });
 
+export const AUTH_JOI_SCHEMA: Joi.ObjectSchema = Joi.object({
+  authorization: JoiAuthBearer().required(),
+}).unknown(true);
+
 export default {
   createTokens,
   generateTokenKey,
   validateTokenData,
+  getAccessToken,
 };

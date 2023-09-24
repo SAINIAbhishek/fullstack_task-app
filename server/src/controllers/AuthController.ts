@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Logger from '../middleware/Logger';
 import {
+  SuccessMsgResponse,
   SuccessResponse,
   TokenRefreshResponse,
 } from '../middleware/ApiResponse';
@@ -47,7 +48,6 @@ class AuthController {
 
   refreshToken = asyncHandler(async (req, res) => {
     const refreshToken = (req.cookies && req.cookies[COOKIE.login]) ?? null;
-
     if (!refreshToken) {
       throw new AuthFailureError('Invalid Authorization');
     }
@@ -73,7 +73,17 @@ class AuthController {
   });
 
   logout = asyncHandler(async (req, res) => {
-    Logger.info('User logged out successfully!');
+    const refreshToken = (req.cookies && req.cookies[COOKIE.login]) ?? null;
+    if (!!refreshToken) {
+      res.clearCookie(COOKIE.login, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        signed: true,
+      });
+    }
+
+    new SuccessMsgResponse('User logged out successfully').send(res);
   });
 }
 
