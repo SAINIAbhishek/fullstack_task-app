@@ -62,15 +62,15 @@ UserSchema.set('toJSON', {
 });
 
 export const USER_JOI_REGISTER_SCHEMA: Joi.ObjectSchema = Joi.object({
-  firstname: Joi.string().max(200),
-  lastname: Joi.string().max(200),
+  firstname: Joi.string().max(200).required(),
+  lastname: Joi.string().max(200).required(),
   email: Joi.string().min(5).max(255).email().required(),
   password: Joi.string().min(8).max(255).required(),
 });
 
 export const USER_JOI_LOGIN_SCHEMA: Joi.ObjectSchema = Joi.object({
   email: Joi.string().min(5).max(255).email().required(),
-  password: Joi.string().min(8).required(),
+  password: Joi.string().required(),
 });
 
 export const UserModel = model<User>(

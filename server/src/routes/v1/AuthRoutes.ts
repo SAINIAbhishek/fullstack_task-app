@@ -9,6 +9,7 @@ import {
   AUTH_JOI_REFRESH_TOKEN_SCHEMA,
   AUTH_JOI_SCHEMA,
 } from '../../helpers/AuthHelper';
+import UserController from '../../controllers/UserController';
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router
 
 router
   .route('/register')
-  .post(validator(USER_JOI_REGISTER_SCHEMA), AuthController.register);
+  .post(validator(USER_JOI_REGISTER_SCHEMA), UserController.register);
 
 router.route('/logout').post(AuthController.logout);
 
