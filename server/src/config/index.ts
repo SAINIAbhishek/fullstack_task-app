@@ -3,6 +3,11 @@ export const PORT = process.env.PORT;
 export const CORS_URL = process.env.CORS_URL;
 export const API_VERSION = process.env.API_VERSION;
 
+export const COOKIE = {
+  login: process.env.COOKIE_LOGIN || '',
+  maxAge: parseInt(process.env.COOKIE_MAX_AGE_SEC || '0'),
+};
+
 export const DB = {
   name: process.env.DB_NAME || '',
   host: process.env.DB_HOST || '',
@@ -18,6 +23,8 @@ export const TOKEN_INFO = {
   refreshTokenValidity: parseInt(process.env.REFRESH_TOKEN_VALIDITY_SEC || '0'),
   issuer: process.env.TOKEN_ISSUER || '',
   audience: process.env.TOKEN_AUDIENCE || '',
+  accessTokenSecret: process.env.ACCESS_TOKEN_SECRET_KEY || '',
+  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET_KEY || '',
 };
 
 export const LOG_DIRECTORY = process.env.LOG_DIR;

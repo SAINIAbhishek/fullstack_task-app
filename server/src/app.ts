@@ -4,6 +4,7 @@ import { API_VERSION, CORS_URL, ENVIRONMENT } from './config';
 import cors from 'cors';
 import helmet from 'helmet';
 import './config/DatabaseConfig'; // initialize database
+import cookieParser from 'cookie-parser';
 import {
   ApiError,
   ErrorType,
@@ -17,6 +18,10 @@ process.on('uncaughtException', (e) => {
 });
 
 const app = express();
+
+// This middleware is responsible to enable cookie parsing
+// commonly used to parse cookies from the incoming HTTP request headers.
+app.use(cookieParser());
 
 // This middleware is a collection of security-related HTTP headers that help
 // protect application against common web vulnerabilities
@@ -33,7 +38,12 @@ app.use(
 
 // This middleware is used to enable Cross-Origin Resource Sharing (CORS)
 // in application.
-app.use(cors({ origin: CORS_URL, optionsSuccessStatus: 200 }));
+// origin: CORS_URL, Allow requests from this origin
+// optionsSuccessStatus: 200, Set the success status for OPTIONS requests
+// credentials: true, Allow credentials (e.g., cookies) to be sent
+app.use(
+  cors({ origin: CORS_URL, optionsSuccessStatus: 200, credentials: true })
+);
 
 // Api Routes
 app.use(`/api/${API_VERSION}`, routes);
@@ -56,13 +66,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       `500 - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`
     );
 
-    Logger.error(err);
-
     if (ENVIRONMENT === 'development') {
-      return res.status(500).send(err);
+      Logger.error(err);
+      res.status(500).json({ error: err.message });
+    } else {
+      ApiError.handle(new InternalError(), res);
     }
-
-    ApiError.handle(new InternalError(), res);
   }
 });
 

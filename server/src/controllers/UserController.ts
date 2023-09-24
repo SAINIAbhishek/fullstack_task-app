@@ -1,16 +1,38 @@
-import asyncHandler from '../helpers/AsyncHandler';
-import Logger from '../middleware/Logger';
+import asyncHandler from 'express-async-handler';
+import UserHelper from '../helpers/UserHelper';
+import { BadRequestError } from '../middleware/ApiError';
+import bcrypt from 'bcrypt';
+import { UserModel } from '../models/UserModel';
 import { SuccessResponse } from '../middleware/ApiResponse';
 
 class UserController {
   register = asyncHandler(async (req, res) => {
-    Logger.info('User registration');
-  });
+    const { email, password, firstname, lastname } = req.body;
 
-  login = asyncHandler(async (req, res) => {
-    Logger.info('User login');
+    const user = await UserHelper.findByEmail(email);
+    if (user) throw new BadRequestError('User already registered');
 
-    new SuccessResponse('User logged in successfully!', {}).send(res);
+    // hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const userObj = {
+      email,
+      password: hashedPassword,
+      firstname,
+      lastname,
+    };
+
+    const newUser = await UserModel.create(userObj);
+
+    new SuccessResponse('User registered successfully', {
+      user: {
+        _id: newUser._id,
+        email: newUser.email,
+        firstname: newUser.firstname,
+        lastname: newUser.lastname,
+      },
+    }).send(res);
   });
 }
 

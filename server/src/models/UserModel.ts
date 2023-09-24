@@ -1,5 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 import Joi from 'joi';
+import UserHelper from '../helpers/UserHelper';
 
 export const DOCUMENT_NAME = 'User';
 export const COLLECTION_NAME = 'users';
@@ -20,55 +21,58 @@ const UserSchema = new Schema<User>(
       type: Schema.Types.String,
       trim: true,
       maxlength: 200,
+      required: true,
     },
     lastname: {
       type: Schema.Types.String,
       trim: true,
       maxlength: 200,
+      required: true,
     },
     email: {
       type: Schema.Types.String,
       unique: true,
       sparse: true, // allows null
       trim: true,
-      select: false,
       minlength: 5,
       maxlength: 50,
+      required: true,
     },
     password: {
       type: Schema.Types.String,
-      select: false,
+      required: true,
       minlength: 8,
       maxlength: 255,
-    },
-    createdAt: {
-      type: Schema.Types.Date,
-      required: true,
-      select: false,
-    },
-    updatedAt: {
-      type: Schema.Types.Date,
-      required: true,
-      select: false,
     },
   },
   {
     versionKey: false,
+    timestamps: true,
   }
 );
 
 UserSchema.index({ email: 1 });
 
+// a virtual property for name
+UserSchema.virtual('name').get(function () {
+  return UserHelper.fullName(this.firstname, this.lastname);
+});
+
+// ensuring the virtual property is included when converting the document to JSON
+UserSchema.set('toJSON', {
+  virtuals: true,
+});
+
 export const USER_JOI_REGISTER_SCHEMA: Joi.ObjectSchema = Joi.object({
-  firstname: Joi.string().max(200),
-  lastname: Joi.string().max(200),
+  firstname: Joi.string().max(200).required(),
+  lastname: Joi.string().max(200).required(),
   email: Joi.string().min(5).max(255).email().required(),
   password: Joi.string().min(8).max(255).required(),
 });
 
 export const USER_JOI_LOGIN_SCHEMA: Joi.ObjectSchema = Joi.object({
   email: Joi.string().min(5).max(255).email().required(),
-  password: Joi.string().min(8).required(),
+  password: Joi.string().required(),
 });
 
 export const UserModel = model<User>(

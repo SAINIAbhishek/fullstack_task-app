@@ -13,8 +13,10 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "eslint": "eslint . --ext .js,.ts",
-    "upgrade": "npm update --save-dev && npm update --save",
-    "test": "jest --forceExit --detectOpenHandles --coverage --verbose"
+    "test": "jest --forceExit --detectOpenHandles --coverage --verbose",
+    "install:packages": "npm i",
+    "upgrade:packages": "npm update --save-dev && npm update --save",
+    "fix:packages": "npm audit fix --force"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -22,7 +24,8 @@
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
     "express": "^4.18.2",
-    "express-rate-limit": "^6.9.0",
+    "express-async-handler": "^1.2.0",
+    "express-rate-limit": "^6.11.2",
     "helmet": "^6.0.0",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.1",
@@ -45,7 +48,8 @@
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "colors": "^1.4.0",
-    "dotenv": "^16.0.3",
+    "concurrently": "^8.2.1",
+    "dotenv": "^16.3.1",
     "eslint": "^8.29.0",
     "jest": "^29.6.2",
     "nodemon": "^2.0.20",
