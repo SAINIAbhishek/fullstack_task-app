@@ -5,10 +5,7 @@ import {
   USER_JOI_REGISTER_SCHEMA,
 } from '../../models/UserModel';
 import AuthController from '../../controllers/AuthController';
-import {
-  AUTH_JOI_REFRESH_TOKEN_SCHEMA,
-  AUTH_JOI_SCHEMA,
-} from '../../helpers/AuthHelper';
+import { AUTH_JOI_SCHEMA } from '../../helpers/AuthHelper';
 import UserController from '../../controllers/UserController';
 
 const router = express.Router();
@@ -27,7 +24,7 @@ router
   .route('/refresh')
   .post(
     validator(AUTH_JOI_SCHEMA, ValidationSource.HEADER),
-    validator(AUTH_JOI_REFRESH_TOKEN_SCHEMA),
+    AuthController.isAuthorized,
     AuthController.refreshToken
   );
 

@@ -58,7 +58,7 @@ class AuthController {
   refreshToken = asyncHandler(async (req, res) => {
     const refreshToken = (req.cookies && req.cookies[COOKIE.login]) ?? null;
     if (!refreshToken) {
-      throw new AuthFailureError('Invalid Authorization');
+      throw new AuthFailureError('Unauthorized');
     }
 
     const refreshTokenPayload = jwt.verify(
@@ -74,7 +74,7 @@ class AuthController {
 
     const tokens: Tokens = AuthHelper.createTokens(user);
 
-    new TokenRefreshResponse('Token Issued', tokens.accessToken).send(res);
+    new TokenRefreshResponse('Token issued', tokens.accessToken).send(res);
   });
 
   logout = asyncHandler(async (req, res) => {

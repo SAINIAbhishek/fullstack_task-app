@@ -6,9 +6,7 @@ const fullName = (firstname?: string, lastname?: string) => {
 };
 
 const findById = async (id: Types.ObjectId): Promise<User | null> => {
-  return UserModel.findOne({ _id: id, status: true })
-    .select('-password')
-    .exec();
+  return UserModel.findOne({ _id: id }).select('-password').exec();
 };
 
 const findByEmail = async (email: string): Promise<User | null> => {
