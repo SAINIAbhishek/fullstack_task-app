@@ -46,7 +46,7 @@ npm run install:packages
 
 - Now clone the file **.env.example** of a server and save a copy as **.env** in the server directory and change the variables according to your needs.
 
-## How to run the project
+## How to run the backend part
 
 After installing the dependencies either you can go to the package.json file of the server and click on the play button on script 'watch' under the scripts object or in the terminal you can write the below cmd or click on the play button next to it.
 
