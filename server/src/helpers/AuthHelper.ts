@@ -13,9 +13,9 @@ const generateTokenKey = () => {
 };
 
 const getAccessToken = (authorization?: string) => {
-  if (!authorization) throw new AuthFailureError('Invalid Authorization');
+  if (!authorization) throw new AuthFailureError('Unauthorized');
   if (!authorization.startsWith('Bearer '))
-    throw new AuthFailureError('Invalid Authorization');
+    throw new AuthFailureError('Unauthorized');
   return authorization.split(' ')[1];
 };
 
