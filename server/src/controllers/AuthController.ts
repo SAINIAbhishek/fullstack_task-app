@@ -20,6 +20,16 @@ class AuthController {
     new SuccessResponse('Test successfully!', {}).send(res);
   });
 
+  isAuthorized = asyncHandler((req, res) => {
+    const token = AuthHelper.getAccessToken(req.headers.authorization); // Express headers are auto converted to lowercase
+
+    const accessTokenPayload = jwt.verify(token, TOKEN_INFO.accessTokenSecret);
+    AuthHelper.validateTokenData(
+      <JwtPayload>accessTokenPayload,
+      'Unauthorized'
+    );
+  });
+
   login = asyncHandler(async (req, res) => {
     const user = await UserHelper.findByEmail(req.body.email);
     if (!user || !user.password)
@@ -66,10 +76,6 @@ class AuthController {
     const tokens: Tokens = AuthHelper.createTokens(user);
 
     new TokenRefreshResponse('Token Issued', tokens.accessToken).send(res);
-  });
-
-  register = asyncHandler(async (req, res) => {
-    Logger.info('User registration');
   });
 
   logout = asyncHandler(async (req, res) => {
