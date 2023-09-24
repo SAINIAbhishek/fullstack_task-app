@@ -43,38 +43,19 @@ const createTokens = (user: User): Tokens => {
     name: UserHelper.fullName(user.firstname, user.lastname),
     iss: TOKEN_INFO.issuer,
     iat: Math.floor(Date.now() / 1000),
+    aud: TOKEN_INFO.audience,
   };
 
-  const options = {
-    issuer: TOKEN_INFO.issuer,
-    audience: TOKEN_INFO.audience,
-  };
-
-  const accessToken = jwt.sign(
-    {
-      ...payload,
-      exp: TOKEN_INFO.accessTokenValidity,
-    },
-    TOKEN_INFO.accessTokenSecret,
-    {
-      ...options,
-      expiresIn: TOKEN_INFO.accessTokenValidity,
-    }
-  );
+  const accessToken = jwt.sign(payload, TOKEN_INFO.accessTokenSecret, {
+    expiresIn: TOKEN_INFO.accessTokenValidity,
+  });
 
   if (!accessToken) throw new InternalError();
 
-  const refreshToken = jwt.sign(
-    {
-      ...payload,
-      exp: TOKEN_INFO.refreshTokenValidity,
-    },
-    TOKEN_INFO.refreshTokenSecret,
-    {
-      ...options,
-      expiresIn: TOKEN_INFO.refreshTokenValidity,
-    }
-  );
+  const refreshToken = jwt.sign(payload, TOKEN_INFO.refreshTokenSecret, {
+    expiresIn: TOKEN_INFO.refreshTokenValidity,
+  });
+
   if (!refreshToken) throw new InternalError();
 
   return {

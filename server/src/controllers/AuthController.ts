@@ -47,7 +47,6 @@ class AuthController {
       httpOnly: true, // //accessible only by web server
       secure: true, // https
       sameSite: true, // cross-site cookie
-      signed: true, // signed
       maxAge: COOKIE.maxAge, // cookie expiry: set to match refreshTokenValidity
     });
 

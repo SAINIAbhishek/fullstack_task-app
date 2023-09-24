@@ -21,24 +21,26 @@ const UserSchema = new Schema<User>(
       type: Schema.Types.String,
       trim: true,
       maxlength: 200,
+      required: true,
     },
     lastname: {
       type: Schema.Types.String,
       trim: true,
       maxlength: 200,
+      required: true,
     },
     email: {
       type: Schema.Types.String,
       unique: true,
       sparse: true, // allows null
       trim: true,
-      select: false,
       minlength: 5,
       maxlength: 50,
+      required: true,
     },
     password: {
       type: Schema.Types.String,
-      select: false,
+      required: true,
       minlength: 8,
       maxlength: 255,
     },
