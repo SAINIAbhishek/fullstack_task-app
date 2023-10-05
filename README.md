@@ -12,20 +12,22 @@ The project structure follows the best practices and conventions of a Node.js ap
 
 The project has directories based on the functionality and type while justifying the directory name.
 
-Following are the api features of this project:
-- This backend is written in Typescript.
-- Centralised Error handling.
-- Centralised Response handling.
-- Version system for the routes.
-- JSON Web Token(JWT): used to authenticate and authorize users in application.
-- Mongodb is used through Mongoose.
-- Eslint: As lots of developers work on the same project so to enforces coding standards and best practices in your codebase. We can improve code quality, maintain consistency, catch potential issues early, and enforce coding best practices.
-- Prettier: A code formatter to automatically formats code to follow a consistent and predefined set of rules that is in '.prettierrc' configuration file.
-- Cookies: Used for storing the refresh token information.
-- Winston: For the logging purpose in the application.
-- It has middleware for handling exceptions inside of async express routes and passing them to your express error handlers.
+Following are the API features of this project:
+- **TypeScript:** This backend is written in TypeScript, enhancing the development experience by adding static typing to JavaScript. This results in more reliable and maintainable codebases, helps catch potential errors during development, and provides better code completion and tooling support.
+- **Request Limiter**: This feature prevents abuse or overload of the login route, forgot password route by limiting the number of requests, enhancing security and preventing potential attacks.
+- **Centralized Error Handling:** Centralized error handling and response management streamline the codebase, making it easier to maintain and ensuring a consistent user experience.
+- **API Versioning:** Implementing a versioning system for routes helps with organization and ensures compatibility when evolving the API, preventing breaking changes for existing clients.
+- **Role-Based Access Control:** Role-based access control enhances security by granting or restricting permissions based on user roles, allowing fine-grained access management.
+- **JWT Authentication:** JSON Web Tokens (JWT) are used for user authentication and authorization, adding a layer of security to the application by securely transmitting user data.
+- **Password Reset via Email:** Functionality to send email notifications for password resets enhances user account security and recovery options.
+- **MongoDB with Mongoose:** MongoDB is a NoSQL database that is fast and scalable, making it suitable for modern web applications. Mongoose is an ODM (Object-Document Mapper) for MongoDB that simplifies database interactions.
+- **ESLint:** ESLint enforces coding standards and best practices, improving code quality and maintaining consistency while catching potential issues early in development.
+- **Prettier:** Prettier automatically formats code according to predefined rules, ensuring a consistent code style throughout the project.
+- **Cookies for Tokens**: Using cookies to store tokens information enhances user authentication and session management, providing a secure way to maintain user sessions.
+- **Logging:** Winston is used for logging purposes, providing a robust and flexible logging solution that helps with debugging and monitoring the application.
+- **Middleware for Exception Handling:** Middleware for handling exceptions within async Express routes and forwarding them to Express error handlers improves error management, ensuring the smooth operation of the application.
 
-## Stacks:
+## API Stacks:
 - Node.js
 - Express.js
 - Typescript
@@ -35,6 +37,13 @@ Following are the api features of this project:
 - JWT
 - Cookies
 - Winston
+- Rate Limiter
+- Roles
+- Nodemailer
+
+## Setup MAILTRAP
+To test the email functionality I've used the Mailtrap service: <a href="https://mailtrap.io/" target="_blank">Mailtrap</a>.
+You can also create your credentials and place them in the .env file under the **Mailtrap(Email service) Info**.
 
 ## How to setup the backend part
 
@@ -44,7 +53,7 @@ Following are the api features of this project:
 npm run install:packages
 ```
 
-- Now clone the file **.env.example** of a server and save a copy as **.env** in the server directory and change the variables according to your needs.
+- Duplicate the file **.env.example** of a server and save a copy as **.env** in the server directory and change the variables according to your needs.
 
 ## How to run the backend part
 
@@ -52,6 +61,12 @@ After installing the dependencies either you can go to the package.json file of 
 
 ```
 npm run watch
+```
+
+## Access the API at
+
+```
+http://localhost:3001/api/v1/
 ```
 
 ### Secrets
