@@ -22,8 +22,10 @@
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "exclude": ["node_modules", "**/*.spec.tsx", "**/*.test.tsx"],
+  "typeRoots": ["./@types", "./node_modules/@types"]
 }
