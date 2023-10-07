@@ -3,4 +3,5 @@ export type RegisterType = {
   password: string;
   firstname: string;
   lastname: string;
+  terms: boolean;
 };
