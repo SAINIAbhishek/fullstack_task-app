@@ -3,9 +3,12 @@ import * as yup from 'yup';
 import { RegisterType } from './register-type';
 import { Formik } from 'formik';
 import LoadingSpinner from '../shared/loading-spinner';
-import { EMAIL_PATTERN } from '../utils/regex';
+import { EMAIL_PATTERN } from '../../utils/regex';
 import InputField from '../shared/forms/input-field';
 import CheckboxField from '../shared/forms/checkbox-field';
+import { useMutation } from 'react-query';
+import { API_REGISTER_USER } from '../../api/auth-api';
+import toast from 'react-hot-toast';
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('First name is required'),
@@ -35,14 +38,20 @@ const initialValues: RegisterType = {
 const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const handleFormSubmit = (values: RegisterType) => {
-    console.log(values);
-  };
+  const { mutate, isError } = useMutation(API_REGISTER_USER, {
+    onSuccess: (data) => {
+      toast.success(data.message);
+      navigate('/login');
+    },
+    onError: (err: Error) => {
+      toast.error(err.message);
+    },
+  });
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleFormSubmit}
+      onSubmit={(values) => mutate(values)}
       validationSchema={validationSchema}>
       {({
         values,
@@ -119,9 +128,9 @@ const RegisterForm = () => {
             type="submit"
             disabled={!(dirty && isValid)}
             className={`w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center bg-primary-600 hover:bg-primary-700 px-5 ${
-              isSubmitting ? 'py-1' : 'py-2.5'
+              isSubmitting && !isError ? 'py-1' : 'py-2.5'
             } ${!(dirty && isValid) ? 'cursor-not-allowed' : ''}`}>
-            {isSubmitting ? (
+            {isSubmitting && !isError ? (
               <LoadingSpinner size="sm" color="border-white" />
             ) : (
               'Create an account'

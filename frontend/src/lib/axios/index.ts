@@ -1,10 +1,10 @@
-import { BASE_API_URL, LOGGING, NODE_ENV } from '../../config';
+import { API_BASE_URL, LOGGING, NODE_ENV } from '../../config';
 import axios, { Method } from 'axios';
 
 const isLogEnabled = NODE_ENV !== 'production' && LOGGING == 'true';
 
 const instance = axios.create({
-  baseURL: BASE_API_URL,
+  baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -25,7 +25,10 @@ instance.interceptors.request.use(
   },
   async (error) => {
     if (isLogEnabled) console.error('Network Request Error: ', error);
-    return Promise.reject(error);
+    return Promise.reject({
+      ...error.request,
+      ...error.request.data,
+    });
   },
 );
 
@@ -38,27 +41,29 @@ instance.interceptors.response.use(
   async (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     if (isLogEnabled) console.error('Network Response Error: ', error);
-    return Promise.reject(error);
+    return Promise.reject({
+      ...error.response,
+      ...error.response.data,
+    });
   },
 );
 
-export type NetworkResponse<T extends object | null> = {
+type NetworkResponse<T extends object | null> = {
   readonly statusCode: string;
   readonly message: string;
   readonly data?: T;
 };
 
-export type NetworkRequest<T extends object | null> = {
+type NetworkRequest<T extends object | null> = {
   url: string;
   method: Method;
   data?: T;
   params?: object;
 };
 
-export interface NetworkAuthRequest<T extends object | null>
-  extends NetworkRequest<T> {
+type NetworkAuthRequest<T extends object | null> = NetworkRequest<T> & {
   headers?: { Authorization: string };
-}
+};
 
 /**
  * @T : Request Body Type

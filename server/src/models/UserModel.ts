@@ -13,6 +13,7 @@ export default interface User {
   name?: string;
   email?: string;
   password?: string;
+  terms?: boolean;
   createdAt?: string;
   updatedAt?: string;
   passwordUpdatedAt?: string;
@@ -51,6 +52,11 @@ const UserSchema = new Schema<User>(
       minlength: 8,
       maxlength: 255,
       select: false,
+    },
+    terms: {
+      type: Schema.Types.Boolean,
+      select: false,
+      default: true,
     },
     passwordUpdatedAt: {
       type: Schema.Types.Date,
@@ -106,6 +112,7 @@ export const JOI_USER_REGISTER_SCHEMA: Joi.ObjectSchema = Joi.object({
   lastname: Joi.string().max(200).required(),
   email: Joi.string().min(5).max(255).email().required(),
   password: Joi.string().min(8).max(255).required(),
+  terms: Joi.boolean().required(),
 });
 
 export const JOI_USER_CREATE_SCHEMA: Joi.ObjectSchema = Joi.object({

@@ -162,13 +162,11 @@ class AuthController {
       roles: [role],
     };
 
-    const newUser = await UserModel.create(userObj);
-    const tokens: Token = AuthHelper.createTokens(newUser);
+    await UserModel.create(userObj);
 
-    new SuccessResponse('User registered successfully', {
-      token: tokens.accessToken,
-      user: UserHelper.sanitizedUser(newUser),
-    }).send(res);
+    new SuccessResponse('The user has been registered successfully', {}).send(
+      res
+    );
   });
 
   login = asyncHandler(async (req, res) => {
