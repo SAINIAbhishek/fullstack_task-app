@@ -1,4 +1,4 @@
 declare type ApiResponse = {
-  token?: string;
-  user?: User;
+  readonly token?: string;
+  readonly user?: User;
 };

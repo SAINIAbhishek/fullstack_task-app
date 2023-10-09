@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 
 declare type Error = AxiosError & {
-  message: string;
-  statusCode: string;
+  readonly message: string;
+  readonly statusCode: string;
 };

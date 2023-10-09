@@ -13,7 +13,7 @@ declare enum RoleNameEnum {
 }
 
 declare type Role = {
-  _id: string;
-  name: RoleNameEnum;
-  permissions: RolePermissionEnum[];
+  readonly _id: string;
+  readonly name: RoleNameEnum;
+  readonly permissions: RolePermissionEnum[];
 };

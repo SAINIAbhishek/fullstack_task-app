@@ -1,10 +1,10 @@
 declare type User = {
-  _id: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  name: string;
-  roles: string[] | Role[];
-  createdAt: string;
-  updatedAt: string;
+  readonly _id: string;
+  readonly email: string;
+  readonly firstname: string;
+  readonly lastname: string;
+  readonly name: string;
+  readonly roles: string[] | Role[];
+  readonly createdAt: string;
+  readonly updatedAt: string;
 };
