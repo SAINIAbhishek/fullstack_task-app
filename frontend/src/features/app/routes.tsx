@@ -6,6 +6,10 @@ import LoginPage from '../../pages/login.page';
 
 const RegisterPage = lazy(() => import('../../pages/register.page'));
 
+const ForgotPasswordPage = lazy(
+  () => import('../../pages/forgot-password.page'),
+);
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -14,6 +18,7 @@ const AppRoutes = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/" element={<DashboardPage />} />
         </Routes>
       </Suspense>

@@ -25,7 +25,7 @@ import RoleHelper from '../helpers/RoleHelper';
 class AuthController {
   forgotPasswordLimiter = rateLimit({
     windowMs: LIMITER.forgotPasswordWS,
-    max: LIMITER.loginMaxAttempt,
+    max: LIMITER.forgotPasswordMaxAttempt,
     message: 'Too many reset passwords attempts, please try again later.',
     handler: (req, res, _, options) => {
       Logger.info(`${options.message}, Method: ${req.method}, Url: ${req.url}`);

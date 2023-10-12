@@ -2,6 +2,7 @@ export const ENVIRONMENT = process.env.NODE_ENV;
 export const PORT = process.env.PORT;
 export const CORS_URL = process.env.CORS_URL;
 export const API_VERSION = process.env.API_VERSION;
+export const FRONTEND_RESET_URL = process.env.RESET_URL;
 
 export const MAILTRAP_EMAIL = {
   testing: {
