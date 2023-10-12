@@ -1,12 +1,12 @@
 import asyncHandler from 'express-async-handler';
 import { ProtectedRequest } from 'app-request';
-import { API_VERSION } from '../config';
 import EmailHelper from '../helpers/EmailHelper';
 import User, { UserModel } from '../models/UserModel';
 import { BadRequestError, InternalError } from '../middleware/ApiError';
 import Email, { EmailModel, EmailStatusEnum } from '../models/EmailModel';
 import { SuccessResponse } from '../middleware/ApiResponse';
 import Logger from '../middleware/Logger';
+import { FRONTEND_RESET_URL } from '../config';
 
 class EmailController {
   passwordUpdateSuccessfully = asyncHandler(
@@ -56,11 +56,7 @@ class EmailController {
     const { user } = req.email;
     if (!user) throw new BadRequestError('User is required');
 
-    const resetUrl = `${req.protocol}://${req.get(
-      'host'
-    )}/api/${API_VERSION}/oauth/resetPassword/${
-      user.passwordResetTokenRaw
-    }?email=${user.email}`;
+    const resetUrl = `${FRONTEND_RESET_URL}/${user.passwordResetTokenRaw}?email=${user.email}`;
 
     const message = `
         We've received a request to reset your password. Don't worry, we've got you covered! <br><br>
@@ -116,10 +112,9 @@ class EmailController {
       );
     }
 
-    new SuccessResponse(
-      'The password reset email has been sent successfully',
-      {}
-    ).send(res);
+    new SuccessResponse('The password reset email has been sent successfully', {
+      passwordResetToken: user.passwordResetTokenRaw,
+    }).send(res);
   });
 }
 
