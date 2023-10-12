@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { RegisterType } from './register-type';
+import { RegisterType } from './register.type';
 import { Formik } from 'formik';
 import LoadingSpinner from '../shared/loading-spinner';
 import { EMAIL_PATTERN } from '../../utils/regex';
 import InputField from '../shared/forms/input-field';
 import CheckboxField from '../shared/forms/checkbox-field';
 import { useMutation } from 'react-query';
-import { API_REGISTER_USER } from '../../api/auth-api';
+import { API_REGISTER_USER } from '../../api/auth.api';
 import toast from 'react-hot-toast';
 
 const validationSchema = yup.object().shape({

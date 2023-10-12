@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { LoginType } from './login-type';
+import { LoginType } from './login.type';
 import LoadingSpinner from '../shared/loading-spinner';
 import { EMAIL_PATTERN } from '../../utils/regex';
 import { useMutation } from 'react-query';
-import { API_LOGIN_USER } from '../../api/auth-api';
+import { API_LOGIN_USER } from '../../api/auth.api';
 import toast from 'react-hot-toast';
 import InputField from '../shared/forms/input-field';
 

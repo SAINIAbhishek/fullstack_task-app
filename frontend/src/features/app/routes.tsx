@@ -1,10 +1,10 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoadingSpinner from '../shared/loading-spinner';
-import LoginPage from '../../pages/login-page';
-import DashboardPage from '../../pages/dashboard-page';
+import DashboardPage from '../../pages/dashboard.page';
+import LoginPage from '../../pages/login.page';
 
-const RegisterPage = lazy(() => import('../../pages/register-page'));
+const RegisterPage = lazy(() => import('../../pages/register.page'));
 
 const AppRoutes = () => {
   return (

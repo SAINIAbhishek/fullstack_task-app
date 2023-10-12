@@ -1,6 +1,6 @@
-import { RegisterType } from '../features/register/register-type';
+import { RegisterType } from '../features/register/register.type';
 import { publicRequest } from '../lib/axios';
-import { LoginType } from '../features/login/login-type';
+import { LoginType } from '../features/login/login.type';
 
 export const API_REGISTER_USER = async (data: RegisterType) => {
   return await publicRequest<RegisterType, ApiResponse>({
