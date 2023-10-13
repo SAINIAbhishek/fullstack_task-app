@@ -3,10 +3,10 @@ import LoadingSpinner from '../shared/loading-spinner';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { API_FORGOT_PASSWORD } from '../../api/auth.api';
+import { API_RESET_PASSWORD } from '../../api/auth.api';
 import * as yup from 'yup';
 import { EMAIL_PATTERN } from '../../utils/regex';
-import { ForgotPasswordType } from './forgot-password.type';
+import { ResetPasswordType } from './reset-password.type';
 import toast from 'react-hot-toast';
 
 const validationSchema = yup.object().shape({
@@ -17,36 +17,34 @@ const validationSchema = yup.object().shape({
     .required('Email is required'),
 });
 
-const initialValues: ForgotPasswordType = {
-  email: '',
+type Props = {
+  email: string;
+  token: string;
 };
 
-const ForgotPasswordForm = () => {
+const ResetPasswordForm = ({ email, token }: Props) => {
   const navigate = useNavigate();
 
-  const { mutate, isError } = useMutation(API_FORGOT_PASSWORD);
-
-  const handleSubmit = (value: ForgotPasswordType) => {
-    mutate(value, {
-      onSuccess: (response) => {
-        toast.success(response.message);
-        if (response && response.data?.passwordResetToken) {
-          navigate({
-            pathname: `/reset-password/${response.data.passwordResetToken}`,
-            search: `?email=${value.email}`,
-          });
-        }
-      },
-      onError: (err: any) => {
-        toast.error(err.message);
-      },
-    });
+  const initialValues: ResetPasswordType = {
+    email,
+    token,
+    password: '',
   };
+
+  const { mutate, isError } = useMutation(API_RESET_PASSWORD, {
+    onSuccess: (response) => {
+      toast.success(response.message);
+      navigate('/login');
+    },
+    onError: (err: Error) => {
+      toast.error(err.message);
+    },
+  });
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={(values) => mutate(values)}
       validationSchema={validationSchema}>
       {({
         values,
@@ -64,11 +62,19 @@ const ForgotPasswordForm = () => {
             name="email"
             label="Email Address"
             type="email"
+            value={values.email}
+            readOnly
+          />
+
+          <InputField
+            name="password"
+            label="New Password"
+            type="password"
             onBlur={handleBlur}
             onChange={handleChange}
-            value={values.email}
-            error={errors.email}
-            touched={touched.email}
+            value={values.password}
+            error={errors.password}
+            touched={touched.password}
           />
 
           <button
@@ -98,4 +104,4 @@ const ForgotPasswordForm = () => {
   );
 };
 
-export default ForgotPasswordForm;
+export default ResetPasswordForm;
