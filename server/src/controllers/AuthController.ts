@@ -72,12 +72,12 @@ class AuthController {
   });
 
   resetPassword = asyncHandler(async (req: ProtectedRequest, res, next) => {
-    const { password } = req.body;
+    const { password, email } = req.body;
 
     const filter = {
       passwordResetTokenRaw: req.params.token,
       passwordResetToken: AuthHelper.generateHashTokenKey(req.params.token),
-      email: req.query.email,
+      email: email,
       passwordResetTokenExpires: { $gt: Date.now() },
     };
 

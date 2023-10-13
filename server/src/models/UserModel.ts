@@ -135,6 +135,7 @@ export const JOI_USER_LOGIN_SCHEMA: Joi.ObjectSchema = Joi.object({
 
 export const JOI_USER_RESET_PASSWORD_SCHEMA: Joi.ObjectSchema = Joi.object({
   password: Joi.string().min(8).max(255).required(),
+  email: Joi.string().min(5).max(255).email().required(),
 });
 
 export const UserModel = model<User>(

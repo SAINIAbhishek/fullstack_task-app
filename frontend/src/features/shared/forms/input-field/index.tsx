@@ -10,6 +10,7 @@ const InputField = ({
   value,
   error,
   touched,
+  ...props
 }: FormikValues) => (
   <div>
     <label htmlFor={name} className="block mb-2 text-sm font-medium text-white">
@@ -26,6 +27,7 @@ const InputField = ({
         error && touched ? 'border-red-500' : 'focus:ring-blue-500'
       }`}
       placeholder={`Enter your ${label.toLowerCase()}`}
+      {...props}
     />
     <ErrorMessage
       name={name}
