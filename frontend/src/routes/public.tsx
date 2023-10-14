@@ -1,14 +1,20 @@
-import AuthRoutes from '@/features/auth/routes';
-import { Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import MainLayout from '@/components/layout/main-layout';
+import AuthRoutes, { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import Spinner from '@/components/spinner';
+import { Suspense } from 'react';
 
-type Props = {
-  isAuthenticated: boolean;
-  defaultRoute: string;
-};
-
-const PublicRoutes = ({ defaultRoute, isAuthenticated }: Props) => {
+const PublicRoutes = () => {
   return (
-    <>{isAuthenticated ? <Navigate to={defaultRoute} /> : <AuthRoutes />}</>
+    <MainLayout>
+      <BrowserRouter>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route path={`${AUTH_BASE_ROUTE}/*`} element={<AuthRoutes />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </MainLayout>
   );
 };
 
