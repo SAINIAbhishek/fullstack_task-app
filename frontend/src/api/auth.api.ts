@@ -1,8 +1,8 @@
-import { RegisterType } from '../features/register/register.type';
-import { publicRequest } from '../lib/axios';
-import { LoginType } from '../features/login/login.type';
-import { ForgotPasswordType } from '../features/forgot-password/forgot-password.type.ts';
-import { ResetPasswordType } from '../features/reset-password/reset-password.type.ts';
+import { RegisterType } from '@/features/auth/types/register.type';
+import { publicRequest } from '@/lib/axios';
+import { LoginType } from '@/features/auth/types/login.type';
+import { ForgotPasswordType } from '@/features/auth/types/forgot-password.type';
+import { ResetPasswordType } from '@/features/auth/types/reset-password.type';
 
 export const API_RESET_PASSWORD = async (data: ResetPasswordType) => {
   return await publicRequest<
@@ -18,9 +18,9 @@ export const API_RESET_PASSWORD = async (data: ResetPasswordType) => {
   });
 };
 
-export const API_REGISTER_USER = async (data: RegisterType) => {
-  return await publicRequest<RegisterType, ApiResponse>({
-    url: '/oauth/register',
+export const API_FORGOT_PASSWORD = async (data: ForgotPasswordType) => {
+  return await publicRequest<ForgotPasswordType, ApiResponse>({
+    url: '/oauth/forgotPassword',
     method: 'POST',
     data,
   });
@@ -34,9 +34,9 @@ export const API_LOGIN_USER = async (data: LoginType) => {
   });
 };
 
-export const API_FORGOT_PASSWORD = async (data: ForgotPasswordType) => {
-  return await publicRequest<ForgotPasswordType, ApiResponse>({
-    url: '/oauth/forgotPassword',
+export const API_REGISTER_USER = async (data: RegisterType) => {
+  return await publicRequest<RegisterType, ApiResponse>({
+    url: '/oauth/register',
     method: 'POST',
     data,
   });
