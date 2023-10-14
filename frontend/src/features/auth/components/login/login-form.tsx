@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { LoginType } from './login.type';
-import LoadingSpinner from '../shared/loading-spinner';
-import { EMAIL_PATTERN } from '../../utils/regex';
 import { useMutation } from 'react-query';
-import { API_LOGIN_USER } from '../../api/auth.api';
 import toast from 'react-hot-toast';
-import InputField from '../shared/forms/input-field';
+import { EMAIL_PATTERN } from '@/utils/regex';
+import { LoginType } from '@/features/auth/types/login.type';
+import { API_LOGIN_USER } from '@/api/auth.api';
+import InputField from '@/components/form/input-field';
+import Spinner from '@/components/spinner';
+import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -77,7 +78,7 @@ const LoginForm = () => {
 
           <div className="flex items-center justify-end">
             <button
-              onClick={() => navigate('/forgot-password')}
+              onClick={() => navigate(`${AUTH_BASE_ROUTE}/forgot-password`)}
               type="button"
               className="text-sm font-medium hover:underline text-primary-500">
               Forgot password?
@@ -91,7 +92,7 @@ const LoginForm = () => {
               isSubmitting && !isError ? '' : 'py-2.5'
             }`}>
             {isSubmitting && !isError ? (
-              <LoadingSpinner size="sm" color="border-white" />
+              <Spinner size="sm" color="border-white" />
             ) : (
               'Sign in'
             )}
@@ -101,7 +102,7 @@ const LoginForm = () => {
             Don’t have an account yet?
             <button
               type="button"
-              onClick={() => navigate('/register')}
+              onClick={() => navigate(`${AUTH_BASE_ROUTE}/register`)}
               className="font-medium hover:underline text-primary-500 ml-1">
               Sign up
             </button>

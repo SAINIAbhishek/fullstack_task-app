@@ -1,13 +1,14 @@
-import InputField from '../shared/forms/input-field';
-import LoadingSpinner from '../shared/loading-spinner';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { API_RESET_PASSWORD } from '../../api/auth.api';
 import * as yup from 'yup';
-import { EMAIL_PATTERN } from '../../utils/regex';
-import { ResetPasswordType } from './reset-password.type';
 import toast from 'react-hot-toast';
+import { EMAIL_PATTERN } from '@/utils/regex';
+import { ResetPasswordType } from '@/features/auth/types/reset-password.type';
+import { API_RESET_PASSWORD } from '@/api/auth.api';
+import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import InputField from '@/components/form/input-field';
+import Spinner from '@/components/spinner';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -34,7 +35,7 @@ const ResetPasswordForm = ({ email, token }: Props) => {
   const { mutate, isError } = useMutation(API_RESET_PASSWORD, {
     onSuccess: (response) => {
       toast.success(response.message);
-      navigate('/login');
+      navigate(`${AUTH_BASE_ROUTE}/login`);
     },
     onError: (err: Error) => {
       toast.error(err.message);
@@ -84,7 +85,7 @@ const ResetPasswordForm = ({ email, token }: Props) => {
               isSubmitting && !isError ? '' : 'py-2.5'
             } ${!(dirty && isValid) ? 'cursor-not-allowed' : ''}`}>
             {isSubmitting && !isError ? (
-              <LoadingSpinner size="sm" color="border-white" />
+              <Spinner size="sm" color="border-white" />
             ) : (
               'Reset password'
             )}
@@ -93,7 +94,8 @@ const ResetPasswordForm = ({ email, token }: Props) => {
           <p className="text-sm font-light text-gray-400">
             Already have an account?
             <button
-              onClick={() => navigate('/login')}
+              type="button"
+              onClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
               className="font-medium hover:underline text-primary-500 ml-1">
               Login here
             </button>

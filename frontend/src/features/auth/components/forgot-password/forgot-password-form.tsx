@@ -1,13 +1,14 @@
-import InputField from '../shared/forms/input-field';
-import LoadingSpinner from '../shared/loading-spinner';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { API_FORGOT_PASSWORD } from '../../api/auth.api';
 import * as yup from 'yup';
-import { EMAIL_PATTERN } from '../../utils/regex';
-import { ForgotPasswordType } from './forgot-password.type';
 import toast from 'react-hot-toast';
+import { EMAIL_PATTERN } from '@/utils/regex';
+import { ForgotPasswordType } from '@/features/auth/types/forgot-password.type';
+import { API_FORGOT_PASSWORD } from '@/api/auth.api';
+import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import InputField from '@/components/form/input-field';
+import Spinner from '@/components/spinner';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -32,7 +33,7 @@ const ForgotPasswordForm = () => {
         toast.success(response.message);
         if (response && response.data?.passwordResetToken) {
           navigate({
-            pathname: `/reset-password/${response.data.passwordResetToken}`,
+            pathname: `${AUTH_BASE_ROUTE}/reset-password/${response.data.passwordResetToken}`,
             search: `?email=${value.email}`,
           });
         }
@@ -78,7 +79,7 @@ const ForgotPasswordForm = () => {
               isSubmitting && !isError ? '' : 'py-2.5'
             } ${!(dirty && isValid) ? 'cursor-not-allowed' : ''}`}>
             {isSubmitting && !isError ? (
-              <LoadingSpinner size="sm" color="border-white" />
+              <Spinner size="sm" color="border-white" />
             ) : (
               'Reset password'
             )}
@@ -87,7 +88,8 @@ const ForgotPasswordForm = () => {
           <p className="text-sm font-light text-gray-400">
             Already have an account?
             <button
-              onClick={() => navigate('/login')}
+              type="button"
+              onClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
               className="font-medium hover:underline text-primary-500 ml-1">
               Login here
             </button>

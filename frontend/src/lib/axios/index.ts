@@ -1,5 +1,5 @@
-import { API_BASE_URL, LOGGING, NODE_ENV } from '../../config';
 import axios, { Method } from 'axios';
+import { API_BASE_URL, LOGGING, NODE_ENV } from '@/config';
 
 const isLogEnabled = NODE_ENV !== 'production' && LOGGING == 'true';
 

@@ -1,14 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { RegisterType } from './register.type';
 import { Formik } from 'formik';
-import LoadingSpinner from '../shared/loading-spinner';
-import { EMAIL_PATTERN } from '../../utils/regex';
-import InputField from '../shared/forms/input-field';
-import CheckboxField from '../shared/forms/checkbox-field';
 import { useMutation } from 'react-query';
-import { API_REGISTER_USER } from '../../api/auth.api';
 import toast from 'react-hot-toast';
+import { EMAIL_PATTERN } from '@/utils/regex';
+import { RegisterType } from '@/features/auth/types/register.type';
+import InputField from '@/components/form/input-field';
+import { API_REGISTER_USER } from '@/api/auth.api';
+import CheckboxField from '@/components/form/checkbox-field';
+import Spinner from '@/components/spinner';
+import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('First name is required'),
@@ -41,7 +42,7 @@ const RegisterForm = () => {
   const { mutate, isError } = useMutation(API_REGISTER_USER, {
     onSuccess: (data) => {
       toast.success(data.message);
-      navigate('/login');
+      navigate(`${AUTH_BASE_ROUTE}/login`);
     },
     onError: (err: Error) => {
       toast.error(err.message);
@@ -131,7 +132,7 @@ const RegisterForm = () => {
               isSubmitting && !isError ? '' : 'py-2.5'
             } ${!(dirty && isValid) ? 'cursor-not-allowed' : ''}`}>
             {isSubmitting && !isError ? (
-              <LoadingSpinner size="sm" color="border-white" />
+              <Spinner size="sm" color="border-white" />
             ) : (
               'Create an account'
             )}
@@ -140,7 +141,8 @@ const RegisterForm = () => {
           <p className="text-sm font-light text-gray-400">
             Already have an account?
             <button
-              onClick={() => navigate('/login')}
+              type="button"
+              onClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
               className="font-medium hover:underline text-primary-500 ml-1">
               Login here
             </button>
