@@ -4,11 +4,11 @@ import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
-import { ForgotPasswordType } from '@/features/auth/types/forgot-password.type';
 import { API_FORGOT_PASSWORD } from '@/api/auth.api';
-import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
 import InputField from '@/components/form/input-field';
 import Spinner from '@/components/spinner';
+import { ForgotPasswordType } from '../../types/forgot-password.type';
+import { AUTH_BASE_ROUTE } from '../../routes';
 
 const validationSchema = yup.object().shape({
   email: yup

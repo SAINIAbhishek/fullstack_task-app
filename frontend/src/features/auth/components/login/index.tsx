@@ -1,5 +1,5 @@
-import LoginForm from './login-form.tsx';
-import AuthLayout from '@/features/auth/layout';
+import AuthLayout from '../../layout';
+import LoginForm from './login-form';
 
 const Login = () => {
   return (

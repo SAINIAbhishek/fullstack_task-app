@@ -4,11 +4,11 @@ import { Formik } from 'formik';
 import { useMutation } from 'react-query';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
-import { LoginType } from '@/features/auth/types/login.type';
+import { LoginType } from '../../types/login.type';
 import { API_LOGIN_USER } from '@/api/auth.api';
 import InputField from '@/components/form/input-field';
 import Spinner from '@/components/spinner';
-import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import { AUTH_BASE_ROUTE } from '../../routes';
 
 const validationSchema = yup.object().shape({
   email: yup

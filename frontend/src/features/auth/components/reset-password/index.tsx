@@ -1,7 +1,7 @@
 import ResetPasswordForm from './reset-password-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
-import AuthLayout from '@/features/auth/layout';
+import { AUTH_BASE_ROUTE } from '../../routes';
+import AuthLayout from '../../layout';
 
 const ResetPassword = () => {
   const navigate = useNavigate();

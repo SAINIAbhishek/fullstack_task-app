@@ -4,12 +4,12 @@ import { Formik } from 'formik';
 import { useMutation } from 'react-query';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
-import { RegisterType } from '@/features/auth/types/register.type';
+import { RegisterType } from '../../types/register.type';
 import InputField from '@/components/form/input-field';
 import { API_REGISTER_USER } from '@/api/auth.api';
 import CheckboxField from '@/components/form/checkbox-field';
 import Spinner from '@/components/spinner';
-import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import { AUTH_BASE_ROUTE } from '../../routes';
 
 const validationSchema = yup.object().shape({
   firstname: yup.string().required('First name is required'),

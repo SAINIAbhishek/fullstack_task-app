@@ -4,9 +4,9 @@ import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
-import { ResetPasswordType } from '@/features/auth/types/reset-password.type';
+import { ResetPasswordType } from '../../types/reset-password.type';
 import { API_RESET_PASSWORD } from '@/api/auth.api';
-import { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import { AUTH_BASE_ROUTE } from '../../routes';
 import InputField from '@/components/form/input-field';
 import Spinner from '@/components/spinner';
 
