@@ -7,3 +7,8 @@ export const LOGGING = import.meta.env.VITE_LOGGING;
 
 export const ACCESS_TOKEN = 'access-token';
 export const REFRESH_TOKEN = 'refresh-token';
+
+export const COOKIE = {
+  auth: import.meta.env.VITE_COOKIE_AUTH || '',
+  maxAge: parseInt(import.meta.env.VITE_COOKIE_MAX_AGE_SEC || '0'),
+};

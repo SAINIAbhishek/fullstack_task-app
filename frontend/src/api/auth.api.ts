@@ -4,6 +4,13 @@ import { LoginType } from '@/features/auth/types/login.type';
 import { ForgotPasswordType } from '@/features/auth/types/forgot-password.type';
 import { ResetPasswordType } from '@/features/auth/types/reset-password.type';
 
+export const API_LOGOUT_USER = async () => {
+  return await publicRequest<null, ApiResponse>({
+    url: `/oauth/logout`,
+    method: 'POST',
+  });
+};
+
 export const API_RESET_PASSWORD = async (data: ResetPasswordType) => {
   return await publicRequest<
     Pick<ResetPasswordType, 'email' | 'password'>,
