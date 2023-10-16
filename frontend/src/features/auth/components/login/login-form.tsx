@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { useMutation } from 'react-query';
-import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
 import { LoginType } from '../../types/login.type';
-import { API_LOGIN_USER } from '@/api/auth.api';
 import InputField from '@/components/form/input-field';
 import Spinner from '@/components/spinner';
 import { AUTH_BASE_ROUTE } from '../../routes';
+import { useAuth } from '@/providers/auth-provider';
+import { useState } from 'react';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -27,20 +26,22 @@ const initialValues: LoginType = {
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const [isError, setIsError] = useState<boolean>(false);
 
-  const { mutate, isError } = useMutation(API_LOGIN_USER, {
-    onSuccess: () => {
+  const handleSubmit = async (values: LoginType) => {
+    try {
+      await auth.login(values);
       navigate('/');
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
-    },
-  });
+    } catch (error) {
+      setIsError(false);
+    }
+  };
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={(values) => mutate(values)}
+      onSubmit={handleSubmit}
       validationSchema={validationSchema}>
       {({
         values,

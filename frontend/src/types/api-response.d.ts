@@ -1,5 +1,8 @@
 declare type ApiResponse = {
-  readonly token?: string;
+  readonly tokens?: {
+    accessToken?: string;
+    refreshToken?: string;
+  };
   readonly user?: User;
   readonly passwordResetToken?: string;
 };

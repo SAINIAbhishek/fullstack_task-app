@@ -3,9 +3,10 @@ import { Suspense } from 'react';
 import Spinner from '@/components/spinner';
 import MainLayout from '@/components/layout/main-layout';
 import PublicRoutes from '@/routes/public';
+import { useAuth } from '@/providers/auth-provider';
 
 const AppRoute = () => {
-  const isAuthenticated = false;
+  const { isAuthenticated } = useAuth();
 
   return (
     <MainLayout>
