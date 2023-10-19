@@ -5,10 +5,11 @@ export const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 export const LOGGING = import.meta.env.VITE_LOGGING;
 
-export const ACCESS_TOKEN = 'access-token';
-export const REFRESH_TOKEN = 'refresh-token';
-
 export const COOKIE = {
   auth: import.meta.env.VITE_COOKIE_AUTH || '',
   maxAge: parseInt(import.meta.env.VITE_COOKIE_MAX_AGE_SEC || '0'),
+  accessToken: import.meta.env.VITE_COOKIE_ACCESS_TOKEN || '',
+  accessTokenMaxAge: parseInt(
+    import.meta.env.VITE_COOKIE_ACCESS_TOKEN_MAX_AGE_SEC || '0',
+  ),
 };

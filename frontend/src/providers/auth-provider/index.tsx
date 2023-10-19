@@ -20,11 +20,12 @@ export const useAuth = () => {
 const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<string>('');
 
-  const { setAuthToken, removeAuthToken } = useAuthToken();
+  const { setAuthToken, removeAuthToken, setAccessToken, removeAccessToken } =
+    useAuthToken();
 
   const { mutate: loginMutate } = useMutation(API_LOGIN_USER);
+  const { mutate: logoutMutate } = useMutation(API_LOGOUT_USER);
 
   const login = useCallback(
     (data: LoginType): Promise<boolean> => {
@@ -49,15 +50,13 @@ const AuthProvider = ({ children }: Props) => {
     [loginMutate, setAuthToken],
   );
 
-  const { mutate: logoutMutate } = useMutation(API_LOGOUT_USER);
-
   const logout = useCallback((): Promise<boolean> => {
     return new Promise((resolve, reject) => {
       logoutMutate(undefined, {
         onSuccess: (response) => {
           setIsAuthenticated(false);
           removeAuthToken();
-          setAccessToken('');
+          removeAccessToken();
           setUser(undefined);
           toast.success(response.message);
           resolve(true);
@@ -76,7 +75,6 @@ const AuthProvider = ({ children }: Props) => {
         user,
         login,
         logout,
-        accessToken,
         isAuthenticated,
       }}>
       {children}
