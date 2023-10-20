@@ -1,33 +1,45 @@
 import { COOKIE } from '@/config';
 import { useCookies } from 'react-cookie';
+import {
+  COOKIE_ACCESS_TOKEN,
+  COOKIE_AUTH_NAME,
+  cookieDefaultOptions,
+} from '@/lib/react-cookie';
 
 /**
- * we are storing the refresh token in the cookie
+ * we are storing the refresh and access tokens in the cookie
  */
-export const COOKIE_NAME = COOKIE.auth;
-
 const useAuthToken = () => {
-  const [cookies, setCookie, removeCookie] = useCookies([COOKIE_NAME]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    COOKIE_AUTH_NAME,
+    COOKIE_ACCESS_TOKEN,
+  ]);
 
-  const getAuthToken = () => cookies[COOKIE_NAME] || null;
-
-  const cookieOptions = {
-    path: '/',
-    secure: true,
-    httpOnly: true,
-    maxAge: COOKIE.maxAge,
-    sameSite: true,
-  };
+  const getAuthToken = () => cookies[COOKIE_AUTH_NAME] || null;
+  const getAccessToken = () => cookies[COOKIE_ACCESS_TOKEN] || null;
 
   const setAuthToken = (token: string) =>
-    setCookie(COOKIE_NAME, token, cookieOptions);
+    setCookie(COOKIE_AUTH_NAME, token, {
+      ...cookieDefaultOptions,
+      maxAge: COOKIE.maxAge,
+    });
 
-  const removeAuthToken = () => removeCookie(COOKIE_NAME);
+  const setAccessToken = (token: string) =>
+    setCookie(COOKIE_ACCESS_TOKEN, token, {
+      ...cookieDefaultOptions,
+      maxAge: COOKIE.accessTokenMaxAge,
+    });
+
+  const removeAuthToken = () => removeCookie(COOKIE_AUTH_NAME);
+  const removeAccessToken = () => removeCookie(COOKIE_ACCESS_TOKEN);
 
   return {
     getAuthToken,
     setAuthToken,
     removeAuthToken,
+    setAccessToken,
+    removeAccessToken,
+    getAccessToken,
   };
 };
 

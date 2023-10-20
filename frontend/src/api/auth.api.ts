@@ -1,8 +1,15 @@
 import { RegisterType } from '@/features/auth/types/register.type';
-import { publicRequest } from '@/lib/axios';
+import { protectedRequest, publicRequest } from '@/lib/axios';
 import { LoginType } from '@/features/auth/types/login.type';
 import { ForgotPasswordType } from '@/features/auth/types/forgot-password.type';
 import { ResetPasswordType } from '@/features/auth/types/reset-password.type';
+
+export const API_REFRESH_TOKEN = async () => {
+  return await protectedRequest<null, ApiResponse>({
+    url: `/oauth/refresh`,
+    method: 'POST',
+  });
+};
 
 export const API_LOGOUT_USER = async () => {
   return await publicRequest<null, ApiResponse>({

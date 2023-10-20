@@ -1,5 +1,6 @@
 import axios, { Method } from 'axios';
 import { API_BASE_URL, LOGGING, NODE_ENV } from '@/config';
+import { getAccessToken } from '@/lib/react-cookie';
 
 const isLogEnabled = NODE_ENV !== 'production' && LOGGING == 'true';
 
@@ -84,12 +85,15 @@ export async function publicRequest<
 export async function protectedRequest<
   T extends object | null,
   R extends object | null,
->(request: NetworkRequest<T>, token: string): Promise<NetworkResponse<R>> {
+>(request: NetworkRequest<T>): Promise<NetworkResponse<R>> {
   try {
     (request as NetworkAuthRequest<T>).headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     };
-    const { data } = await instance.request<NetworkResponse<R>>(request);
+    const { data } = await instance.request<NetworkResponse<R>>({
+      ...request,
+      withCredentials: true,
+    });
     return data;
   } catch (error) {
     return Promise.reject(error);
