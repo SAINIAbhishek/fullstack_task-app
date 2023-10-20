@@ -1,21 +1,31 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Suspense } from 'react';
 import Spinner from '@/components/spinner';
-import MainLayout from '@/components/layout/main-layout';
 import PublicRoutes from '@/routes/public';
-import { useAuth } from '@/providers/auth-provider';
+import AuthRoutes, { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import ProtectedRoutes from '@/routes/protected';
 
 const AppRoute = () => {
-  const { isAuthenticated } = useAuth();
-
   return (
-    <MainLayout>
-      <BrowserRouter>
-        <Suspense fallback={<Spinner />}>
-          {isAuthenticated ? '' : <PublicRoutes />}
-        </Suspense>
-      </BrowserRouter>
-    </MainLayout>
+    <BrowserRouter>
+      <Suspense fallback={<Spinner />}>
+        <Routes>
+          <Route
+            element={
+              <ProtectedRoutes defaultRoute={`${AUTH_BASE_ROUTE}/login`} />
+            }>
+            <Route path="/dashboard" element={'Dashboard page'} />
+          </Route>
+          <Route element={<PublicRoutes defaultRoute="/dashboard" />}>
+            <Route path={`${AUTH_BASE_ROUTE}/*`} element={<AuthRoutes />} />
+          </Route>
+          <Route
+            path="*"
+            element={<Navigate to={`${AUTH_BASE_ROUTE}/login`} />}
+          />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 };
 

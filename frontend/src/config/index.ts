@@ -6,8 +6,10 @@ export const APP_NAME = import.meta.env.VITE_APP_NAME;
 export const LOGGING = import.meta.env.VITE_LOGGING;
 
 export const COOKIE = {
-  auth: import.meta.env.VITE_COOKIE_AUTH || '',
-  maxAge: parseInt(import.meta.env.VITE_COOKIE_MAX_AGE_SEC || '0'),
+  auth: import.meta.env.VITE_COOKIE_REFRESH_TOKEN || '',
+  maxAge: parseInt(
+    import.meta.env.VITE_COOKIE_REFRESH_TOKEN_MAX_AGE_SEC || '0',
+  ),
   accessToken: import.meta.env.VITE_COOKIE_ACCESS_TOKEN || '',
   accessTokenMaxAge: parseInt(
     import.meta.env.VITE_COOKIE_ACCESS_TOKEN_MAX_AGE_SEC || '0',

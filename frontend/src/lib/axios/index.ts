@@ -86,13 +86,14 @@ export async function protectedRequest<
   T extends object | null,
   R extends object | null,
 >(request: NetworkRequest<T>): Promise<NetworkResponse<R>> {
-  const token = getAccessToken();
-
   try {
     (request as NetworkAuthRequest<T>).headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     };
-    const { data } = await instance.request<NetworkResponse<R>>(request);
+    const { data } = await instance.request<NetworkResponse<R>>({
+      ...request,
+      withCredentials: true,
+    });
     return data;
   } catch (error) {
     return Promise.reject(error);

@@ -1,19 +1,13 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import AuthRoutes, { AUTH_BASE_ROUTE } from '@/features/auth/routes';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/providers/auth-provider';
 
-const PublicRoutes = () => {
-  const { isAuthenticated } = useAuth();
+type Props = {
+  defaultRoute: string;
+};
 
-  return (
-    <Routes>
-      {isAuthenticated ? (
-        <Navigate to="/" />
-      ) : (
-        <Route path={`${AUTH_BASE_ROUTE}/*`} element={<AuthRoutes />} />
-      )}
-    </Routes>
-  );
+const PublicRoutes = ({ defaultRoute }: Props) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Navigate to={defaultRoute} /> : <Outlet />;
 };
 
 export default PublicRoutes;

@@ -5,6 +5,7 @@ import { NODE_ENV } from '@/config';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClientProvider } from 'react-query';
 import AuthProvider from '../auth-provider';
+import MainLayout from '@/components/layout/main-layout';
 
 type Props = {
   children: React.ReactNode;
@@ -13,8 +14,10 @@ type Props = {
 const AppProvider = ({ children }: Props) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster position="bottom-left" />
-      <AuthProvider>{children}</AuthProvider>
+      <Toaster position="bottom-right" />
+      <AuthProvider>
+        <MainLayout>{children}</MainLayout>
+      </AuthProvider>
       {NODE_ENV === 'development' && <ReactQueryDevtools />}
     </QueryClientProvider>
   );

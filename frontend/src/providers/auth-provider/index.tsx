@@ -1,7 +1,17 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import useAuthToken from '@/hooks/useAuthToken';
 import { useMutation } from 'react-query';
-import { API_LOGIN_USER, API_LOGOUT_USER } from '@/api/auth.api';
+import {
+  API_LOGIN_USER,
+  API_LOGOUT_USER,
+  API_REFRESH_TOKEN,
+} from '@/api/auth.api';
 import toast from 'react-hot-toast';
 import { LoginType } from '@/features/auth/types/login.type';
 import { AuthContextType } from '@/providers/auth-provider/auth-context.type';
@@ -19,36 +29,66 @@ export const useAuth = () => {
 
 const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | undefined>(undefined);
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const { setAuthToken, removeAuthToken, setAccessToken, removeAccessToken } =
-    useAuthToken();
+  const {
+    setAuthToken,
+    removeAuthToken,
+    setAccessToken,
+    removeAccessToken,
+    getAccessToken,
+    getAuthToken,
+  } = useAuthToken();
 
   const { mutate: loginMutate } = useMutation(API_LOGIN_USER);
   const { mutate: logoutMutate } = useMutation(API_LOGOUT_USER);
+  const { mutate: refreshMutate } = useMutation(API_REFRESH_TOKEN);
 
-  const login = useCallback(
-    (data: LoginType): Promise<boolean> => {
-      return new Promise((resolve, reject) => {
-        loginMutate(data, {
-          onSuccess: (response) => {
-            const { tokens, user } = response.data as ApiResponse;
-            setAuthToken(tokens?.refreshToken ?? '');
-            setAccessToken(tokens?.accessToken ?? '');
-            setUser(user);
-            setIsAuthenticated(true);
-            toast.success(response.message);
-            resolve(true);
-          },
-          onError: (err: any) => {
-            toast.error(err.message);
-            reject(false);
-          },
-        });
+  useEffect(() => {
+    if (getAuthToken() && getAccessToken() && !isAuthenticated) {
+      refresh().then();
+    }
+  }, []);
+
+  const handleAuthentication = (user: User | undefined, token: string) => {
+    setAccessToken(token);
+    setUser(user);
+    setIsAuthenticated(true);
+  };
+
+  const refresh = useCallback((): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      refreshMutate(undefined, {
+        onSuccess: (response) => {
+          const { tokens, user } = response.data as ApiResponse;
+          handleAuthentication(user, tokens?.accessToken ?? '');
+          resolve(true);
+        },
+        onError: () => {
+          reject(false);
+        },
       });
-    },
-    [loginMutate, setAuthToken],
-  );
+    });
+  }, []);
+
+  const login = useCallback((data: LoginType): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      loginMutate(data, {
+        onSuccess: (response) => {
+          const { tokens, user } = response.data as ApiResponse;
+          handleAuthentication(user, tokens?.accessToken ?? '');
+          setAuthToken(tokens?.refreshToken ?? '');
+          toast.success(response.message);
+          resolve(true);
+        },
+        onError: (err: any) => {
+          toast.error(err.message);
+          reject(false);
+        },
+      });
+    });
+  }, []);
 
   const logout = useCallback((): Promise<boolean> => {
     return new Promise((resolve, reject) => {
@@ -67,7 +107,7 @@ const AuthProvider = ({ children }: Props) => {
         },
       });
     });
-  }, [logoutMutate, removeAuthToken]);
+  }, []);
 
   return (
     <AuthContext.Provider
