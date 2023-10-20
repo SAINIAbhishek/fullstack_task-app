@@ -7,7 +7,7 @@ type Props = {
 const MainLayout = ({ children }: Props) => {
   return (
     <main>
-      <section className="min-h-screen text-slate-600 bg-slate-900 xl:text-base sm:text-sm text-xs">
+      <section className="min-h-screen text-slate-100 bg-slate-900 xl:text-base sm:text-sm text-xs">
         {children}
       </section>
     </main>

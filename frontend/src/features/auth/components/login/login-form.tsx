@@ -4,10 +4,11 @@ import { Formik } from 'formik';
 import { EMAIL_PATTERN } from '@/utils/regex';
 import { LoginType } from '../../types/login.type';
 import InputField from '@/components/form/input-field';
-import Spinner from '@/components/spinner';
 import { AUTH_BASE_ROUTE } from '../../routes';
 import { useAuth } from '@/providers/auth-provider';
 import { useState } from 'react';
+import PrimaryButton from '@/components/buttons/primay-btn';
+import LinkButton from '@/components/buttons/link-btn';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -86,27 +87,19 @@ const LoginForm = () => {
             </button>
           </div>
 
-          <button
+          <PrimaryButton
+            title="Sign in"
             type="submit"
-            disabled={!(dirty && isValid)}
-            className={`w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center bg-primary-600 hover:bg-primary-700 px-5 ${
-              isSubmitting && !isError ? '' : 'py-2.5'
-            } ${!(dirty && isValid) ? 'cursor-not-allowed' : ''}`}>
-            {isSubmitting && !isError ? (
-              <Spinner size="sm" color="border-white" />
-            ) : (
-              'Sign in'
-            )}
-          </button>
+            isLoading={isSubmitting && !isError}
+            isDisabled={!(dirty && isValid)}
+          />
 
           <p className="text-sm font-light text-gray-400">
             Don’t have an account yet?
-            <button
-              type="button"
-              onClick={() => navigate(`${AUTH_BASE_ROUTE}/register`)}
-              className="font-medium hover:underline text-primary-500 ml-1">
-              Sign up
-            </button>
+            <LinkButton
+              handleClick={() => navigate(`${AUTH_BASE_ROUTE}/register`)}
+              title="Sign up"
+            />
           </p>
         </form>
       )}
