@@ -23,7 +23,7 @@ const PrimaryButton = ({
       disabled={isDisabled}
       onClick={handleClick}
       className={`w-full bg-primary-600 text-white focus:outline-none font-medium px-3 rounded-lg w-auto transition hover:bg-primary-700 ${
-        isLoading ? 'py-1' : 'py-3'
+        isLoading ? 'py-1' : 'py-2.5'
       } ${isDisabled || isLoading ? 'cursor-not-allowed' : ''} ${className}`}>
       {isLoading ? <Spinner size="sm" color="border-white" /> : title}
     </button>
