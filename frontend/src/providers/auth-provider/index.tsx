@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import useAuthToken from '@/hooks/useAuthToken';
 import { useMutation } from 'react-query';
 import {
@@ -32,24 +26,12 @@ const AuthProvider = ({ children }: Props) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const {
-    setAuthToken,
-    removeAuthToken,
-    setAccessToken,
-    removeAccessToken,
-    getAccessToken,
-    getAuthToken,
-  } = useAuthToken();
+  const { setAuthToken, removeAuthToken, setAccessToken, removeAccessToken } =
+    useAuthToken();
 
   const { mutate: loginMutate } = useMutation(API_LOGIN_USER);
   const { mutate: logoutMutate } = useMutation(API_LOGOUT_USER);
   const { mutate: refreshMutate } = useMutation(API_REFRESH_TOKEN);
-
-  useEffect(() => {
-    if (getAuthToken() && getAccessToken() && !isAuthenticated) {
-      refresh().then();
-    }
-  }, []);
 
   const handleAuthentication = (user: User | undefined, token: string) => {
     setAccessToken(token);
@@ -116,6 +98,7 @@ const AuthProvider = ({ children }: Props) => {
         login,
         logout,
         isAuthenticated,
+        refresh,
       }}>
       {children}
     </AuthContext.Provider>

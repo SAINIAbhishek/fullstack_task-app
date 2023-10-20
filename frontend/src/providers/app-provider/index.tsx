@@ -1,25 +1,30 @@
-import React from 'react';
-import { queryClient } from '@/lib/react-query';
-import { Toaster } from 'react-hot-toast';
-import { NODE_ENV } from '@/config';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { QueryClientProvider } from 'react-query';
-import AuthProvider from '../auth-provider';
+import React, { useEffect, useState } from 'react';
 import MainLayout from '@/components/layout/main-layout';
+import Spinner from '@/components/spinner';
+import { useAuth } from '@/providers/auth-provider';
+import useAuthToken from '@/hooks/useAuthToken';
 
 type Props = {
   children: React.ReactNode;
 };
 
 const AppProvider = ({ children }: Props) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isAuthenticated, refresh } = useAuth();
+  const { getAuthToken, getAccessToken } = useAuthToken();
+
+  useEffect(() => {
+    if (getAuthToken() && getAccessToken() && !isAuthenticated) {
+      refresh().finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
+  }, [getAccessToken, getAuthToken, isAuthenticated, refresh]);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <Toaster position="bottom-right" />
-      <AuthProvider>
-        <MainLayout>{children}</MainLayout>
-      </AuthProvider>
-      {NODE_ENV === 'development' && <ReactQueryDevtools />}
-    </QueryClientProvider>
+    <MainLayout>
+      {isLoading && !isAuthenticated ? <Spinner /> : <>{children}</>}
+    </MainLayout>
   );
 };
 

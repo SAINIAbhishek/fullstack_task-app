@@ -5,4 +5,5 @@ export type AuthContextType = {
   isAuthenticated: boolean;
   login: (data: LoginType) => Promise<boolean>;
   logout: () => Promise<boolean>;
+  refresh: () => Promise<boolean>;
 };

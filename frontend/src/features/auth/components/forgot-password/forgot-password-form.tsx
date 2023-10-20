@@ -6,9 +6,10 @@ import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
 import { API_FORGOT_PASSWORD } from '@/api/auth.api';
 import InputField from '@/components/form/input-field';
-import Spinner from '@/components/spinner';
 import { ForgotPasswordType } from '../../types/forgot-password.type';
 import { AUTH_BASE_ROUTE } from '../../routes';
+import PrimaryButton from '@/components/buttons/primay-btn';
+import LinkButton from '@/components/buttons/link-btn';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -72,27 +73,19 @@ const ForgotPasswordForm = () => {
             touched={touched.email}
           />
 
-          <button
+          <PrimaryButton
+            title="Reset password"
             type="submit"
-            disabled={!(dirty && isValid)}
-            className={`w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm text-center bg-primary-600 hover:bg-primary-700 px-5 ${
-              isSubmitting && !isError ? '' : 'py-2.5'
-            } ${!(dirty && isValid) ? 'cursor-not-allowed' : ''}`}>
-            {isSubmitting && !isError ? (
-              <Spinner size="sm" color="border-white" />
-            ) : (
-              'Reset password'
-            )}
-          </button>
+            isLoading={isSubmitting && !isError}
+            isDisabled={!(dirty && isValid)}
+          />
 
           <p className="text-sm font-light text-gray-400">
             Already have an account?
-            <button
-              type="button"
-              onClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
-              className="font-medium hover:underline text-primary-500 ml-1">
-              Login here
-            </button>
+            <LinkButton
+              handleClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
+              title="Login here"
+            />
           </p>
         </form>
       )}
