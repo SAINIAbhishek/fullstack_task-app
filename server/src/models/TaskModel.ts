@@ -31,10 +31,8 @@ const TaskSchema = new Schema<Task>(
       trim: true,
     },
     user: {
-      type: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     important: {

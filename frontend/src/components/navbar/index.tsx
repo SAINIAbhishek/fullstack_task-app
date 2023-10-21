@@ -45,7 +45,7 @@ const Navbar = () => {
         <div className="flex md:order-2">
           <PrimaryButton
             title="Add new task"
-            className="py-1.5 px-5"
+            className="px-5"
             handleClick={() => navigate(`${TASKS_BASE_ROUTE}/new`)}
           />
         </div>
@@ -53,7 +53,7 @@ const Navbar = () => {
         <div
           className="items-center justify-between flex w-auto order-1 mt-4 md:mt-0"
           id="navbar-user">
-          <ul className="flex flex-wrap font-medium p-0 mt-4 border rounded-lg flex-row mt-0 border-0 bg-gray-800 bg-gray-900 border-gray-700">
+          <ul className="flex flex-wrap font-medium p-0 border rounded-lg flex-row mt-0 border-0 bg-gray-800 bg-gray-900 border-gray-700">
             {menuLinks.map((link) => (
               <li key={link.path}>
                 <NavLink
