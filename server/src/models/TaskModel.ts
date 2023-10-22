@@ -14,7 +14,7 @@ export default interface Task {
   completed?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  completedAt?: string;
+  date?: string;
 }
 
 const TaskSchema = new Schema<Task>(
@@ -45,7 +45,7 @@ const TaskSchema = new Schema<Task>(
       default: false,
       index: true,
     },
-    completedAt: {
+    date: {
       type: Schema.Types.Date,
       required: true,
       index: true,
@@ -62,14 +62,11 @@ TaskSchema.index({ updatedAt: 1 });
 
 export const JOI_TASK_CREATE_SCHEMA: Joi.ObjectSchema = Joi.object({
   title: Joi.string().max(200).required(),
+  description: Joi.string().optional(),
+  important: Joi.boolean().optional(),
+  completed: Joi.boolean().optional(),
   user: JoiObjectId().required(),
-  completedAt: Joi.date().min(new Date().toISOString()).required(),
-});
-
-export const JOI_TASK_UPDATE_SCHEMA: Joi.ObjectSchema = Joi.object({
-  title: Joi.string().max(200).required(),
-  completedAt: Joi.date().min(new Date().toISOString()).required(),
-  user: JoiObjectId().required(),
+  date: Joi.date().required(),
 });
 
 export const TaskModel = model<Task>(

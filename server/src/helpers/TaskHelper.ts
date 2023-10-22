@@ -8,7 +8,8 @@ const sanitizedTask = (task: Task): Task => {
     title: task.title,
     description: task.description,
     completed: task.completed,
-    completedAt: task.completedAt,
+    important: task.important,
+    date: task.date,
     user: task.user,
   };
 };

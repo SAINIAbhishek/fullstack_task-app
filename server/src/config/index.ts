@@ -4,6 +4,10 @@ export const CORS_URL = process.env.CORS_URL?.split(',') || [];
 export const API_VERSION = process.env.API_VERSION;
 export const FRONTEND_RESET_URL = process.env.RESET_URL;
 
+export const DATE_FORMAT = process.env.DATE_FORMAT || 'yyyy-MM-dd';
+export const DATE_FULL_FORMAT =
+  process.env.DATE_FULL_FORMAT || 'yyyy-MM-dd HH:mm:ss.SSS';
+
 export const MAILTRAP_EMAIL = {
   testing: {
     username: process.env.MAILTRAP_TESTING_USERNAME || '',
