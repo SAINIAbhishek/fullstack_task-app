@@ -228,8 +228,8 @@ class AuthController {
     new TokenRefreshResponse('Token issued', {
       tokens: {
         accessToken: tokens.accessToken,
-        user: UserHelper.sanitizedUser(user),
       },
+      user: UserHelper.sanitizedUser(user),
     }).send(res);
   });
 

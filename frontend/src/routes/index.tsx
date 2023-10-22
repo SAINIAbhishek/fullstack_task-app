@@ -4,7 +4,8 @@ import Spinner from '@/components/spinner';
 import PublicRoutes from '@/routes/public';
 import AuthRoutes, { AUTH_BASE_ROUTE } from '@/features/auth/routes';
 import ProtectedRoutes from '@/routes/protected';
-import DashboardRoutes from '@/features/dashboard/routes';
+import TasksRoutes, { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
+import DashboardLayout from '@/features/dashboard/layout';
 
 const AppRoute = () => {
   return (
@@ -15,7 +16,8 @@ const AppRoute = () => {
             element={
               <ProtectedRoutes defaultRoute={`${AUTH_BASE_ROUTE}/login`} />
             }>
-            <Route path="/dashboard" element={<DashboardRoutes />} />
+            <Route path="/dashboard" element={<DashboardLayout />} />
+            <Route path={`${TASKS_BASE_ROUTE}/*`} element={<TasksRoutes />} />
           </Route>
           <Route element={<PublicRoutes defaultRoute="/dashboard" />}>
             <Route path={`${AUTH_BASE_ROUTE}/*`} element={<AuthRoutes />} />
