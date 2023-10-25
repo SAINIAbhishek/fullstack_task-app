@@ -1,6 +1,13 @@
 import { protectedRequest } from '@/lib/axios';
 import { TaskType } from '@/features/tasks/types/task.type';
 
+export const API_GET_TASK = async (taskId: string) => {
+  return await protectedRequest<null, ApiResponse>({
+    url: `/tasks/${taskId}`,
+    method: 'GET',
+  });
+};
+
 export const API_DELETE_TASK = async (taskId: string) => {
   return await protectedRequest<null, ApiResponse>({
     url: `/tasks/${taskId}`,

@@ -5,6 +5,17 @@ import TaskHelper from '../helpers/TaskHelper';
 import { NotFoundError } from '../middleware/ApiError';
 
 class TaskController {
+  get = asyncHandler(async (req, res) => {
+    const task = await TaskModel.findOne({
+      _id: req.params.id,
+    });
+    if (!task) throw new NotFoundError('Task not found');
+
+    new SuccessResponse('Task fetched successfully', {
+      task: TaskHelper.sanitizedTask(task),
+    }).send(res);
+  });
+
   delete = asyncHandler(async (req, res) => {
     const result: DeleteResult = await TaskModel.deleteOne({
       _id: req.params.id,
@@ -17,7 +28,7 @@ class TaskController {
     }).send(res);
   });
 
-  get = asyncHandler(async (req, res) => {
+  getAll = asyncHandler(async (req, res) => {
     const filter = req.query.filter && JSON.parse(req.query.filter as string);
 
     const tasks = await TaskHelper.findAll(filter);

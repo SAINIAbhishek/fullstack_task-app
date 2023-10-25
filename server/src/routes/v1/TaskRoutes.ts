@@ -17,7 +17,7 @@ router.use(
 
 router
   .route('/')
-  .get(TaskController.get)
+  .get(TaskController.getAll)
   .post(
     validator(JOI_TASK_CREATE_SCHEMA, ValidationSource.BODY),
     TaskController.create
@@ -25,6 +25,6 @@ router
 
 router.use('/:id', validator(JOI_ID_SCHEMA, ValidationSource.PARAM));
 
-router.route('/:id').delete(TaskController.delete);
+router.route('/:id').get(TaskController.get).delete(TaskController.delete);
 
 export default router;
