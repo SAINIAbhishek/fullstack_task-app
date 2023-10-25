@@ -3,7 +3,22 @@ import {
   TaskType,
   UpdateCompletedTaskType,
   UpdateImportantTaskType,
+  UpdateTaskType,
 } from '@/features/tasks/types/task.type';
+
+export const API_TASK_UPDATE = async (data: UpdateTaskType) => {
+  return await protectedRequest<
+    Pick<
+      TaskType,
+      'title' | 'description' | 'completed' | 'important' | 'date'
+    >,
+    ApiResponse
+  >({
+    url: `/tasks/${data.taskId}`,
+    method: 'PUT',
+    data,
+  });
+};
 
 export const API_TASK_TOGGLE_IMPORTANT = async (
   data: UpdateImportantTaskType,

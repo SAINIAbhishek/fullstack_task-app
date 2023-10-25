@@ -1,21 +1,28 @@
-export type TaskType = {
-  _id?: string;
-  title: string;
-  description: string;
-  user: string;
+type TaskBaseType = {
   important: boolean;
+  description: string;
+  title: string;
   completed: boolean;
-  createdAt?: string;
-  updatedAt?: string;
   date: string;
 };
 
-export type UpdateImportantTaskType = {
+export type TaskType = TaskBaseType & {
+  _id?: string;
+  user: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+type UpdateTaskBaseType = {
   taskId: string;
+};
+
+export type UpdateImportantTaskType = UpdateTaskBaseType & {
   important: boolean;
 };
 
-export type UpdateCompletedTaskType = {
-  taskId: string;
+export type UpdateCompletedTaskType = UpdateTaskBaseType & {
   completed: boolean;
 };
+
+export type UpdateTaskType = UpdateTaskBaseType & TaskBaseType;

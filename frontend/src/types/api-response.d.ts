@@ -6,5 +6,6 @@ declare type ApiResponse = {
   readonly user?: User;
   readonly total?: number;
   readonly tasks?: TaskType[];
+  readonly task?: TaskType;
   readonly passwordResetToken?: string;
 };

@@ -5,12 +5,14 @@ import { todayDate } from '@/utils/date.ts';
 export const TASKS_BASE_ROUTE = '/tasks';
 
 const NewTask = lazy(() => import('./components/new-task'));
+const EditTask = lazy(() => import('./components/edit-task'));
 const Tasks = lazy(() => import('./components/tasks'));
 
 const TasksRoutes = () => {
   return (
     <Routes>
       <Route path="/new" element={<NewTask />} />
+      <Route path="/:id/edit" element={<EditTask />} />
       <Route
         path="/important"
         element={

@@ -12,6 +12,7 @@ const CheckboxField = ({ name, label, onChange, value }: FormikValues) => {
             name={name}
             checked={value}
             onChange={onChange}
+            value={value}
             className="w-4 h-4 border rounded focus:ring-3 bg-gray-700 border-gray-600 focus:ring-primary-600 ring-offset-gray-800"
           />
         </div>

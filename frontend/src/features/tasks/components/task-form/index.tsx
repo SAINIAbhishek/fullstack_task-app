@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import InputField from '@/components/form/input-field';
 import TextareaField from '@/components/form/textarea-field';
 import { DATE_FORMAT } from '@/config';
-import { todayDate } from '@/utils/date.ts';
+import { todayDate } from '@/utils/date';
 import CheckboxField from '@/components/form/checkbox-field';
 
 const validationSchema = yup.object().shape({
@@ -97,6 +97,7 @@ export const TaskForm = ({
                 name="important"
                 label="Mark as important"
                 checked={values.important}
+                value={values.important}
                 onChange={handleChange}
                 touched={touched.important}
               />
@@ -106,6 +107,7 @@ export const TaskForm = ({
                 label="Mark as completed"
                 checked={values.completed}
                 onChange={handleChange}
+                value={values.completed}
                 touched={touched.completed}
               />
 
