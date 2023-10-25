@@ -8,3 +8,10 @@ export const API_CREATE_TASK = async (data: TaskType) => {
     data,
   });
 };
+
+export const API_GET_TASKS = async (filter?: string) => {
+  return await protectedRequest<null, ApiResponse>({
+    url: `/tasks${filter ? `?filter=${filter}` : ''}`,
+    method: 'GET',
+  });
+};

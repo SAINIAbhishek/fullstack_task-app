@@ -4,5 +4,7 @@ declare type ApiResponse = {
     refreshToken?: string;
   };
   readonly user?: User;
+  readonly total?: number;
+  readonly tasks?: TaskType[];
   readonly passwordResetToken?: string;
 };

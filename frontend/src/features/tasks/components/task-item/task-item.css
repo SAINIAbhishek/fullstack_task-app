@@ -1,0 +1,13 @@
+.task-item__card {
+  @apply relative max-w-sm p-3 border rounded-lg shadow bg-gray-800 border-gray-700 mt-2 h-fit;
+}
+
+.task-item__footer {
+  @apply flex border-dashed border-slate-700/[.3] border-t-2 w-full pt-2 mt-4 justify-end;
+}
+
+.task-item__badge {
+  @apply absolute text-center px-4 py-1 border border-gray-700 rounded-t-md shadow transition;
+  top: -34px;
+  right: 9px;
+}

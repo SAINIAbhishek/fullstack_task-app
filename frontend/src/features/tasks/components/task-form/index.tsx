@@ -13,6 +13,7 @@ const validationSchema = yup.object().shape({
     .string()
     .max(200, 'Title cannot exceed 200 characters')
     .required('Title is required'),
+  description: yup.string().required('Description is required'),
   date: yup
     .date()
     .min(todayDate(), "Date must be equal to or greater than today's date")
@@ -75,6 +76,7 @@ export const TaskForm = ({
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.description}
+                error={errors.description}
                 touched={touched.description}
                 placeholder="Enter the description"
               />

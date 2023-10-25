@@ -4,6 +4,8 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 export const DATE_FORMAT = import.meta.env.VITE_DATE_FORMAT || 'yyyy-MM-dd';
+export const DATE_FORMAT_EN =
+  import.meta.env.VITE_DATE_FORMAT_EN || 'dd-MM-yyyy';
 export const DATE_FULL_FORMAT =
   import.meta.env.VITE_DATE_FULL_FORMAT || 'yyyy-MM-dd HH:mm:ss.SSS';
 

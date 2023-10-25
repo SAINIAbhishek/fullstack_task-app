@@ -29,6 +29,7 @@ const TaskSchema = new Schema<Task>(
     description: {
       type: Schema.Types.String,
       trim: true,
+      required: true,
     },
     user: {
       type: Schema.Types.ObjectId,
@@ -62,7 +63,7 @@ TaskSchema.index({ updatedAt: 1 });
 
 export const JOI_TASK_CREATE_SCHEMA: Joi.ObjectSchema = Joi.object({
   title: Joi.string().max(200).required(),
-  description: Joi.string().optional(),
+  description: Joi.string().required(),
   important: Joi.boolean().optional(),
   completed: Joi.boolean().optional(),
   user: JoiObjectId().required(),

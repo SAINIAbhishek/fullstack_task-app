@@ -16,6 +16,7 @@ router.use(
 
 router
   .route('/')
+  .get(TaskController.get)
   .post(
     validator(JOI_TASK_CREATE_SCHEMA, ValidationSource.BODY),
     TaskController.create
