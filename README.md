@@ -41,7 +41,7 @@ npm run install:packages
 
 - After installing the dependencies, you can go to the package.json file and click on the play button next to the 'dev' script under the scripts object.
 - Alternatively, in the terminal, you can execute the following command:
--
+
 ```
 npm run dev
 ```
