@@ -1,3 +1,4 @@
+import './task-item.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarCheck,
@@ -5,15 +6,32 @@ import {
   faStar,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
-import { formattedDate } from '@/utils/date.ts';
-import './task-item.css';
+import { formattedDate } from '@/utils/date';
 import IconBtn from '@/components/buttons/icon-btn';
+import { useMutation } from 'react-query';
+import { API_DELETE_TASK } from '@/api/task.api';
+import toast from 'react-hot-toast';
+import { queryClient } from '@/lib/react-query';
 
 type Props = {
   task: TaskType;
+  queryKey: string;
 };
 
-const TaskItem = ({ task }: Props) => {
+const TaskItem = ({ task, queryKey }: Props) => {
+  const { mutate: deleteMutate, isLoading: isDeleting } = useMutation(
+    API_DELETE_TASK,
+    {
+      onSuccess: (response) => {
+        queryClient.invalidateQueries(queryKey).then();
+        toast.success(response.message);
+      },
+      onError: (err: Error) => {
+        toast.error(err.message);
+      },
+    },
+  );
+
   return (
     <div className="task-item__card">
       <h5 className="mb-2 font-bold tracking-tight text-white">{task.title}</h5>
@@ -39,7 +57,11 @@ const TaskItem = ({ task }: Props) => {
           }`}>
           <FontAwesomeIcon icon={faStar} />
         </IconBtn>
-        <IconBtn title="Delete task" className="text-white hover:bg-gray-700">
+        <IconBtn
+          handleClick={() => deleteMutate(task._id)}
+          isDisabled={isDeleting}
+          title="Delete task"
+          className="text-white hover:bg-gray-700">
           <FontAwesomeIcon icon={faTrashCan} />
         </IconBtn>
       </div>

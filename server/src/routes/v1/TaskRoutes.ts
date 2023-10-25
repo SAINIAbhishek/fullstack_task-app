@@ -1,6 +1,7 @@
 import express from 'express';
 import validator, {
   JOI_AUTHORIZATION_SCHEMA,
+  JOI_ID_SCHEMA,
   ValidationSource,
 } from '../../helpers/Validator';
 import AuthController from '../../controllers/AuthController';
@@ -21,5 +22,9 @@ router
     validator(JOI_TASK_CREATE_SCHEMA, ValidationSource.BODY),
     TaskController.create
   );
+
+router.use('/:id', validator(JOI_ID_SCHEMA, ValidationSource.PARAM));
+
+router.route('/:id').delete(TaskController.delete);
 
 export default router;

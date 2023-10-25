@@ -2,8 +2,21 @@ import asyncHandler from 'express-async-handler';
 import { TaskModel } from '../models/TaskModel';
 import { SuccessResponse } from '../middleware/ApiResponse';
 import TaskHelper from '../helpers/TaskHelper';
+import { NotFoundError } from '../middleware/ApiError';
 
 class TaskController {
+  delete = asyncHandler(async (req, res) => {
+    const result: DeleteResult = await TaskModel.deleteOne({
+      _id: req.params.id,
+    });
+
+    if (!result.deletedCount) throw new NotFoundError('Task not found');
+
+    new SuccessResponse('Task deleted successfully', {
+      taskId: req.params.id,
+    }).send(res);
+  });
+
   get = asyncHandler(async (req, res) => {
     const filter = req.query.filter && JSON.parse(req.query.filter as string);
 
