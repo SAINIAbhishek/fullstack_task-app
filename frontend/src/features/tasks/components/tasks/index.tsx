@@ -1,6 +1,6 @@
 import PageLayout from '@/components/layout/page-layout';
 import { useQuery } from 'react-query';
-import { API_GET_TASKS } from '@/api/task.api.ts';
+import { API_GET_TASKS } from '@/api/task.api';
 import toast from 'react-hot-toast';
 import Spinner from '@/components/spinner';
 import TaskItem from '@/features/tasks/components/task-item';
@@ -34,7 +34,7 @@ const Tasks = ({ title, filter }: Props) => {
         ) : tasks.length ? (
           <div className="mt-8 grid gap-2 gap-y-14 sm:gap-4 sm:gap-y-14 xl:gap-6 xl:gap-y-14 2xl:grid-cols-5 xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
             {tasks.map((task) => (
-              <TaskItem task={task} key={task._id} />
+              <TaskItem task={task} key={task._id} queryKey={title} />
             ))}
           </div>
         ) : (

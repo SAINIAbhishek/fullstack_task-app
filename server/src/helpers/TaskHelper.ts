@@ -23,4 +23,15 @@ const findAll = async (
   return TaskModel.find(filter).select(selectFields).populate(populates).exec();
 };
 
-export default { sanitizedTask, findAll };
+const findOne = async (
+  filter: object = {},
+  selectFields = '',
+  populates: PopulateOptions[] = []
+): Promise<Task | null> => {
+  return TaskModel.findOne(filter)
+    .select(selectFields)
+    .populate(populates)
+    .exec();
+};
+
+export default { sanitizedTask, findAll, findOne };

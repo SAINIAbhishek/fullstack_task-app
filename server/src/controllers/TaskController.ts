@@ -2,9 +2,49 @@ import asyncHandler from 'express-async-handler';
 import { TaskModel } from '../models/TaskModel';
 import { SuccessResponse } from '../middleware/ApiResponse';
 import TaskHelper from '../helpers/TaskHelper';
+import { NotFoundError } from '../middleware/ApiError';
 
 class TaskController {
+  update = asyncHandler(async (req, res) => {
+    const updatedTask = await TaskModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
+      { new: true }
+    );
+
+    if (!updatedTask) {
+      throw new NotFoundError('Task not found');
+    }
+
+    new SuccessResponse('Task updated successfully', {
+      task: TaskHelper.sanitizedTask(updatedTask),
+    }).send(res);
+  });
+
   get = asyncHandler(async (req, res) => {
+    const task = await TaskModel.findOne({
+      _id: req.params.id,
+    });
+    if (!task) throw new NotFoundError('Task not found');
+
+    new SuccessResponse('Task fetched successfully', {
+      task: TaskHelper.sanitizedTask(task),
+    }).send(res);
+  });
+
+  delete = asyncHandler(async (req, res) => {
+    const result: DeleteResult = await TaskModel.deleteOne({
+      _id: req.params.id,
+    });
+
+    if (!result.deletedCount) throw new NotFoundError('Task not found');
+
+    new SuccessResponse('Task deleted successfully', {
+      taskId: req.params.id,
+    }).send(res);
+  });
+
+  getAll = asyncHandler(async (req, res) => {
     const filter = req.query.filter && JSON.parse(req.query.filter as string);
 
     const tasks = await TaskHelper.findAll(filter);
