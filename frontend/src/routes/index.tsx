@@ -1,11 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import Spinner from '@/components/spinner';
 import PublicRoutes from '@/routes/public';
 import AuthRoutes, { AUTH_BASE_ROUTE } from '@/features/auth/routes';
 import ProtectedRoutes from '@/routes/protected';
 import TasksRoutes, { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
-import DashboardLayout from '@/features/dashboard/layout';
+
+const Tasks = lazy(() => import('@/features/tasks/components/tasks'));
 
 const AppRoute = () => {
   return (
@@ -16,7 +17,7 @@ const AppRoute = () => {
             element={
               <ProtectedRoutes defaultRoute={`${AUTH_BASE_ROUTE}/login`} />
             }>
-            <Route path="/dashboard" element={<DashboardLayout />} />
+            <Route path="/dashboard" element={<Tasks title="All tasks" />} />
             <Route path={`${TASKS_BASE_ROUTE}/*`} element={<TasksRoutes />} />
           </Route>
           <Route element={<PublicRoutes defaultRoute="/dashboard" />}>

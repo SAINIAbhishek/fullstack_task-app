@@ -1,4 +1,5 @@
-import Task from '../models/TaskModel';
+import Task, { TaskModel } from '../models/TaskModel';
+import { PopulateOptions } from 'mongoose';
 
 const sanitizedTask = (task: Task): Task => {
   return {
@@ -14,4 +15,12 @@ const sanitizedTask = (task: Task): Task => {
   };
 };
 
-export default { sanitizedTask };
+const findAll = async (
+  filter: object = {},
+  selectFields = '',
+  populates: PopulateOptions[] = []
+): Promise<Task[] | []> => {
+  return TaskModel.find(filter).select(selectFields).populate(populates).exec();
+};
+
+export default { sanitizedTask, findAll };

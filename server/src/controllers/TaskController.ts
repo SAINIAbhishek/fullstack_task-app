@@ -2,9 +2,20 @@ import asyncHandler from 'express-async-handler';
 import { TaskModel } from '../models/TaskModel';
 import { SuccessResponse } from '../middleware/ApiResponse';
 import TaskHelper from '../helpers/TaskHelper';
-import DateHelper from '../helpers/DateHelper';
 
 class TaskController {
+  get = asyncHandler(async (req, res) => {
+    const filter = req.query.filter && JSON.parse(req.query.filter as string);
+
+    const tasks = await TaskHelper.findAll(filter);
+    tasks.map((task) => TaskHelper.sanitizedTask(task));
+
+    new SuccessResponse('Tasks fetched successfully', {
+      total: tasks.length,
+      tasks: tasks,
+    }).send(res);
+  });
+
   create = asyncHandler(async (req, res) => {
     const { title, description, important, completed, date, user } = req.body;
 
@@ -13,7 +24,7 @@ class TaskController {
       description,
       important,
       completed,
-      date: DateHelper.format(date),
+      date: new Date(date),
       user,
     });
 

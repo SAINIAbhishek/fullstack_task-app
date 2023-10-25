@@ -13,8 +13,11 @@ export const NewTask = () => {
   const [resetForm, setResetForm] = useState(false);
 
   const initialValues: TaskType = {
-    user: user?._id,
+    user: user?._id ?? '',
     title: '',
+    description: '',
+    completed: false,
+    important: false,
     date: todayDate(),
   };
 
