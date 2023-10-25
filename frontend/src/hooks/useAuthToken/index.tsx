@@ -18,20 +18,27 @@ const useAuthToken = () => {
   const getAuthToken = () => cookies[COOKIE_AUTH_NAME] || null;
   const getAccessToken = () => cookies[COOKIE_ACCESS_TOKEN] || null;
 
+  const authTokenOptions = {
+    ...cookieDefaultOptions,
+    maxAge: COOKIE.maxAge,
+  };
+
+  const accessTokenOptions = {
+    ...cookieDefaultOptions,
+    maxAge: COOKIE.accessTokenMaxAge,
+  };
+
   const setAuthToken = (token: string) =>
-    setCookie(COOKIE_AUTH_NAME, token, {
-      ...cookieDefaultOptions,
-      maxAge: COOKIE.maxAge,
-    });
+    setCookie(COOKIE_AUTH_NAME, token, authTokenOptions);
 
   const setAccessToken = (token: string) =>
-    setCookie(COOKIE_ACCESS_TOKEN, token, {
-      ...cookieDefaultOptions,
-      maxAge: COOKIE.accessTokenMaxAge,
-    });
+    setCookie(COOKIE_ACCESS_TOKEN, token, accessTokenOptions);
 
-  const removeAuthToken = () => removeCookie(COOKIE_AUTH_NAME);
-  const removeAccessToken = () => removeCookie(COOKIE_ACCESS_TOKEN);
+  const removeAuthToken = () =>
+    removeCookie(COOKIE_AUTH_NAME, authTokenOptions);
+
+  const removeAccessToken = () =>
+    removeCookie(COOKIE_ACCESS_TOKEN, accessTokenOptions);
 
   return {
     getAuthToken,

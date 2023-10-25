@@ -1,8 +1,8 @@
 import { APP_NAME } from '@/config';
 import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import PrimaryButton from '@/components/buttons/primay-btn';
+import { NavLink, useLocation } from 'react-router-dom';
 import ContentLayout from '@/components/layout/content-layout';
+import DropdownUser from './dropdown-user';
 
 const menuLinks = [
   {
@@ -29,7 +29,6 @@ const menuLinks = [
 
 const Navbar = () => {
   const route = useLocation();
-  const navigate = useNavigate();
   const currentPath = route.pathname;
 
   return (
@@ -42,12 +41,8 @@ const Navbar = () => {
           </span>
         </div>
 
-        <div className="flex md:order-2">
-          <PrimaryButton
-            title="Add new task"
-            className="px-5"
-            handleClick={() => navigate(`${TASKS_BASE_ROUTE}/new`)}
-          />
+        <div className="md:order-2">
+          <DropdownUser />
         </div>
 
         <div

@@ -4,6 +4,9 @@ import { API_GET_TASKS } from '@/api/task.api';
 import toast from 'react-hot-toast';
 import Spinner from '@/components/spinner';
 import TaskItem from '@/features/tasks/components/task-item';
+import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
+import PrimaryButton from '@/components/buttons/primay-btn';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   title: string;
@@ -11,6 +14,8 @@ type Props = {
 };
 
 const Tasks = ({ title, filter }: Props) => {
+  const navigate = useNavigate();
+
   const { data, isLoading } = useQuery(title, () => API_GET_TASKS(filter), {
     onError: (err: Error) => {
       toast.error(err.message);
@@ -25,9 +30,17 @@ const Tasks = ({ title, filter }: Props) => {
 
   return (
     <PageLayout className="flex-col">
-      <h1 className="font-medium text-center sm:text-left md:text-2xl text-lg text-slate-200">
-        {tasksTitle}
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="font-medium text-center sm:text-left md:text-2xl text-lg text-slate-200">
+          {tasksTitle}
+        </h1>
+        <PrimaryButton
+          title="Add new task"
+          className="px-5"
+          handleClick={() => navigate(`${TASKS_BASE_ROUTE}/new`)}
+        />
+      </div>
+
       <div className="flex justify-center mt-6">
         {isLoading ? (
           <Spinner />

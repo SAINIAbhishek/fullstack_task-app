@@ -54,23 +54,26 @@ const AuthProvider = ({ children }: Props) => {
     });
   }, []);
 
-  const login = useCallback((data: LoginType): Promise<boolean> => {
-    return new Promise((resolve, reject) => {
-      loginMutate(data, {
-        onSuccess: (response) => {
-          const { tokens, user } = response.data as ApiResponse;
-          handleAuthentication(user, tokens?.accessToken ?? '');
-          setAuthToken(tokens?.refreshToken ?? '');
-          toast.success(response.message);
-          resolve(true);
-        },
-        onError: (err: any) => {
-          toast.error(err.message);
-          reject(false);
-        },
+  const login = useCallback(
+    (data: LoginType): Promise<boolean> => {
+      return new Promise((resolve, reject) => {
+        loginMutate(data, {
+          onSuccess: (response) => {
+            const { tokens, user } = response.data as ApiResponse;
+            handleAuthentication(user, tokens?.accessToken ?? '');
+            setAuthToken(tokens?.refreshToken ?? '');
+            toast.success(response.message);
+            resolve(true);
+          },
+          onError: (err: any) => {
+            toast.error(err.message);
+            reject(false);
+          },
+        });
       });
-    });
-  }, []);
+    },
+    [isAuthenticated],
+  );
 
   const logout = useCallback((): Promise<boolean> => {
     return new Promise((resolve, reject) => {
@@ -89,7 +92,7 @@ const AuthProvider = ({ children }: Props) => {
         },
       });
     });
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider
