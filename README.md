@@ -1,10 +1,54 @@
 # FullStack Task Application
 
-## Client (Frontend)
+The purpose of this project is to demonstrate a fully functional FullStack Task Application keeping security in mind. The client-side, or frontend component, is developed using React.js while the server-side, or backend component, is built using Node.js.
+
+<hr />
+
+![Signin page](signin.png)
+![Register page](register.png)
+![Home page](home.png)
+
+## Frontend (React + TypeScript + Vite + Tailwind CSS)
+The project's organization aligns with established industry standards, employing a feature-based directory structure and maintaining a uniform naming convention. 
+
+Additionally, the application employs the Context API and Hooks to effectively manage its state.
+
+## Stacks:
+- TypeScript
+- Formik
+- React Query
+- Axios
+- React cookie
+- Yup
+- Tailwind CSS
+- React Router Dom
+- Eslint
+- Prettier
 
 <hr>
 
-## Server (Backend)
+### How to setup the Frontend part
+
+- Clone the project and, in the terminal, navigate to the frontend directory. Then, run the following command to install all the dependencies needed for the project
+
+```
+npm run install:packages
+```
+
+- duplicate the .env.example file and rename the copy to .env file. Modify the variables as needed.
+
+### How to run the project
+
+- After installing the dependencies, you can go to the package.json file and click on the play button next to the 'dev' script under the scripts object.
+- Alternatively, in the terminal, you can execute the following command:
+-
+```
+npm run dev
+```
+
+<hr />
+
+## Backend (Node + Express + Winston + TypeScript + JWT)
 
 A tasks project backend api. It is design while keeping the different environments in the mind.
 
@@ -78,4 +122,13 @@ node
 ```
 ```
 require('crypto').randomBytes(64).toString('hex')
+```
+
+#### Server
+
+- and click on the play button next to the 'watch' script under the scripts object.
+- Alternatively, in the terminal, you can execute the following command:
+- 
+```
+npm run watch
 ```
