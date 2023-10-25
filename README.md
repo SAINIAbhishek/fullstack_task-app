@@ -123,12 +123,3 @@ node
 ```
 require('crypto').randomBytes(64).toString('hex')
 ```
-
-#### Server
-
-- and click on the play button next to the 'watch' script under the scripts object.
-- Alternatively, in the terminal, you can execute the following command:
-- 
-```
-npm run watch
-```
