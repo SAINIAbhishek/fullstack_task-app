@@ -92,6 +92,7 @@ const LoginForm = () => {
             type="submit"
             isLoading={isSubmitting && !isError}
             isDisabled={!(dirty && isValid)}
+            className="w-full"
           />
 
           <p className="text-sm font-light text-gray-400">
