@@ -9,7 +9,11 @@ import {
 import { formattedDate } from '@/utils/date';
 import IconBtn from '@/components/buttons/icon-btn';
 import { useMutation } from 'react-query';
-import { API_DELETE_TASK } from '@/api/task.api';
+import {
+  API_DELETE_TASK,
+  API_TASK_TOGGLE_COMPLETED,
+  API_TASK_TOGGLE_IMPORTANT,
+} from '@/api/task.api';
 import toast from 'react-hot-toast';
 import { queryClient } from '@/lib/react-query';
 
@@ -19,18 +23,37 @@ type Props = {
 };
 
 const TaskItem = ({ task, queryKey }: Props) => {
-  const { mutate: deleteMutate, isLoading: isDeleting } = useMutation(
-    API_DELETE_TASK,
-    {
-      onSuccess: (response) => {
-        queryClient.invalidateQueries(queryKey).then();
-        toast.success(response.message);
-      },
-      onError: (err: Error) => {
-        toast.error(err.message);
-      },
+  const { mutate: deleteMutate } = useMutation(API_DELETE_TASK, {
+    onSuccess: (response) => {
+      handleSuccessResponse(response.message);
     },
-  );
+    onError: (err: Error) => {
+      toast.error(err.message);
+    },
+  });
+
+  const { mutate: importantMutate } = useMutation(API_TASK_TOGGLE_IMPORTANT, {
+    onSuccess: (response) => {
+      handleSuccessResponse(response.message);
+    },
+    onError: (err: Error) => {
+      toast.error(err.message);
+    },
+  });
+
+  const { mutate: completedMutate } = useMutation(API_TASK_TOGGLE_COMPLETED, {
+    onSuccess: (response) => {
+      handleSuccessResponse(response.message);
+    },
+    onError: (err: Error) => {
+      toast.error(err.message);
+    },
+  });
+
+  const handleSuccessResponse = (message: string) => {
+    queryClient.invalidateQueries(queryKey).then();
+    toast.success(message);
+  };
 
   return (
     <div className="task-item__card">
@@ -42,15 +65,21 @@ const TaskItem = ({ task, queryKey }: Props) => {
       </div>
       <div className="task-item__footer">
         <IconBtn
-          title={task.important ? 'mark as uncompleted' : 'mark as completed'}
+          handleClick={() =>
+            completedMutate({ taskId: task._id, completed: !task.completed })
+          }
+          title={task.completed ? 'mark as uncompleted' : 'mark as completed'}
           className={`hover:bg-gray-700 ${
-            task.important
+            task.completed
               ? 'text-green-500 hover:text-green-600'
               : 'text-white'
           }`}>
           <FontAwesomeIcon icon={faCalendarCheck} />
         </IconBtn>
         <IconBtn
+          handleClick={() =>
+            importantMutate({ taskId: task._id, important: !task.important })
+          }
           title={task.important ? 'unmark as important' : 'mark as important'}
           className={`hover:bg-gray-700 ${
             task.important ? 'text-red-500 hover:text-red-600' : 'text-white'
@@ -59,7 +88,6 @@ const TaskItem = ({ task, queryKey }: Props) => {
         </IconBtn>
         <IconBtn
           handleClick={() => deleteMutate(task._id)}
-          isDisabled={isDeleting}
           title="Delete task"
           className="text-white hover:bg-gray-700">
           <FontAwesomeIcon icon={faTrashCan} />

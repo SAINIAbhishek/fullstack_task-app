@@ -5,6 +5,22 @@ import TaskHelper from '../helpers/TaskHelper';
 import { NotFoundError } from '../middleware/ApiError';
 
 class TaskController {
+  update = asyncHandler(async (req, res) => {
+    const updatedTask = await TaskModel.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
+      { new: true }
+    );
+
+    if (!updatedTask) {
+      throw new NotFoundError('Task not found');
+    }
+
+    new SuccessResponse('Task updated successfully', {
+      task: TaskHelper.sanitizedTask(updatedTask),
+    }).send(res);
+  });
+
   get = asyncHandler(async (req, res) => {
     const task = await TaskModel.findOne({
       _id: req.params.id,

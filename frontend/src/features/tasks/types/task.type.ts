@@ -9,3 +9,13 @@ export type TaskType = {
   updatedAt?: string;
   date: string;
 };
+
+export type UpdateImportantTaskType = {
+  taskId: string;
+  important: boolean;
+};
+
+export type UpdateCompletedTaskType = {
+  taskId: string;
+  completed: boolean;
+};

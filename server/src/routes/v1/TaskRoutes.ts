@@ -25,6 +25,10 @@ router
 
 router.use('/:id', validator(JOI_ID_SCHEMA, ValidationSource.PARAM));
 
-router.route('/:id').get(TaskController.get).delete(TaskController.delete);
+router
+  .route('/:id')
+  .get(TaskController.get)
+  .put(TaskController.update)
+  .delete(TaskController.delete);
 
 export default router;

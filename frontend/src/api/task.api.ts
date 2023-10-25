@@ -1,5 +1,29 @@
 import { protectedRequest } from '@/lib/axios';
-import { TaskType } from '@/features/tasks/types/task.type';
+import {
+  TaskType,
+  UpdateCompletedTaskType,
+  UpdateImportantTaskType,
+} from '@/features/tasks/types/task.type';
+
+export const API_TASK_TOGGLE_IMPORTANT = async (
+  data: UpdateImportantTaskType,
+) => {
+  return await protectedRequest<Pick<TaskType, 'important'>, ApiResponse>({
+    url: `/tasks/${data.taskId}`,
+    method: 'PUT',
+    data: { important: data.important },
+  });
+};
+
+export const API_TASK_TOGGLE_COMPLETED = async (
+  data: UpdateCompletedTaskType,
+) => {
+  return await protectedRequest<Pick<TaskType, 'completed'>, ApiResponse>({
+    url: `/tasks/${data.taskId}`,
+    method: 'PUT',
+    data: { completed: data.completed },
+  });
+};
 
 export const API_GET_TASK = async (taskId: string) => {
   return await protectedRequest<null, ApiResponse>({
