@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarCheck,
   faCalendarDays,
+  faPen,
   faStar,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +17,8 @@ import {
 } from '@/api/task.api';
 import toast from 'react-hot-toast';
 import { queryClient } from '@/lib/react-query';
+import { useNavigate } from 'react-router-dom';
+import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
 
 type Props = {
   task: TaskType;
@@ -23,6 +26,8 @@ type Props = {
 };
 
 const TaskItem = ({ task, queryKey }: Props) => {
+  const navigate = useNavigate();
+
   const { mutate: deleteMutate } = useMutation(API_DELETE_TASK, {
     onSuccess: (response) => {
       handleSuccessResponse(response.message);
@@ -58,12 +63,26 @@ const TaskItem = ({ task, queryKey }: Props) => {
   return (
     <div className="task-item__card">
       <h5 className="mb-2 font-bold tracking-tight text-white">{task.title}</h5>
+
       <p className="mb-8 font-normal text-gray-400">{task.description}</p>
+
       <div className="mt-auto text-gray-300 flex w-full items-center">
         <FontAwesomeIcon icon={faCalendarDays} className="mr-3" />
         {formattedDate(task.date)}
       </div>
+
       <div className="task-item__footer">
+        <IconBtn
+          handleClick={() =>
+            importantMutate({ taskId: task._id, important: !task.important })
+          }
+          title={task.important ? 'unmark as important' : 'mark as important'}
+          className={`hover:bg-gray-700 ${
+            task.important ? 'text-red-500 hover:text-red-600' : 'text-white'
+          }`}>
+          <FontAwesomeIcon icon={faStar} />
+        </IconBtn>
+
         <IconBtn
           handleClick={() =>
             completedMutate({ taskId: task._id, completed: !task.completed })
@@ -76,16 +95,16 @@ const TaskItem = ({ task, queryKey }: Props) => {
           }`}>
           <FontAwesomeIcon icon={faCalendarCheck} />
         </IconBtn>
+
         <IconBtn
-          handleClick={() =>
-            importantMutate({ taskId: task._id, important: !task.important })
-          }
-          title={task.important ? 'unmark as important' : 'mark as important'}
-          className={`hover:bg-gray-700 ${
-            task.important ? 'text-red-500 hover:text-red-600' : 'text-white'
-          }`}>
-          <FontAwesomeIcon icon={faStar} />
+          handleClick={() => navigate(`${TASKS_BASE_ROUTE}/${task._id}/edit`)}
+          title="Edit task"
+          className="text-white hover:bg-gray-700">
+          <FontAwesomeIcon icon={faPen} />
         </IconBtn>
+
+        <div className="w-[1px] h-[35px] ml-1 mr-2 bg-gray-700"></div>
+
         <IconBtn
           handleClick={() => deleteMutate(task._id)}
           title="Delete task"
@@ -93,6 +112,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
           <FontAwesomeIcon icon={faTrashCan} />
         </IconBtn>
       </div>
+
       <span
         className={`task-item__badge ${
           task.completed
