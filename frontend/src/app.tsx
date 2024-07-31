@@ -4,7 +4,6 @@ import AuthProvider from '@/providers/auth-provider';
 import { queryClient } from '@/lib/react-query';
 import { QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
-import { NODE_ENV } from '@/config';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const App = () => {
@@ -16,7 +15,7 @@ const App = () => {
           <AppRoute />
         </AppProvider>
       </AuthProvider>
-      {NODE_ENV === 'development' && <ReactQueryDevtools />}
+      <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>
   );
 };

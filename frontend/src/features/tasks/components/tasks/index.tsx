@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import Spinner from '@/components/spinner';
 import TaskItem from '@/features/tasks/components/task-item';
 import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
-import PrimaryButton from '@/components/buttons/primay-btn';
+import PrimaryButton from '@/components/buttons/primary-btn';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
