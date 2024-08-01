@@ -7,7 +7,7 @@ import InputField from '@/components/form/input-field';
 import { AUTH_BASE_ROUTE } from '../../routes';
 import { useAuth } from '@/providers/auth-provider';
 import { useState } from 'react';
-import PrimaryButton from '@/components/buttons/primay-btn';
+import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
 
 const validationSchema = yup.object().shape({

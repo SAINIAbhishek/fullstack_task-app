@@ -1,4 +1,4 @@
-import PrimaryButton from '@/components/buttons/primay-btn';
+import PrimaryButton from '@/components/buttons/primary-btn';
 import { Formik } from 'formik';
 import { TaskType } from '../../types/task.type';
 import * as yup from 'yup';

@@ -33,11 +33,14 @@ const AuthProvider = ({ children }: Props) => {
   const { mutate: logoutMutate } = useMutation(API_LOGOUT_USER);
   const { mutate: refreshMutate } = useMutation(API_REFRESH_TOKEN);
 
-  const handleAuthentication = (user: User | undefined, token: string) => {
-    setAccessToken(token);
-    setUser(user);
-    setIsAuthenticated(true);
-  };
+  const handleAuthentication = useCallback(
+    (user: User | undefined, token: string) => {
+      setAccessToken(token);
+      setUser(user);
+      setIsAuthenticated(true);
+    },
+    [setAccessToken],
+  );
 
   const refresh = useCallback((): Promise<boolean> => {
     return new Promise((resolve, reject) => {
@@ -52,7 +55,7 @@ const AuthProvider = ({ children }: Props) => {
         },
       });
     });
-  }, []);
+  }, [refreshMutate, handleAuthentication]);
 
   const login = useCallback(
     (data: LoginType): Promise<boolean> => {
@@ -72,7 +75,7 @@ const AuthProvider = ({ children }: Props) => {
         });
       });
     },
-    [isAuthenticated],
+    [loginMutate, setAuthToken, handleAuthentication],
   );
 
   const logout = useCallback((): Promise<boolean> => {
@@ -92,7 +95,7 @@ const AuthProvider = ({ children }: Props) => {
         },
       });
     });
-  }, [isAuthenticated]);
+  }, [logoutMutate, removeAuthToken, removeAccessToken]);
 
   return (
     <AuthContext.Provider

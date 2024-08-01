@@ -8,7 +8,7 @@ import { ResetPasswordType } from '../../types/reset-password.type';
 import { API_RESET_PASSWORD } from '@/api/auth.api';
 import { AUTH_BASE_ROUTE } from '../../routes';
 import InputField from '@/components/form/input-field';
-import PrimaryButton from '@/components/buttons/primay-btn';
+import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
 
 const validationSchema = yup.object().shape({

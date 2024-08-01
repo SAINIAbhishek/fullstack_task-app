@@ -9,7 +9,7 @@ import InputField from '@/components/form/input-field';
 import { API_REGISTER_USER } from '@/api/auth.api';
 import CheckboxField from '@/components/form/checkbox-field';
 import { AUTH_BASE_ROUTE } from '../../routes';
-import PrimaryButton from '@/components/buttons/primay-btn';
+import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
 
 const validationSchema = yup.object().shape({
