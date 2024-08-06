@@ -3,7 +3,7 @@ import TaskForm from '../task-form';
 import { useAuth } from '@/providers/auth-provider';
 import { TaskType } from '../../types/task.type';
 import { todayDate } from '@/utils/date';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { API_CREATE_TASK } from '@/api/task.api';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
@@ -21,13 +21,11 @@ export const NewTask = () => {
     date: todayDate(),
   };
 
-  const { mutate, isError, isLoading } = useMutation(API_CREATE_TASK, {
+  const { mutate, isError, isPending } = useMutation({
+    mutationFn: API_CREATE_TASK,
     onSuccess: (response) => {
       setResetForm(true);
       toast.success(response.message);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 
@@ -42,7 +40,7 @@ export const NewTask = () => {
         handleSubmit={handleSubmit}
         title="Add a task"
         btnLabel="Add a task"
-        isSubmitting={isLoading}
+        isSubmitting={isPending}
         isError={isError}
         initialValues={initialValues}
         key={resetForm ? 'reset' : 'form'}

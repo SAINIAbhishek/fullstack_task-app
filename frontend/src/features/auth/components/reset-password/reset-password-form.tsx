@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
@@ -33,13 +33,11 @@ const ResetPasswordForm = ({ email, token }: Props) => {
     password: '',
   };
 
-  const { mutate, isError } = useMutation(API_RESET_PASSWORD, {
+  const { mutate, isError } = useMutation({
+    mutationFn: API_RESET_PASSWORD,
     onSuccess: (response) => {
       toast.success(response.message);
       navigate(`${AUTH_BASE_ROUTE}/login`);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 

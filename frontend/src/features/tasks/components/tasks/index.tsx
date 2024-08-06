@@ -1,12 +1,11 @@
 import PageLayout from '@/components/layout/page-layout';
-import { useQuery } from 'react-query';
 import { API_GET_TASKS } from '@/api/task.api';
-import toast from 'react-hot-toast';
 import Spinner from '@/components/spinner';
 import TaskItem from '@/features/tasks/components/task-item';
 import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   title: string;
@@ -16,10 +15,9 @@ type Props = {
 const Tasks = ({ title, filter }: Props) => {
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery(title, () => API_GET_TASKS(filter), {
-    onError: (err: Error) => {
-      toast.error(err.message);
-    },
+  const { data, isLoading } = useQuery({
+    queryKey: [title],
+    queryFn: () => API_GET_TASKS(filter),
   });
 
   const tasks = data?.data?.tasks || [];

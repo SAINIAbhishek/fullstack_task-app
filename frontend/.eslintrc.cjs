@@ -16,7 +16,7 @@ module.exports = {
       "jsx": true // Allows for the parsing of JSX,
     }
   },
-  plugins: ['react-refresh', 'prettier'],
+  plugins: ['react-refresh', 'prettier', '@tanstack/react-query'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -32,4 +32,4 @@ module.exports = {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   },
-}
+};

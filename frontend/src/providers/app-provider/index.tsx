@@ -10,16 +10,28 @@ type Props = {
 
 const AppProvider = ({ children }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { isAuthenticated, refresh } = useAuth();
+  // TODO reactivate refresh token
+  // const { isAuthenticated, refresh } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { getAuthToken, getAccessToken } = useAuthToken();
 
   useEffect(() => {
-    if (getAuthToken() && getAccessToken() && !isAuthenticated) {
-      refresh().finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
-  }, [getAccessToken, getAuthToken, isAuthenticated, refresh]);
+    const checkAuth = async () => {
+      if (getAuthToken() && getAccessToken() && !isAuthenticated) {
+        try {
+          // await refresh();
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [getAccessToken, getAuthToken, isAuthenticated]);
 
   return (
     <MainLayout>

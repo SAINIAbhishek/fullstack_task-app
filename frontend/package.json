@@ -18,6 +18,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@tanstack/react-query": "^5.51.21",
     "axios": "^1.7.3",
     "date-fns": "^2.30.0",
     "dotenv": "^16.4.5",
@@ -27,7 +28,6 @@
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.26.0",
     "yup": "^1.4.0"
   },
@@ -44,6 +44,8 @@
     ]
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.51.15",
+    "@tanstack/react-query-devtools": "^5.51.21",
     "@types/node": "^16.18.104",
     "@types/react": "^18.3.3",
     "@types/react-datepicker": "^6.2.0",

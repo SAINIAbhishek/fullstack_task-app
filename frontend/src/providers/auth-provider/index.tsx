@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import useAuthToken from '@/hooks/useAuthToken';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   API_LOGIN_USER,
   API_LOGOUT_USER,
@@ -29,9 +29,15 @@ const AuthProvider = ({ children }: Props) => {
   const { setAuthToken, removeAuthToken, setAccessToken, removeAccessToken } =
     useAuthToken();
 
-  const { mutate: loginMutate } = useMutation(API_LOGIN_USER);
-  const { mutate: logoutMutate } = useMutation(API_LOGOUT_USER);
-  const { mutate: refreshMutate } = useMutation(API_REFRESH_TOKEN);
+  const { mutate: loginMutate } = useMutation({
+    mutationFn: API_LOGIN_USER,
+  });
+  
+  const { mutate: logoutMutate } = useMutation({ mutationFn: API_LOGOUT_USER });
+  
+  const { mutate: refreshMutate } = useMutation({
+    mutationFn: API_REFRESH_TOKEN,
+  });
 
   const handleAuthentication = useCallback(
     (user: User | undefined, token: string) => {
@@ -68,8 +74,8 @@ const AuthProvider = ({ children }: Props) => {
             toast.success(response.message);
             resolve(true);
           },
-          onError: (err: any) => {
-            toast.error(err.message);
+          onError: (error: Error) => {
+            toast.error(error.message);
             reject(false);
           },
         });
@@ -89,8 +95,8 @@ const AuthProvider = ({ children }: Props) => {
           toast.success(response.message);
           resolve(true);
         },
-        onError: (err: any) => {
-          toast.error(err.message);
+        onError: (error: Error) => {
+          toast.error(error.message);
           reject(false);
         },
       });

@@ -1,6 +1,5 @@
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
@@ -10,6 +9,7 @@ import { ForgotPasswordType } from '../../types/forgot-password.type';
 import { AUTH_BASE_ROUTE } from '../../routes';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
+import { useMutation } from '@tanstack/react-query';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -26,7 +26,9 @@ const initialValues: ForgotPasswordType = {
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
 
-  const { mutate, isError } = useMutation(API_FORGOT_PASSWORD);
+  const { mutate, isError, isPending } = useMutation({
+    mutationFn: API_FORGOT_PASSWORD,
+  });
 
   const handleSubmit = (value: ForgotPasswordType) => {
     mutate(value, {
@@ -38,9 +40,6 @@ const ForgotPasswordForm = () => {
             search: `?email=${value.email}`,
           });
         }
-      },
-      onError: (err: any) => {
-        toast.error(err.message);
       },
     });
   };
@@ -76,7 +75,7 @@ const ForgotPasswordForm = () => {
           <PrimaryButton
             title="Reset password"
             type="submit"
-            isLoading={isSubmitting && !isError}
+            isLoading={isSubmitting && !isError && isPending}
             isDisabled={!(dirty && isValid)}
             className="w-full"
           />

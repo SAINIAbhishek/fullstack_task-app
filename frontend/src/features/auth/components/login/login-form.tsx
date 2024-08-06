@@ -6,9 +6,9 @@ import { LoginType } from '../../types/login.type';
 import InputField from '@/components/form/input-field';
 import { AUTH_BASE_ROUTE } from '../../routes';
 import { useAuth } from '@/providers/auth-provider';
-import { useState } from 'react';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
+import { useMutation } from '@tanstack/react-query';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -28,21 +28,16 @@ const initialValues: LoginType = {
 const LoginForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
-  const [isError, setIsError] = useState<boolean>(false);
 
-  const handleSubmit = async (values: LoginType) => {
-    try {
-      await auth.login(values);
-      navigate('/');
-    } catch (error) {
-      setIsError(false);
-    }
-  };
+  const { mutate, isError } = useMutation({
+    mutationFn: (values: LoginType) => auth.login(values),
+    onSuccess: () => navigate('/'),
+  });
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={(values) => mutate(values)}
       validationSchema={validationSchema}>
       {({
         values,

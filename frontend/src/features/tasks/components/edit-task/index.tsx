@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { API_GET_TASK, API_TASK_UPDATE } from '@/api/task.api';
 import toast from 'react-hot-toast';
 import TaskForm from '@/features/tasks/components/task-form';
@@ -12,16 +12,11 @@ import { DATE_FORMAT } from '@/config';
 const EditTask = () => {
   const { id } = useParams();
 
-  const { data, isLoading: isFetchingTask } = useQuery(
-    ['task', id],
-    () => API_GET_TASK(id ?? ''),
-    {
-      enabled: !!id,
-      onError: (err: Error) => {
-        toast.error(err.message);
-      },
-    },
-  );
+  const { data, isLoading: isFetchingTask } = useQuery({
+    queryKey: ['task', id],
+    queryFn: () => API_GET_TASK(id ?? ''),
+    enabled: !!id,
+  });
 
   const task = data?.data?.task ?? ({} as TaskType);
 
@@ -34,12 +29,10 @@ const EditTask = () => {
     date: task.date ? formattedDate(task.date, DATE_FORMAT) : todayDate(),
   };
 
-  const { mutate, isError, isLoading } = useMutation(API_TASK_UPDATE, {
+  const { mutate, isError, isPending } = useMutation({
+    mutationFn: API_TASK_UPDATE,
     onSuccess: (response) => {
       toast.success(response.message);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 
@@ -57,7 +50,7 @@ const EditTask = () => {
         <TaskForm
           title="Edit a task"
           btnLabel="Save"
-          isSubmitting={isLoading}
+          isSubmitting={isPending}
           initialValues={initialValues}
           handleSubmit={handleSubmit}
           isError={isError}

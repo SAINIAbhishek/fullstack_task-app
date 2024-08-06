@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { formattedDate } from '@/utils/date';
 import IconBtn from '@/components/buttons/icon-btn';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   API_DELETE_TASK,
   API_TASK_TOGGLE_COMPLETED,
@@ -28,35 +28,29 @@ type Props = {
 const TaskItem = ({ task, queryKey }: Props) => {
   const navigate = useNavigate();
 
-  const { mutate: deleteMutate } = useMutation(API_DELETE_TASK, {
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: API_DELETE_TASK,
     onSuccess: (response) => {
       handleSuccessResponse(response.message);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 
-  const { mutate: importantMutate } = useMutation(API_TASK_TOGGLE_IMPORTANT, {
+  const { mutate: importantMutate } = useMutation({
+    mutationFn: API_TASK_TOGGLE_IMPORTANT,
     onSuccess: (response) => {
       handleSuccessResponse(response.message);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 
-  const { mutate: completedMutate } = useMutation(API_TASK_TOGGLE_COMPLETED, {
+  const { mutate: completedMutate } = useMutation({
+    mutationFn: API_TASK_TOGGLE_COMPLETED,
     onSuccess: (response) => {
       handleSuccessResponse(response.message);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 
   const handleSuccessResponse = (message: string) => {
-    queryClient.invalidateQueries(queryKey).then();
+    queryClient.invalidateQueries({ queryKey: [queryKey] }).then();
     toast.success(message);
   };
 

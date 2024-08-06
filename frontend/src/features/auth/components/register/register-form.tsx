@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { EMAIL_PATTERN } from '@/utils/regex';
 import { RegisterType } from '../../types/register.type';
@@ -40,13 +40,11 @@ const initialValues: RegisterType = {
 const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const { mutate, isError } = useMutation(API_REGISTER_USER, {
+  const { mutate, isError } = useMutation({
+    mutationFn: API_REGISTER_USER,
     onSuccess: (data) => {
       toast.success(data.message);
       navigate(`${AUTH_BASE_ROUTE}/login`);
-    },
-    onError: (err: Error) => {
-      toast.error(err.message);
     },
   });
 
