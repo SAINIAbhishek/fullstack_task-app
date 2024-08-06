@@ -2,7 +2,7 @@ export const ENVIRONMENT = process.env.NODE_ENV;
 export const PORT = process.env.PORT;
 export const CORS_URL = process.env.CORS_URL?.split(',') || [];
 export const API_VERSION = process.env.API_VERSION;
-export const FRONTEND_RESET_URL = process.env.RESET_URL;
+export const FRONTEND_RESET_URL = process.env.FRONTEND_RESET_URL;
 
 export const DATE_FORMAT = process.env.DATE_FORMAT || 'yyyy-MM-dd';
 export const DATE_FULL_FORMAT =
@@ -13,7 +13,7 @@ export const MAILTRAP_EMAIL = {
     username: process.env.MAILTRAP_TESTING_USERNAME || '',
     password: process.env.MAILTRAP_TESTING_PASSWORD || '',
     host: process.env.MAILTRAP_TESTING_HOST || '',
-    port: parseInt(process.env.MAILTRAP_TESTING_PORT || '2525'),
+    port: parseInt(process.env.MAILTRAP_TESTING_PORT || ''),
   },
 };
 
@@ -22,9 +22,9 @@ export const LIMITER = {
   forgotPasswordWS: parseInt(
     process.env.LIMITER_FORGOT_PASSWORD_WS || '120000'
   ),
-  loginMaxAttempt: parseInt(process.env.LIMITER_LOGIN_ATTEMT || '5'),
+  loginMaxAttempt: parseInt(process.env.LIMITER_LOGIN_ATTEMPT || '5'),
   forgotPasswordMaxAttempt: parseInt(
-    process.env.LIMITER_FORGOT_PASSWORD_ATTEMT || '2'
+    process.env.LIMITER_FORGOT_PASSWORD_ATTEMPT || '2'
   ),
 };
 
