@@ -1,0 +1,76 @@
+{
+  "already_account": "Already have an account?",
+  "no_account": "Don’t have an account yet?",
+  "no_task": "No tasks found",
+  "title": {
+    "login": "Sign in to your account",
+    "register": "Create an account",
+    "forgot_password": "Forgot your password?",
+    "reset_password": "Change Password",
+    "edit_task": "Edit a task",
+    "add_task": "Add a task",
+    "task_one": "({{count}} task)",
+    "task_other": "({{count}} tasks)"
+  },
+  "subtitle": {
+    "forgot_password": "Don't fret! Just type in your email and we will send you a code to reset your password!"
+  },
+  "menu": {
+    "all_tasks": "All tasks",
+    "today_tasks": "Today's tasks",
+    "completed_tasks": "Completed tasks",
+    "uncompleted_tasks": "Uncompleted tasks",
+    "important_tasks": "Important tasks"
+  },
+  "error": {
+    "email_invalid": "Email is invalid",
+    "email_required": "Email is required",
+    "title_required": "Title is required",
+    "date_required": "Date is required",
+    "description_required": "Description is required",
+    "first_name_required": "First name is required",
+    "last_name_required": "Last name is required",
+    "password_required": "Password is required",
+    "terms": "You must accept the Terms and Conditions",
+    "password_short": "Password is too short - should be 8 characters minimum",
+    "title_max_200": "Title cannot exceed 200 characters",
+    "date_equal_greater_today": "Date must be equal to or greater than today's date"
+  },
+  "label": {
+    "email_address": "Email Address",
+    "password": "Password",
+    "new_password": "New Password",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "title": "Title",
+    "date": "Date",
+    "description": "Description",
+    "terms_conditions": "I accept the Terms and Conditions",
+    "mark_important": "Mark as important",
+    "unmark_important": "Unmark as important",
+    "mark_completed": "Mark as completed",
+    "mark_uncompleted": "Mark as uncompleted",
+    "edit_task": "Edit task",
+    "completed": "Completed",
+    "uncompleted": "Uncompleted",
+    "delete_task": "Delete task",
+    "user_photo": "user photo"
+  },
+  "placeholder": {
+    "title": "Enter the title",
+    "description": "Enter the description"
+  },
+  "button": {
+    "reset_password": "Reset password",
+    "forgot_password": "Forgot password?",
+    "login_here": "Login here",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "sign_out": "Sign out",
+    "save": "Save",
+    "create_account": "Create an account",
+    "add_task": "Add a task",
+    "add_new_task": "Add new task",
+    "edit_task": "Edit task"
+  }
+}

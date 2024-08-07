@@ -48,8 +48,8 @@ const EditTask = () => {
         <Spinner />
       ) : (
         <TaskForm
-          title="Edit a task"
-          btnLabel="Save"
+          title="title.edit_task"
+          btnLabel="button.save"
           isSubmitting={isPending}
           initialValues={initialValues}
           handleSubmit={handleSubmit}

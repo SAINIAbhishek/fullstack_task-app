@@ -3,26 +3,27 @@ import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
 import { NavLink, useLocation } from 'react-router-dom';
 import ContentLayout from '@/components/layout/content-layout';
 import DropdownUser from './dropdown-user';
+import { useTranslation } from 'react-i18next';
 
 const menuLinks = [
   {
-    name: 'All tasks',
+    name: 'menu.all_tasks',
     path: '/dashboard',
   },
   {
-    name: "Today's tasks",
+    name: 'menu.today_tasks',
     path: `${TASKS_BASE_ROUTE}/today`,
   },
   {
-    name: 'Important tasks',
+    name: 'menu.important_tasks',
     path: `${TASKS_BASE_ROUTE}/important`,
   },
   {
-    name: 'Completed tasks',
+    name: 'menu.completed_tasks',
     path: `${TASKS_BASE_ROUTE}/completed`,
   },
   {
-    name: 'Uncompleted tasks',
+    name: 'menu.uncompleted_tasks',
     path: `${TASKS_BASE_ROUTE}/uncompleted`,
   },
 ];
@@ -30,6 +31,7 @@ const menuLinks = [
 const Navbar = () => {
   const route = useLocation();
   const currentPath = route.pathname;
+  const { t } = useTranslation();
 
   return (
     <nav className="border-gray-200 w-full bg-slate-800">
@@ -58,7 +60,7 @@ const Navbar = () => {
                       : 'text-white hover:text-blue-500'
                   }`}
                   to={link.path}>
-                  {link.name}
+                  {t(link.name)}
                 </NavLink>
               </li>
             ))}

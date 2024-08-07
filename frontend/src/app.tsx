@@ -1,3 +1,4 @@
+import '@/lib/i18n';
 import AppProvider from '@/providers/app-provider';
 import AppRoute from '@/routes';
 import AuthProvider from '@/providers/auth-provider';

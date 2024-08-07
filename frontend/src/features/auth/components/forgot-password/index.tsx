@@ -4,9 +4,8 @@ import ForgotPasswordForm from './forgot-password-form';
 const ForgotPassword = () => {
   return (
     <AuthLayout
-      title="Forgot your password?"
-      subtitle="Don't fret! Just type in your email and we will send you a code to
-          reset your password!">
+      title="title.forgot_password"
+      subtitle="subtitle.forgot_password">
       <ForgotPasswordForm />
     </AuthLayout>
   );

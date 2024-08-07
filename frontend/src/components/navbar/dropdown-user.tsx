@@ -1,10 +1,12 @@
 import { useAuth } from '@/providers/auth-provider';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 const DropdownUser = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
 
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
@@ -26,7 +28,7 @@ const DropdownUser = () => {
         <img
           className="w-8 rounded-full"
           src="/user-default.png"
-          alt="user photo"
+          alt={t('label.user_photo')}
         />
       </button>
 
@@ -45,7 +47,7 @@ const DropdownUser = () => {
           <li
             onClick={handleLogout}
             className="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-400 cursor-pointer">
-            Sign out
+            {t('button.sign_out')}
           </li>
         </ul>
       </div>

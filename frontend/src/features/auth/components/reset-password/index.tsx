@@ -15,7 +15,7 @@ const ResetPassword = () => {
   }
 
   return (
-    <AuthLayout title="Change Password">
+    <AuthLayout title="title.reset_password">
       {!!token && !!email && <ResetPasswordForm token={token} email={email} />}
     </AuthLayout>
   );

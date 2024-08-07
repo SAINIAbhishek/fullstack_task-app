@@ -10,14 +10,7 @@ import { AUTH_BASE_ROUTE } from '../../routes';
 import InputField from '@/components/form/input-field';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
-
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Email is invalid')
-    .matches(EMAIL_PATTERN, 'Email is invalid')
-    .required('Email is required'),
-});
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   email: string;
@@ -26,6 +19,15 @@ type Props = {
 
 const ResetPasswordForm = ({ email, token }: Props) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const validationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email(t('error.email_invalid'))
+      .matches(EMAIL_PATTERN, t('error.email_invalid'))
+      .required(t('error.email_required')),
+  });
 
   const initialValues: ResetPasswordType = {
     email,
@@ -60,7 +62,7 @@ const ResetPasswordForm = ({ email, token }: Props) => {
         <form onSubmit={handleSubmit} className="space-y-6 md:space-y-6">
           <InputField
             name="email"
-            label="Email Address"
+            label="label.email_address"
             type="email"
             value={values.email}
             readOnly
@@ -68,7 +70,7 @@ const ResetPasswordForm = ({ email, token }: Props) => {
 
           <InputField
             name="password"
-            label="New Password"
+            label="label.new_password"
             type="password"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -78,7 +80,7 @@ const ResetPasswordForm = ({ email, token }: Props) => {
           />
 
           <PrimaryButton
-            title="Reset password"
+            title="button.reset_password"
             type="submit"
             isLoading={isSubmitting && !isError}
             isDisabled={!(dirty && isValid)}
@@ -86,7 +88,7 @@ const ResetPasswordForm = ({ email, token }: Props) => {
           />
 
           <p className="text-sm font-light text-gray-400">
-            Already have an account?
+            {t('already_account')}
             <LinkButton
               handleClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
               title="Login here"

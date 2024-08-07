@@ -1,4 +1,5 @@
 import Spinner from '@/components/spinner';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   title: string;
@@ -17,6 +18,8 @@ const PrimaryButton = ({
   isDisabled,
   type = 'button',
 }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <button
       type={type}
@@ -25,7 +28,7 @@ const PrimaryButton = ({
       className={`w-auto bg-primary-600 text-white focus:outline-none font-medium px-3 rounded-lg transition hover:bg-primary-700 ${
         isLoading ? 'py-1' : 'py-2.5'
       } ${isDisabled || isLoading ? 'cursor-not-allowed' : ''} ${className}`}>
-      {isLoading ? <Spinner size="sm" color="border-white" /> : title}
+      {isLoading ? <Spinner size="sm" color="border-white" /> : t(title)}
     </button>
   );
 };

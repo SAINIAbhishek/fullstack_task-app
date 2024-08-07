@@ -17,7 +17,7 @@ const TasksRoutes = () => {
         path="/important"
         element={
           <Tasks
-            title="Important tasks"
+            title="menu.important_tasks"
             filter={JSON.stringify({ important: true })}
           />
         }
@@ -26,7 +26,7 @@ const TasksRoutes = () => {
         path="/completed"
         element={
           <Tasks
-            title="Completed tasks"
+            title="menu.completed_tasks"
             filter={JSON.stringify({ completed: true })}
           />
         }
@@ -35,7 +35,7 @@ const TasksRoutes = () => {
         path="/uncompleted"
         element={
           <Tasks
-            title="Uncompleted tasks"
+            title="menu.uncompleted_tasks"
             filter={JSON.stringify({ completed: false })}
           />
         }
@@ -44,7 +44,7 @@ const TasksRoutes = () => {
         path="/today"
         element={
           <Tasks
-            title="Today's tasks"
+            title="menu.today_tasks"
             filter={JSON.stringify({ date: todayDate() })}
           />
         }

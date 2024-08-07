@@ -6,6 +6,7 @@ import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   title: string;
@@ -14,6 +15,7 @@ type Props = {
 
 const Tasks = ({ title, filter }: Props) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { data, isLoading } = useQuery({
     queryKey: [title],
@@ -22,18 +24,14 @@ const Tasks = ({ title, filter }: Props) => {
 
   const tasks = data?.data?.tasks || [];
 
-  const tasksTitle = `${title} (${tasks.length} ${
-    tasks.length === 1 ? 'task' : 'tasks'
-  })`;
-
   return (
     <PageLayout className="flex-col">
       <div className="flex justify-between items-center">
         <h1 className="font-medium text-center sm:text-left md:text-2xl text-lg text-slate-200">
-          {tasksTitle}
+          {t(title)} {t('title.task', { count: tasks.length })}
         </h1>
         <PrimaryButton
-          title="Add new task"
+          title="button.add_new_task"
           className="px-5"
           handleClick={() => navigate(`${TASKS_BASE_ROUTE}/new`)}
         />
@@ -49,7 +47,7 @@ const Tasks = ({ title, filter }: Props) => {
             ))}
           </div>
         ) : (
-          <p>No tasks found</p>
+          <p>{t('no_task')}</p>
         )}
       </div>
     </PageLayout>
