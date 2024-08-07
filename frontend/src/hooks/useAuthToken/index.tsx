@@ -5,9 +5,10 @@ import {
   COOKIE_AUTH_NAME,
   cookieDefaultOptions,
 } from '@/lib/react-cookie';
+import { useMemo } from 'react';
 
 /**
- * we are storing the refresh and access tokens in the cookie
+ * Hook for managing authentication tokens stored in cookies
  */
 const useAuthToken = () => {
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -15,8 +16,8 @@ const useAuthToken = () => {
     COOKIE_ACCESS_TOKEN,
   ]);
 
-  const getAuthToken = () => cookies[COOKIE_AUTH_NAME] || null;
-  const getAccessToken = () => cookies[COOKIE_ACCESS_TOKEN] || null;
+  const { [COOKIE_AUTH_NAME]: authToken, [COOKIE_ACCESS_TOKEN]: accessToken } =
+    cookies;
 
   const authTokenOptions = {
     ...cookieDefaultOptions,
@@ -27,6 +28,9 @@ const useAuthToken = () => {
     ...cookieDefaultOptions,
     maxAge: COOKIE.accessTokenMaxAge,
   };
+
+  const getAuthToken = () => authToken || null;
+  const getAccessToken = () => accessToken || null;
 
   const setAuthToken = (token: string) =>
     setCookie(COOKIE_AUTH_NAME, token, authTokenOptions);
@@ -40,14 +44,17 @@ const useAuthToken = () => {
   const removeAccessToken = () =>
     removeCookie(COOKIE_ACCESS_TOKEN, accessTokenOptions);
 
-  return {
-    getAuthToken,
-    setAuthToken,
-    removeAuthToken,
-    setAccessToken,
-    removeAccessToken,
-    getAccessToken,
-  };
+  return useMemo(
+    () => ({
+      getAuthToken,
+      setAuthToken,
+      removeAuthToken,
+      setAccessToken,
+      removeAccessToken,
+      getAccessToken,
+    }),
+    [authToken, accessToken],
+  );
 };
 
 export default useAuthToken;
