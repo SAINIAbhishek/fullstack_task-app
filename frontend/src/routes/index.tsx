@@ -17,7 +17,10 @@ const AppRoute = () => {
             element={
               <ProtectedRoutes defaultRoute={`${AUTH_BASE_ROUTE}/login`} />
             }>
-            <Route path="/dashboard" element={<Tasks title="All tasks" />} />
+            <Route
+              path="/dashboard"
+              element={<Tasks title="menu.all_tasks" />}
+            />
             <Route path={`${TASKS_BASE_ROUTE}/*`} element={<TasksRoutes />} />
           </Route>
           <Route element={<PublicRoutes defaultRoute="/dashboard" />}>

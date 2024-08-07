@@ -11,23 +11,7 @@ import CheckboxField from '@/components/form/checkbox-field';
 import { AUTH_BASE_ROUTE } from '../../routes';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
-
-const validationSchema = yup.object().shape({
-  firstname: yup.string().required('First name is required'),
-  lastname: yup.string().required('Last name is required'),
-  email: yup
-    .string()
-    .email('Email is invalid')
-    .matches(EMAIL_PATTERN, 'Email is invalid')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(8, 'Password is too short - should be 8 characters minimum'),
-  terms: yup
-    .boolean()
-    .oneOf([true], 'You must accept the Terms and Conditions'),
-});
+import { useTranslation } from 'react-i18next';
 
 const initialValues: RegisterType = {
   email: '',
@@ -39,6 +23,22 @@ const initialValues: RegisterType = {
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const validationSchema = yup.object().shape({
+    firstname: yup.string().required(t('error.first_name_required')),
+    lastname: yup.string().required(t('error.last_name_required')),
+    email: yup
+      .string()
+      .email(t('error.email_invalid'))
+      .matches(EMAIL_PATTERN, t('error.email_invalid'))
+      .required(t('error.email_required')),
+    password: yup
+      .string()
+      .required(t('error.password_required'))
+      .min(8, t('error.password_short')),
+    terms: yup.boolean().oneOf([true], t('error.terms')),
+  });
 
   const { mutate, isError } = useMutation({
     mutationFn: API_REGISTER_USER,
@@ -69,7 +69,7 @@ const RegisterForm = () => {
             <div className="w-1/2">
               <InputField
                 name="firstname"
-                label="First Name"
+                label="label.first_name"
                 type="text"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -82,7 +82,7 @@ const RegisterForm = () => {
             <div className="w-1/2">
               <InputField
                 name="lastname"
-                label="Last Name"
+                label="label.last_name"
                 type="text"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -95,7 +95,7 @@ const RegisterForm = () => {
 
           <InputField
             name="email"
-            label="Email Address"
+            label="label.email_address"
             type="email"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -106,7 +106,7 @@ const RegisterForm = () => {
 
           <InputField
             name="password"
-            label="Password"
+            label="label.password"
             type="password"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -117,7 +117,7 @@ const RegisterForm = () => {
 
           <CheckboxField
             name="terms"
-            label="I accept the Terms and Conditions"
+            label="label.terms_conditions"
             checked={values.terms}
             onChange={handleChange}
             error={errors.terms}
@@ -125,7 +125,7 @@ const RegisterForm = () => {
           />
 
           <PrimaryButton
-            title="Create an account"
+            title="button.create_account"
             type="submit"
             isLoading={isSubmitting && !isError}
             isDisabled={!(dirty && isValid)}
@@ -133,10 +133,10 @@ const RegisterForm = () => {
           />
 
           <p className="text-sm font-light text-gray-400">
-            Already have an account?
+            {t('already_account')}
             <LinkButton
               handleClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
-              title="Login here"
+              title="button.login_here"
             />
           </p>
         </form>

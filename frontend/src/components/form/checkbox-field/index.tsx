@@ -1,7 +1,10 @@
 import { ErrorMessage, Field } from 'formik';
 import { FormikValues } from 'formik/dist/types';
+import { useTranslation } from 'react-i18next';
 
 const CheckboxField = ({ name, label, onChange, value }: FormikValues) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <div className="flex items-start">
@@ -18,7 +21,7 @@ const CheckboxField = ({ name, label, onChange, value }: FormikValues) => {
         </div>
         <div className="ml-3 text-sm">
           <label htmlFor={name} className="font-light text-gray-300">
-            {label}
+            {t(label)}
           </label>
         </div>
       </div>

@@ -24,6 +24,7 @@ Additionally, the application employs the Context API and Hooks to effectively m
 - React Router Dom
 - Eslint
 - Prettier
+- React i18next
 
 <hr>
 

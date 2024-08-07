@@ -3,7 +3,7 @@ import RegisterForm from './register-form';
 
 const Register = () => {
   return (
-    <AuthLayout title="Create an account">
+    <AuthLayout title="title.register">
       <RegisterForm />
     </AuthLayout>
   );

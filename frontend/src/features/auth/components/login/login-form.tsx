@@ -9,16 +9,7 @@ import { useAuth } from '@/providers/auth-provider';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
 import { useMutation } from '@tanstack/react-query';
-
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Email is invalid')
-    .matches(EMAIL_PATTERN, 'Email is invalid')
-    .required('Email is required')
-    .trim(),
-  password: yup.string().required('Password is required'),
-});
+import { useTranslation } from 'react-i18next';
 
 const initialValues: LoginType = {
   email: '',
@@ -28,6 +19,17 @@ const initialValues: LoginType = {
 const LoginForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
+  const { t } = useTranslation();
+
+  const validationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email(t('error.email_invalid'))
+      .matches(EMAIL_PATTERN, t('error.email_invalid'))
+      .required(t('error.email_required'))
+      .trim(),
+    password: yup.string().required(t('error.password_required')),
+  });
 
   const { mutate, isError } = useMutation({
     mutationFn: (values: LoginType) => auth.login(values),
@@ -53,7 +55,7 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           <InputField
             name="email"
-            label="Email Address"
+            label="label.email_address"
             type="email"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -64,7 +66,7 @@ const LoginForm = () => {
 
           <InputField
             name="password"
-            label="Password"
+            label="label.password"
             type="password"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -74,16 +76,15 @@ const LoginForm = () => {
           />
 
           <div className="flex items-center justify-end">
-            <button
-              onClick={() => navigate(`${AUTH_BASE_ROUTE}/forgot-password`)}
-              type="button"
-              className="text-sm font-medium hover:underline text-primary-500">
-              Forgot password?
-            </button>
+            <LinkButton
+              className="text-sm"
+              handleClick={() => navigate(`${AUTH_BASE_ROUTE}/forgot-password`)}
+              title="button.forgot_password"
+            />
           </div>
 
           <PrimaryButton
-            title="Sign in"
+            title="button.sign_in"
             type="submit"
             isLoading={isSubmitting && !isError}
             isDisabled={!(dirty && isValid)}
@@ -91,10 +92,10 @@ const LoginForm = () => {
           />
 
           <p className="text-sm font-light text-gray-400">
-            Don’t have an account yet?
+            {t('no_account')}
             <LinkButton
               handleClick={() => navigate(`${AUTH_BASE_ROUTE}/register`)}
-              title="Sign up"
+              title="button.sign_up"
             />
           </p>
         </form>

@@ -3,7 +3,7 @@ import LoginForm from './login-form';
 
 const Login = () => {
   return (
-    <AuthLayout title="Sign in to your account">
+    <AuthLayout title="title.login">
       <LoginForm />
     </AuthLayout>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   title?: string;
@@ -19,10 +20,12 @@ const IconButton = ({
   type = 'button',
   title,
 }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <button
       type={type}
-      title={title}
+      title={title && t(title)}
       disabled={isDisabled}
       onClick={handleClick}
       className={`font-medium text-sm p-2.5 text-center inline-flex items-center 

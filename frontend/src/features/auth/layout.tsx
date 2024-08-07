@@ -1,5 +1,6 @@
 import React from 'react';
 import { APP_NAME } from '@/config';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   children: React.ReactNode;
@@ -8,6 +9,8 @@ type Props = {
 };
 
 const AuthLayout = ({ children, title, subtitle }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <section className="flex flex-col items-center justify-center px-6 py-8">
       <div className="flex items-center mt-10 mb-6 text-2xl font-semibold text-white">
@@ -20,13 +23,13 @@ const AuthLayout = ({ children, title, subtitle }: Props) => {
             className={`text-xl font-bold leading-tight tracking-tight md:text-2xl text-white ${
               subtitle ? 'mb-1' : ''
             }`}>
-            {title}
+            {t(title)}
           </h1>
           {!!subtitle && (
             <p
               style={{ marginTop: 0 }}
               className="font-light text-gray-500 dark:text-gray-400">
-              {subtitle}
+              {t(subtitle)}
             </p>
           )}
           {children}

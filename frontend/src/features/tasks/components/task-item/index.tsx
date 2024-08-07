@@ -19,6 +19,7 @@ import toast from 'react-hot-toast';
 import { queryClient } from '@/lib/react-query';
 import { useNavigate } from 'react-router-dom';
 import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   task: TaskType;
@@ -27,6 +28,7 @@ type Props = {
 
 const TaskItem = ({ task, queryKey }: Props) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { mutate: deleteMutate } = useMutation({
     mutationFn: API_DELETE_TASK,
@@ -70,7 +72,9 @@ const TaskItem = ({ task, queryKey }: Props) => {
           handleClick={() =>
             importantMutate({ taskId: task._id, important: !task.important })
           }
-          title={task.important ? 'unmark as important' : 'mark as important'}
+          title={
+            task.important ? 'label.unmark_important' : 'label.mark_important'
+          }
           className={`hover:bg-gray-700 ${
             task.important ? 'text-red-500 hover:text-red-600' : 'text-white'
           }`}>
@@ -81,7 +85,9 @@ const TaskItem = ({ task, queryKey }: Props) => {
           handleClick={() =>
             completedMutate({ taskId: task._id, completed: !task.completed })
           }
-          title={task.completed ? 'mark as uncompleted' : 'mark as completed'}
+          title={
+            task.completed ? 'label.mark_uncompleted' : 'label.mark_completed'
+          }
           className={`hover:bg-gray-700 ${
             task.completed
               ? 'text-green-500 hover:text-green-600'
@@ -92,7 +98,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
 
         <IconBtn
           handleClick={() => navigate(`${TASKS_BASE_ROUTE}/${task._id}/edit`)}
-          title="Edit task"
+          title="label.edit_task"
           className="text-white hover:bg-gray-700">
           <FontAwesomeIcon icon={faPen} />
         </IconBtn>
@@ -101,7 +107,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
 
         <IconBtn
           handleClick={() => deleteMutate(task._id)}
-          title="Delete task"
+          title="label.delete_task"
           className="text-white hover:bg-gray-700">
           <FontAwesomeIcon icon={faTrashCan} />
         </IconBtn>
@@ -113,7 +119,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
             ? 'bg-green-200 text-green-800'
             : 'bg-yellow-200 text-yellow-800'
         }`}>
-        {task.completed ? 'Completed' : 'Uncompleted'}
+        {task.completed ? t('label.completed') : t('label.uncompleted')}
       </span>
     </div>
   );

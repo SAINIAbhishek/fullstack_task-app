@@ -38,8 +38,8 @@ export const NewTask = () => {
     <PageLayout className="flex flex-col items-center justify-center px-6 py-8">
       <TaskForm
         handleSubmit={handleSubmit}
-        title="Add a task"
-        btnLabel="Add a task"
+        title="title.add_task"
+        btnLabel="button.add_task"
         isSubmitting={isPending}
         isError={isError}
         initialValues={initialValues}

@@ -10,14 +10,7 @@ import { AUTH_BASE_ROUTE } from '../../routes';
 import PrimaryButton from '@/components/buttons/primary-btn';
 import LinkButton from '@/components/buttons/link-btn';
 import { useMutation } from '@tanstack/react-query';
-
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Email is invalid')
-    .matches(EMAIL_PATTERN, 'Email is invalid')
-    .required('Email is required'),
-});
+import { useTranslation } from 'react-i18next';
 
 const initialValues: ForgotPasswordType = {
   email: '',
@@ -25,6 +18,15 @@ const initialValues: ForgotPasswordType = {
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const validationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email(t('error.email_invalid'))
+      .matches(EMAIL_PATTERN, t('error.email_invalid'))
+      .required(t('error.email_required')),
+  });
 
   const { mutate, isError, isPending } = useMutation({
     mutationFn: API_FORGOT_PASSWORD,
@@ -63,7 +65,7 @@ const ForgotPasswordForm = () => {
         <form onSubmit={handleSubmit} className="space-y-6 md:space-y-6">
           <InputField
             name="email"
-            label="Email Address"
+            label="label.email_address"
             type="email"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -73,7 +75,7 @@ const ForgotPasswordForm = () => {
           />
 
           <PrimaryButton
-            title="Reset password"
+            title="button.reset_password"
             type="submit"
             isLoading={isSubmitting && !isError && isPending}
             isDisabled={!(dirty && isValid)}
@@ -81,10 +83,10 @@ const ForgotPasswordForm = () => {
           />
 
           <p className="text-sm font-light text-gray-400">
-            Already have an account?
+            {t('already_account')}
             <LinkButton
               handleClick={() => navigate(`${AUTH_BASE_ROUTE}/login`)}
-              title="Login here"
+              title="button.login_here"
             />
           </p>
         </form>
