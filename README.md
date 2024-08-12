@@ -9,11 +9,13 @@ The purpose of this project is to demonstrate a fully functional FullStack Task 
 ![Home page](home.png)
 
 ## Frontend (React + TypeScript + Vite + Tailwind CSS)
-The project's organization aligns with established industry standards, employing a feature-based directory structure and maintaining a uniform naming convention. 
+
+The project's organization aligns with established industry standards, employing a feature-based directory structure and maintaining a uniform naming convention.
 
 Additionally, the application employs the Context API and Hooks to effectively manage its state.
 
 ## Stacks:
+
 - TypeScript
 - Formik
 - React Query
@@ -25,6 +27,7 @@ Additionally, the application employs the Context API and Hooks to effectively m
 - Eslint
 - Prettier
 - React i18next
+- Testing with Vitest & React Testing Library
 
 <hr>
 
@@ -58,6 +61,7 @@ The project structure follows the best practices and conventions of a Node.js ap
 The project has directories based on the functionality and type while justifying the directory name.
 
 Following are the API features of this project:
+
 - **TypeScript:** This backend is written in TypeScript, enhancing the development experience by adding static typing to JavaScript. This results in more reliable and maintainable codebases, helps catch potential errors during development, and provides better code completion and tooling support.
 - **Request Limiter**: This feature prevents abuse or overload of the login route, forgot password route by limiting the number of requests, enhancing security and preventing potential attacks.
 - **Centralized Error Handling:** Centralized error handling and response management streamline the codebase, making it easier to maintain and ensuring a consistent user experience.
@@ -73,6 +77,7 @@ Following are the API features of this project:
 - **Middleware for Exception Handling:** Middleware for handling exceptions within async Express routes and forwarding them to Express error handlers improves error management, ensuring the smooth operation of the application.
 
 ## API Stacks:
+
 - Node.js
 - Express.js
 - Typescript
@@ -87,6 +92,7 @@ Following are the API features of this project:
 - Nodemailer
 
 ## Setup MAILTRAP
+
 To test the email functionality I've used the Mailtrap service: <a href="https://mailtrap.io/" target="_blank">Mailtrap</a>.
 You can also create your credentials and place them in the .env file under the **Mailtrap(Email service) Info**.
 
@@ -121,6 +127,7 @@ To generate a secret token and refresh to add in the .env file of the server you
 ```
 node
 ```
+
 ```
 require('crypto').randomBytes(64).toString('hex')
 ```

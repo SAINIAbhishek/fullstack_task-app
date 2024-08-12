@@ -1,7 +1,7 @@
 import Spinner from '@/components/spinner';
 import { useTranslation } from 'react-i18next';
 
-type Props = {
+export type PrimaryButtonProps = {
   title: string;
   className?: string;
   isLoading?: boolean;
@@ -17,7 +17,7 @@ const PrimaryButton = ({
   isLoading,
   isDisabled,
   type = 'button',
-}: Props) => {
+}: PrimaryButtonProps) => {
   const { t } = useTranslation();
 
   return (

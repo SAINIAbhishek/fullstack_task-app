@@ -24,5 +24,17 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
+    test: {
+      globals: true,
+      setupFiles: 'src/tests/setup.ts',
+      environment: 'jsdom',
+      exclude: ['**/node_modules/**'],
+      tsconfig: './tsconfig.test.json',
+      coverage: {
+        include: ['src/**'],
+        reporter: ['text', 'json', 'html'],
+      },
+    },
+    cacheDir: 'node_modules/.vite_cache',
   };
 });

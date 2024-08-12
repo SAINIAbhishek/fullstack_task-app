@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-type Props = {
+export type IconButtonProps = {
   title?: string;
   className?: string;
   isDisabled?: boolean;
@@ -19,7 +19,7 @@ const IconButton = ({
   children,
   type = 'button',
   title,
-}: Props) => {
+}: IconButtonProps) => {
   const { t } = useTranslation();
 
   return (
