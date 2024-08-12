@@ -1,9 +1,9 @@
-type Props = {
+export type SpinnerProps = {
   size?: 'sm';
   color?: string;
 };
 
-const Spinner = ({ size, color = 'border-blue-500' }: Props) => {
+const Spinner = ({ size, color = 'border-blue-500' }: SpinnerProps) => {
   const spinnerSize =
     size === 'sm'
       ? `h-6 w-6 border-t-2 ${color}`
@@ -15,6 +15,7 @@ const Spinner = ({ size, color = 'border-blue-500' }: Props) => {
         size === 'sm' ? 'h-10' : 'h-16'
       }`}>
       <div
+        data-testid="spinner"
         className={`animate-spin rounded-full ${spinnerSize} border-solid`}></div>
     </div>
   );

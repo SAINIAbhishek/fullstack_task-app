@@ -7,7 +7,7 @@ type Props = {
 
 const ContentLayout = ({ children, className }: Props) => {
   return (
-    <div className={`max-w-screen-2xl mx-auto flex mx-8 px-4 ${className}`}>
+    <div className={`max-w-screen-2xl flex mx-8 px-4 ${className}`}>
       {children}
     </div>
   );

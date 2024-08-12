@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-type Props = {
+export type LinkButtonProps = {
   title: string;
   className?: string;
   isDisabled?: boolean;
@@ -14,7 +14,7 @@ const LinkButton = ({
   handleClick,
   isDisabled,
   type = 'button',
-}: Props) => {
+}: LinkButtonProps) => {
   const { t } = useTranslation();
 
   return (
