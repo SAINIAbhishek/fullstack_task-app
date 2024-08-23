@@ -13,13 +13,36 @@ logs
 node_modules
 
 # Ignore built files
-build/**/*
+build/
+dist/
 
 # ignore test converage
-coverage
+coverage/
 
 # git
 .gitignore
-.git
+.git/
 
 .DS_Store 
+
+# docker
+dockerfile
+.dockerignore
+
+# Environment varibles
+.env
+
+# Ignore local development files
+tmp/
+temp/
+
+# Ignore npm debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore output from TypeScript compiler
+*.tsbuildinfo
+
+# Ignore eslint cache
+.eslintcache
