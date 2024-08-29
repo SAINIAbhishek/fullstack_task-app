@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json", // Inherit base configuration
+  "extends": "./tsconfig.base.json", // Inherit base configuration
   "compilerOptions": {
     "types": ["vitest/globals", "vitest", "@testing-library/jest-dom"], // Include testing-related types
     "noUnusedLocals": false,

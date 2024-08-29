@@ -4,18 +4,18 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'VITE_PORT');
+  const env = loadEnv(mode, process.cwd(), 'APP_PORT');
 
   return {
     base: './',
-    envPrefix: 'VITE_',
+    envPrefix: 'APP_',
     plugins: [react()],
     server: {
-      port: parseInt(env.VITE_PORT),
+      port: parseInt(env.APP_PORT),
       strictPort: true,
     },
     preview: {
-      port: parseInt(env.VITE_PORT),
+      port: parseInt(env.APP_PORT),
       strictPort: true,
       open: 'index.html',
     },
