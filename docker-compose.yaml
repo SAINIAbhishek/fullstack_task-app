@@ -6,15 +6,13 @@ services:
     container_name: mongo
     # Configures the container to restart automatically.
     restart: always
-    ports:
-      # Map host port to container port 27017
-      - 27017:27017
     # Volumes to persist data and initialize MongoDB
     volumes:
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       - dbdata:/data/db
 
+  # only for the local env
   mongo-express:
     # Use the official mongo-express image
     image: mongo-express
