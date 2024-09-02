@@ -11,6 +11,13 @@ services:
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       - dbdata:/data/db
+    healthcheck:
+      test:
+        ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # only for the local env
   mongo-express:
@@ -28,7 +35,8 @@ services:
     ports:
       - 8081:8081
     depends_on:
-      - mongodb # Ensure mongo-express starts after MongoDB is up and running
+      mongodb: # Ensure mongo-express starts after MongoDB is up and running
+        condition: service_healthy
 
   # To build task backend image
   api:
@@ -55,7 +63,14 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/healthcheck"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # To build task frontend image
   frontend:
@@ -73,7 +88,8 @@ services:
     ports:
       - 3000:80
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
 # Our top-level volumes key defines the volumes dbdata.
 # When Docker creates volumes, the contents of the volume are stored in a part of the host filesystem, /var/lib/docker/volumes/, that’s managed by Docker.
