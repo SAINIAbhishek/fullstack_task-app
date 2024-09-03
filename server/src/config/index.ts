@@ -34,9 +34,12 @@ export const COOKIE = {
 };
 
 export const DB = {
-  name: process.env.DB_NAME || '',
-  host: process.env.DB_HOST || '',
-  port: process.env.DB_PORT || '',
+  uri: process.env.MONGO_URI,
+  name: process.env.MONGO_DB_DATABASE_NAME || '',
+  host: process.env.MONGO_DB_HOST || '',
+  username: process.env.MONGO_DB_USERNAME || '',
+  pwd: process.env.MONGO_DB_PWD || '',
+  port: process.env.MONGO_DB_PORT || '',
   minPoolSize: parseInt(process.env.DB_MIN_POOL_SIZE || '5'),
   maxPoolSize: parseInt(process.env.DB_MAX_POOL_SIZE || '10'),
   connectTimeoutMS: parseInt(process.env.DB_CONNECT_TIMEOUT_MS || '60000'),

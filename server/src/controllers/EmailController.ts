@@ -56,7 +56,7 @@ class EmailController {
     const { user } = req.email;
     if (!user) throw new BadRequestError('User is required');
 
-    const resetUrl = `${FRONTEND_RESET_URL}/${user.passwordResetTokenRaw}?email=${user.email}`;
+    const resetUrl = `${FRONTEND_RESET_URL}auth/reset-password/${user.passwordResetTokenRaw}?email=${user.email}`;
 
     const message = `
         We've received a request to reset your password. Don't worry, we've got you covered! <br><br>
