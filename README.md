@@ -28,7 +28,7 @@ Additionally, the application employs the Context API and Hooks to effectively m
 - Prettier
 - React i18next
 - Testing with Vitest & React Testing Library
-- Docker image (https://hub.docker.com/r/sainiabhishek/fullstack_task-frontend)
+- Docker image (<a href="https://hub.docker.com/r/sainiabhishek/fullstack_task-frontend" target="_blank">Frontend Image</a>)
 
 <hr>
 
@@ -91,7 +91,7 @@ Following are the API features of this project:
 - Rate Limiter
 - Roles
 - Nodemailer
-- Docker image (https://hub.docker.com/r/sainiabhishek/fullstack_task-api)
+- Docker image (<a href="https://hub.docker.com/r/sainiabhishek/fullstack_task-api" target="_blank">API Image</a>)
 
 ## Setup MAILTRAP
 
