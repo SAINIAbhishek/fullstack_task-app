@@ -28,6 +28,7 @@ Additionally, the application employs the Context API and Hooks to effectively m
 - Prettier
 - React i18next
 - Testing with Vitest & React Testing Library
+- Docker image (https://hub.docker.com/r/sainiabhishek/fullstack_task-frontend)
 
 <hr>
 
@@ -90,6 +91,7 @@ Following are the API features of this project:
 - Rate Limiter
 - Roles
 - Nodemailer
+- Docker image (https://hub.docker.com/r/sainiabhishek/fullstack_task-api)
 
 ## Setup MAILTRAP
 
@@ -131,3 +133,18 @@ node
 ```
 require('crypto').randomBytes(64).toString('hex')
 ```
+
+## How to run the project using Docker compose
+
+- Ensure that Docker is installed on your computer. 
+- Navigate to each directory where a .env.example file is present. Copy or rename the .env.example file to .env. Open the newly created .env file and fill in the required values based on your environment.
+- Open your terminal and navigate to the root directory of your project.
+- Execute the following command in the terminal:
+
+```
+docker-compose up -d  
+```
+
+This command will fetch all the necessary libraries and dependencies, set up the environment, and start the services as defined in your docker-compose.yml file.
+
+Once the process is complete, the application should be up and running. Follow any additional setup or configuration instructions provided in the Readme file.
