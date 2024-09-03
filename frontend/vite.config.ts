@@ -7,12 +7,13 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'APP_PORT');
 
   return {
-    base: './',
+    base: '/',
     envPrefix: 'APP_',
     plugins: [react()],
     server: {
       port: parseInt(env.APP_PORT),
       strictPort: true,
+      historyApiFallback: true,
     },
     preview: {
       port: parseInt(env.APP_PORT),
