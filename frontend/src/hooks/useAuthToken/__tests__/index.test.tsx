@@ -2,8 +2,11 @@ import { useCookies } from 'react-cookie';
 import { vi } from 'vitest';
 import useAuthToken from '..';
 import { act, renderHook } from '@testing-library/react';
-import { COOKIE_ACCESS_TOKEN, COOKIE_AUTH_NAME } from '@/lib/react-cookie';
-import { COOKIE } from '@/config';
+import {
+  COOKIE_ACCESS_TOKEN,
+  COOKIE_AUTH_NAME,
+} from '../../../lib/react-cookie';
+import { COOKIE } from '../../../config';
 
 describe('useAuthToken', () => {
   const setCookie = vi.fn();
