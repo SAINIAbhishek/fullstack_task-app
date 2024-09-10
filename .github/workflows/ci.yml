@@ -25,20 +25,31 @@ jobs:
           node-version: "20.17.0" # Specify Node.js version, keep it same as in server/dockerfile
           cache: "npm" # Enable caching of 'node_modules' for faster builds
 
-      - name: Cache Node.js Modules
+      - name: Cache Server Node.js Modules
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.npm
-            ~/.cache
+          path: server/node_modules
           # Unique key to identify the cache
           # This key is based on the hash of the package-lock.json file.
           # If dependencies change, the hash will change and a new cache will be created.
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
           # Restore keys provide fallback cache options.
           # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-server-node-
+
+      - name: Cache Frontend Node.js Modules
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          # Unique key to identify the cache
+          # This key is based on the hash of the package-lock.json file.
+          # If dependencies change, the hash will change and a new cache will be created.
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+          # Restore keys provide fallback cache options.
+          # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
+          restore-keys: |
+            ${{ runner.os }}-frontend-node-
 
       # Install dependencies for the server
       - name: Install Dependencies
