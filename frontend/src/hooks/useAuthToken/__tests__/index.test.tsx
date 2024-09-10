@@ -26,6 +26,7 @@ describe('useAuthToken', () => {
     cookies = {};
     setCookie.mockClear();
     removeCookie.mockClear();
+    vi.resetAllMocks();
   });
 
   test('retrieves authToken and accessToken from cookies', () => {
@@ -33,6 +34,9 @@ describe('useAuthToken', () => {
     cookies[COOKIE_ACCESS_TOKEN] = 'access-token';
 
     const { result } = renderHook(() => useAuthToken());
+
+    console.log('Auth Token:', result.current.getAuthToken());
+    console.log('Access Token:', result.current.getAccessToken());
 
     expect(result.current.getAuthToken()).toBe('auth-token');
     expect(result.current.getAccessToken()).toBe('access-token');
