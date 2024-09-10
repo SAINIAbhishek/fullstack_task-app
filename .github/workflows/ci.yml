@@ -28,7 +28,7 @@ jobs:
       - name: Cache Server Node.js Modules
         uses: actions/cache@v3
         with:
-          path: server/node_modules
+          path: server/
           # Unique key to identify the cache
           # This key is based on the hash of the package-lock.json file.
           # If dependencies change, the hash will change and a new cache will be created.
@@ -41,7 +41,7 @@ jobs:
       - name: Cache Frontend Node.js Modules
         uses: actions/cache@v3
         with:
-          path: frontend/node_modules
+          path: frontend/
           # Unique key to identify the cache
           # This key is based on the hash of the package-lock.json file.
           # If dependencies change, the hash will change and a new cache will be created.
