@@ -27,14 +27,6 @@ jobs:
         with:
           node-version: "20.17.0" # Specify Node.js version
 
-      # Install dependencies for the server
-      - name: Install Server Dependencies
-        run: cd server && npm ci # Install exact versions from package-lock.json in server
-
-      # Install dependencies for the frontend
-      - name: Install Frontend Dependencies
-        run: cd frontend && npm ci # Install exact versions from package-lock.json in frontend
-  
   # Step 2: Cache Node.js Modules
   cache-dependencies:
     needs: setup-node
@@ -62,13 +54,12 @@ jobs:
           key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-frontend-node-
-        
+
   # Step 3: Install Dependencies
   install-dependencies:
     needs: cache-dependencies
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
@@ -99,39 +90,28 @@ jobs:
     needs: install-dependencies # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code again to ensure a fresh working directory
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       # Lint the server code
       - name: Lint Server Code
-        run: cd server && npm run eslint # Lint the server directory
+        run: cd server && npx eslint . --ext .js,.ts
 
       # Lint the frontend code
       - name: Lint Frontend Code
-        run: cd frontend && npm run lint # Lint the frontend directory
+        run: cd frontend && npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
 
   # Step 5: Formatting job
   format:
     needs: install-dependencies # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       # Format the frontend code with Prettier
       - name: Check Frontend Code Formatting with Prettier
-        run: cd frontend && npm run prettier:check
+        run: cd frontend && npx prettier --check .
 
   # Step 6: Security audit for both server and frontend
   security-audit:
     needs: install-dependencies # Run only after tests have passed
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       # Run npm audit for server
       - name: Run Server npm audit
         run: cd server && npm audit
@@ -145,10 +125,6 @@ jobs:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       # Run frontend unit tests
       - name: Run Frontend Unit Tests
         run: cd frontend && npm run test:coverage
@@ -160,10 +136,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Build Server for Production
         run: cd server && npm run build
         env:
