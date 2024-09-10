@@ -27,6 +27,16 @@ jobs:
         with:
           node-version: "20.17.0" # Specify Node.js version
 
+      # Install dependencies for the server
+      - name: Install Server Dependencies
+        run: npm ci
+        working-directory: ./server
+
+      # Install dependencies for the frontend
+      - name: Install Frontend Dependencies
+        run: npm ci
+        working-directory: ./frontend
+
   # Step 2: Cache Node.js Modules
   cache-dependencies:
     needs: setup-node
@@ -65,11 +75,13 @@ jobs:
 
       # Install dependencies for the server
       - name: Install Server Dependencies
-        run: cd server && npm ci # Install exact versions from package-lock.json in server
+        run: npm ci
+        working-directory: ./server
 
       # Install dependencies for the frontend
       - name: Install Frontend Dependencies
-        run: cd frontend && npm ci # Install exact versions from package-lock.json in frontend
+        run: npm ci
+        working-directory: ./frontend
 
       # Save Server Node.js Modules cache
       - name: Save Server Node.js Modules Cache
@@ -100,42 +112,58 @@ jobs:
 
       # Lint the server code
       - name: Lint Server Code
-        run: cd server && npx eslint . --ext .js,.ts
+        run: npx eslint . --ext .js,.ts
+        working-directory: ./server
 
       # Lint the frontend code
       - name: Lint Frontend Code
-        run: cd frontend && npx eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0
+        run: npx eslint . --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0
+        working-directory: ./frontend
 
   # Step 5: Formatting job
   format:
     needs: install-dependencies # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       # Format the frontend code with Prettier
       - name: Check Frontend Code Formatting with Prettier
-        run: cd frontend && npx prettier --check .
+        run: npx prettier --check .
+        working-directory: ./frontend
 
   # Step 6: Security audit for both server and frontend
   security-audit:
     needs: install-dependencies # Run only after tests have passed
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       # Run npm audit for server
       - name: Run Server npm audit
-        run: cd server && npm audit
+        run: npm audit
+        working-directory: ./server
 
       # Run npm audit for frontend
       - name: Run Frontend npm audit
-        run: cd frontend && npm audit
+        run: npm audit
+        working-directory: ./frontend
 
   # Step 7: Run unit tests
   test:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
     steps:
+      # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       # Run frontend unit tests
       - name: Run Frontend Unit Tests
-        run: cd frontend && npm run test:coverage
+        run: npm run test:coverage
+        working-directory: ./frontend
         env:
           CI: true # Ensures Vitest runs in Continuous Integration mode
 
@@ -144,13 +172,19 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Build Server for Production
-        run: cd server && npm run build
+        run: npm run build
+        working-directory: ./server
         env:
           NODE_ENV: production
 
       - name: Build Frontend for Production
-        run: cd frontend && npm run build:prod
+        run: npm run build:prod
+        working-directory: ./frontend
         env:
           NODE_ENV: production
 
