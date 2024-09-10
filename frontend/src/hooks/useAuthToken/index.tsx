@@ -53,6 +53,7 @@ const useAuthToken = () => {
       removeAccessToken,
       getAccessToken,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [authToken, accessToken],
   );
 };

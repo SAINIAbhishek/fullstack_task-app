@@ -1,16 +1,16 @@
-import { NODE_ENV } from "@/config";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import enLang from "./locales/en/en.json";
+import { NODE_ENV } from '@/config';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import enLang from './locales/en/en.json';
 
-const languages = ["en"];
-const DEFAULT_LANGUAGE = "en";
-const DEFAULT_FALLBACK_LANGUAGE = "en";
+const languages = ['en'];
+const DEFAULT_LANGUAGE = 'en';
+const DEFAULT_FALLBACK_LANGUAGE = 'en';
 
 // the translations
 const resources = {
   en: {
-    translation: enLang
+    translation: enLang,
   },
 };
 
@@ -26,8 +26,8 @@ i18n
     // if you're using a language detector, do not define the lng option
 
     interpolation: {
-      escapeValue: false // react already safes from xss
-    }
+      escapeValue: false, // react already safes from xss
+    },
   });
 
 export default i18n;

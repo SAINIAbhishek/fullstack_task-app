@@ -14,8 +14,8 @@ vi.mock('react-cookie', async (importOriginal) => {
       get() {
         return undefined;
       }
-      set() { }
-      remove() { }
+      set() {}
+      remove() {}
     },
   };
 });
