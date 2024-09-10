@@ -1,6 +1,6 @@
 {
   "name": "fullstack_tasks-frontend",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "type": "module",
   "scripts": {
@@ -15,9 +15,11 @@
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "prettier": "prettier . --write",
+    "prettier:check": "prettier . --check",
     "install:packages": "npm i",
     "upgrade:packages": "npm update --save-dev && npm update --save",
-    "fix:packages": "npm audit fix --force"
+    "audit": "npm audit --audit-level=high",
+    "audit:fix": "npm audit fix --force"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
