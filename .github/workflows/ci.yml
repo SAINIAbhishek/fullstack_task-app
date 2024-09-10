@@ -104,14 +104,22 @@ jobs:
           echo "Frontend Directory:"
           ls -R ./frontend
 
+      - name: Install Server Dependencies
+        run: npm ci
+        working-directory: ./server
+
+      - name: Install Frontend Dependencies
+        run: npm ci
+        working-directory: ./frontend
+
       # Lint the server code
       - name: Lint Server Code
-        run: npx eslint . --ext .ts
+        run: npm run eslint
         working-directory: ./server
 
       # Lint the frontend code
       - name: Lint Frontend Code
-        run: npx eslint . --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0
+        run: npm run lint
         working-directory: ./frontend
 
   # Step 5: Formatting job
