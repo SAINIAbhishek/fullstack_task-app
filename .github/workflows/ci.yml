@@ -209,13 +209,13 @@ jobs:
           NODE_ENV: production
 
       - name: Save Server Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: server-build
           path: server/build
 
       - name: Save Frontend Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: frontend/dist
