@@ -27,16 +27,6 @@ jobs:
         with:
           node-version: "20.17.0" # Specify Node.js version
 
-      # Install dependencies for the server
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
-
-      # Install dependencies for the frontend
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
   # Step 2: Cache Node.js Modules
   cache-dependencies:
     needs: setup-node
@@ -108,11 +98,15 @@ jobs:
 
       # List Directory Contents for Troubleshooting
       - name: List Directory Contents
-        run: ls -R
+        run: |
+          echo "Server Directory:"
+          ls -R ./server
+          echo "Frontend Directory:"
+          ls -R ./frontend
 
       # Lint the server code
       - name: Lint Server Code
-        run: npx eslint . --ext .js,.ts
+        run: npm run eslint
         working-directory: ./server
 
       # Lint the frontend code
