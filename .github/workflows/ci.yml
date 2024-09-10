@@ -25,10 +25,23 @@ jobs:
           node-version: "20.17.0" # Specify Node.js version, keep it same as in server/dockerfile
           cache: "npm" # Enable caching of 'node_modules' for faster builds
 
+      # Install dependencies for the server
+      - name: Install Server Dependencies
+        run: cd server && npm ci # Install exact versions from package-lock.json in server
+
+      # Install dependencies for the frontend
+      - name: Install Frontend Dependencies
+        run: cd frontend && npm ci # Install exact versions from package-lock.json in frontend
+
+  # Step 2: Cache dependencies
+  cache:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
       - name: Cache Server Node.js Modules
         uses: actions/cache@v3
         with:
-          path: server/
+          path: server/node_modules
           # Unique key to identify the cache
           # This key is based on the hash of the package-lock.json file.
           # If dependencies change, the hash will change and a new cache will be created.
@@ -41,7 +54,7 @@ jobs:
       - name: Cache Frontend Node.js Modules
         uses: actions/cache@v3
         with:
-          path: frontend/
+          path: frontend/node_modules
           # Unique key to identify the cache
           # This key is based on the hash of the package-lock.json file.
           # If dependencies change, the hash will change and a new cache will be created.
@@ -51,15 +64,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-frontend-node-
 
-      # Install dependencies for the server
-      - name: Install Dependencies
-        run: cd server && npm ci # Install exact versions from package-lock.json in server
-
-      # Install dependencies for the frontend
-      - name: Install Frontend Dependencies
-        run: cd frontend && npm ci # Install exact versions from package-lock.json in frontend
-
-  # Step 2: Lint the code
+  # Step 3: Lint the code
   lint:
     needs: install-dependencies # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
@@ -76,7 +81,7 @@ jobs:
       - name: Lint Frontend Code
         run: cd frontend && npm run lint # Lint the frontend directory
 
-  # Step 3: Formatting job
+  # Step 4: Formatting job
   format:
     needs: install-dependencies # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
@@ -88,7 +93,7 @@ jobs:
       - name: Check Frontend Code Formatting with Prettier
         run: cd frontend && npm run prettier:check
 
-  # Step 4: Security audit for both server and frontend
+  # Step 5: Security audit for both server and frontend
   security-audit:
     needs: install-dependencies # Run only after tests have passed
     runs-on: ubuntu-latest
@@ -105,7 +110,7 @@ jobs:
       - name: Run Frontend npm audit
         run: cd frontend && npm audit
 
-  # Step 5: Run unit tests
+  # Step 6: Run unit tests
   test:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
@@ -120,7 +125,7 @@ jobs:
         env:
           CI: true # Ensures Vitest runs in Continuous Integration mode
 
-  # Step 6: Build the project
+  # Step 7: Build the project
   build:
     needs: test
     runs-on: ubuntu-latest
