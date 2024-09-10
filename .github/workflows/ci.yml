@@ -90,6 +90,14 @@ jobs:
     needs: install-dependencies # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
     steps:
+      # Checkout the code again to ensure a fresh working directory
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # List Directory Contents for Troubleshooting
+      - name: List Directory Contents
+        run: ls -R
+
       # Lint the server code
       - name: Lint Server Code
         run: cd server && npx eslint . --ext .js,.ts
