@@ -10,20 +10,22 @@ on:
       - "**" # Matches every branch for pull request events
 
 jobs:
-  # Step 1: Install dependencies
-  install-dependencies:
+  # Step 1: Set up Node.js environment
+  setup-node:
     runs-on: ubuntu-latest
+    outputs:
+      node-version: ${{ steps.setup-node.outputs.node-version }}
     steps:
       # Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Set up Node.js environment with a specific version and cache npm modules
+      # Set up Node.js environment with a specific version
       - name: Setup Node.js
+        id: setup-node
         uses: actions/setup-node@v3
         with:
-          node-version: "20.17.0" # Specify Node.js version, keep it same as in server/dockerfile
-          cache: "npm" # Enable caching of 'node_modules' for faster builds
+          node-version: "20.17.0" # Specify Node.js version
 
       # Install dependencies for the server
       - name: Install Server Dependencies
@@ -32,13 +34,14 @@ jobs:
       # Install dependencies for the frontend
       - name: Install Frontend Dependencies
         run: cd frontend && npm ci # Install exact versions from package-lock.json in frontend
-
-  # Step 2: Cache dependencies
-  cache:
-    needs: install-dependencies
+  
+  # Step 2: Cache Node.js Modules
+  cache-dependencies:
+    needs: setup-node
     runs-on: ubuntu-latest
     steps:
-      - name: Cache Server Node.js Modules
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
         uses: actions/cache@v3
         with:
           path: server/node_modules
@@ -51,20 +54,47 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-server-node-
 
-      - name: Cache Frontend Node.js Modules
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
         uses: actions/cache@v3
         with:
           path: frontend/node_modules
-          # Unique key to identify the cache
-          # This key is based on the hash of the package-lock.json file.
-          # If dependencies change, the hash will change and a new cache will be created.
           key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-          # Restore keys provide fallback cache options.
-          # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
           restore-keys: |
             ${{ runner.os }}-frontend-node-
+        
+  # Step 3: Install Dependencies
+  install-dependencies:
+    needs: cache-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  # Step 3: Lint the code
+      # Install dependencies for the server
+      - name: Install Server Dependencies
+        run: cd server && npm ci # Install exact versions from package-lock.json in server
+
+      # Install dependencies for the frontend
+      - name: Install Frontend Dependencies
+        run: cd frontend && npm ci # Install exact versions from package-lock.json in frontend
+
+      # Save Server Node.js Modules cache
+      - name: Save Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+
+      # Save Frontend Node.js Modules cache
+      - name: Save Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+
+  # Step 4: Lint the code
   lint:
     needs: install-dependencies # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
@@ -81,7 +111,7 @@ jobs:
       - name: Lint Frontend Code
         run: cd frontend && npm run lint # Lint the frontend directory
 
-  # Step 4: Formatting job
+  # Step 5: Formatting job
   format:
     needs: install-dependencies # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
@@ -93,7 +123,7 @@ jobs:
       - name: Check Frontend Code Formatting with Prettier
         run: cd frontend && npm run prettier:check
 
-  # Step 5: Security audit for both server and frontend
+  # Step 6: Security audit for both server and frontend
   security-audit:
     needs: install-dependencies # Run only after tests have passed
     runs-on: ubuntu-latest
@@ -110,7 +140,7 @@ jobs:
       - name: Run Frontend npm audit
         run: cd frontend && npm audit
 
-  # Step 6: Run unit tests
+  # Step 7: Run unit tests
   test:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
@@ -125,7 +155,7 @@ jobs:
         env:
           CI: true # Ensures Vitest runs in Continuous Integration mode
 
-  # Step 7: Build the project
+  # Step 8: Build the project
   build:
     needs: test
     runs-on: ubuntu-latest
