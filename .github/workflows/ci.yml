@@ -13,16 +13,11 @@ jobs:
   # Step 1: Set up Node.js environment
   setup-node:
     runs-on: ubuntu-latest
-    outputs:
-      node-version: ${{ steps.setup-node.outputs.node-version }}
     steps:
-      # Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Set up Node.js environment with a specific version
       - name: Setup Node.js
-        id: setup-node
         uses: actions/setup-node@v3
         with:
           node-version: "20.17.0" # Specify Node.js version
@@ -32,21 +27,14 @@ jobs:
     needs: setup-node
     runs-on: ubuntu-latest
     steps:
-      # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
         uses: actions/cache@v3
         with:
           path: server/node_modules
-          # Unique key to identify the cache
-          # This key is based on the hash of the package-lock.json file.
-          # If dependencies change, the hash will change and a new cache will be created.
           key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
-          # Restore keys provide fallback cache options.
-          # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
           restore-keys: |
             ${{ runner.os }}-server-node-
 
-      # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
         uses: actions/cache@v3
         with:
@@ -63,24 +51,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Install dependencies for the server
       - name: Install Server Dependencies
         run: npm ci
         working-directory: ./server
 
-      # Install dependencies for the frontend
       - name: Install Frontend Dependencies
         run: npm ci
         working-directory: ./frontend
 
-      # Save Server Node.js Modules cache
       - name: Save Server Node.js Modules Cache
         uses: actions/cache@v3
         with:
           path: server/node_modules
           key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
 
-      # Save Frontend Node.js Modules cache
       - name: Save Frontend Node.js Modules Cache
         uses: actions/cache@v3
         with:
@@ -89,71 +73,36 @@ jobs:
 
   # Step 4: Lint the code
   lint:
-    needs: install-dependencies # Wait for dependencies to be installed before linting
+    needs: install-dependencies
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code again to ensure a fresh working directory
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
-
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
-      # Lint the server code
       - name: Lint Server Code
         run: npm run eslint
         working-directory: ./server
 
-      # Lint the frontend code
       - name: Lint Frontend Code
         run: npm run lint
         working-directory: ./frontend
 
   # Step 5: Formatting job
   format:
-    needs: install-dependencies # Dependencies must be installed before formatting
+    needs: install-dependencies
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
-      # Format the frontend code with Prettier
       - name: Check Frontend Code Formatting with Prettier
         run: npm run prettier
         working-directory: ./frontend
 
   # Step 6: Security audit for both server and frontend
   security-audit:
-    needs: install-dependencies # Run only after tests have passed
+    needs: install-dependencies
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
-
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
-      # Run npm audit for server
       - name: Run Server npm audit
         run: npm run audit
         working-directory: ./server
         continue-on-error: true
 
-      # Run npm audit for frontend
       - name: Run Frontend npm audit
         run: npm run audit
         working-directory: ./frontend
@@ -164,15 +113,6 @@ jobs:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
-      # Run frontend unit tests
       - name: Run Frontend Unit Tests
         run: npm run test:coverage
         working-directory: ./frontend
@@ -184,23 +124,11 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
-
       - name: Build Server for Production
         run: npm run build
         working-directory: ./server
         env:
           NODE_ENV: production
-
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
 
       - name: Build Frontend for Production
         run: npm run build:prod
