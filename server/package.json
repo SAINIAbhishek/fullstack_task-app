@@ -1,6 +1,6 @@
 {
   "name": "fullstack_tasks-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "clean": "rimraf ./build",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "eslint": "eslint . --ext .js,.ts",
+    "eslint": "npx eslint . --ext .ts",
     "test": "jest --forceExit --detectOpenHandles --coverage --verbose",
     "install:packages": "npm i",
     "upgrade:packages": "npm update --save-dev && npm update --save",
