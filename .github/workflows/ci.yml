@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20.17.0-slim" # Specify Node.js version, keep it same as in server/dockerfile
+          node-version: "20.17.0" # Specify Node.js version, keep it same as in server/dockerfile
           cache: "npm" # Enable caching of 'node_modules' for faster builds
 
       - name: Cache Node.js Modules
