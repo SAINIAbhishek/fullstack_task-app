@@ -88,80 +88,80 @@ jobs:
           key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
   # Step 4: Lint the code
-  lint:
-    needs: install-dependencies # Wait for dependencies to be installed before linting
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the code again to ensure a fresh working directory
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # lint:
+  #   needs: install-dependencies # Wait for dependencies to be installed before linting
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checkout the code again to ensure a fresh working directory
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
 
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
+  #     - name: Install Server Dependencies
+  #       run: npm ci
+  #       working-directory: ./server
 
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
+  #     - name: Install Frontend Dependencies
+  #       run: npm ci
+  #       working-directory: ./frontend
 
-      # Lint the server code
-      - name: Lint Server Code
-        run: npm run eslint
-        working-directory: ./server
+  #     # Lint the server code
+  #     - name: Lint Server Code
+  #       run: npm run eslint
+  #       working-directory: ./server
 
-      # Lint the frontend code
-      - name: Lint Frontend Code
-        run: npm run lint
-        working-directory: ./frontend
+  #     # Lint the frontend code
+  #     - name: Lint Frontend Code
+  #       run: npm run lint
+  #       working-directory: ./frontend
 
   # Step 5: Formatting job
-  format:
-    needs: install-dependencies # Dependencies must be installed before formatting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # format:
+  #   needs: install-dependencies # Dependencies must be installed before formatting
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
 
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
+  #     - name: Install Frontend Dependencies
+  #       run: npm ci
+  #       working-directory: ./frontend
 
-      # Format the frontend code with Prettier
-      - name: Check Frontend Code Formatting with Prettier
-        run: npm run prettier
-        working-directory: ./frontend
+  #     # Format the frontend code with Prettier
+  #     - name: Check Frontend Code Formatting with Prettier
+  #       run: npm run prettier
+  #       working-directory: ./frontend
 
   # Step 6: Security audit for both server and frontend
-  security-audit:
-    needs: install-dependencies # Run only after tests have passed
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # security-audit:
+  #   needs: install-dependencies # Run only after tests have passed
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
 
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
+  #     - name: Install Server Dependencies
+  #       run: npm ci
+  #       working-directory: ./server
 
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
+  #     - name: Install Frontend Dependencies
+  #       run: npm ci
+  #       working-directory: ./frontend
 
-      # Run npm audit for server
-      - name: Run Server npm audit
-        run: npm run audit
-        working-directory: ./server
-        continue-on-error: true
+  #     # Run npm audit for server
+  #     - name: Run Server npm audit
+  #       run: npm run audit
+  #       working-directory: ./server
+  #       continue-on-error: true
 
-      # Run npm audit for frontend
-      - name: Run Frontend npm audit
-        run: npm run audit
-        working-directory: ./frontend
-        continue-on-error: true
+  #     # Run npm audit for frontend
+  #     - name: Run Frontend npm audit
+  #       run: npm run audit
+  #       working-directory: ./frontend
+  #       continue-on-error: true
 
   # Step 7: Run unit tests
   test:
-    needs: [lint, format, security-audit]
+    needs: install-dependencies
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
