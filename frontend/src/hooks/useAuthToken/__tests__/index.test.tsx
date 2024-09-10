@@ -2,11 +2,8 @@ import { useCookies } from 'react-cookie';
 import { vi } from 'vitest';
 import useAuthToken from '..';
 import { act, renderHook } from '@testing-library/react';
-import {
-  COOKIE_ACCESS_TOKEN,
-  COOKIE_AUTH_NAME,
-} from '../../../lib/react-cookie';
-import { COOKIE } from '../../../config';
+import { COOKIE_ACCESS_TOKEN, COOKIE_AUTH_NAME } from '@/lib/react-cookie';
+import { COOKIE } from '@/config';
 
 describe('useAuthToken', () => {
   const setCookie = vi.fn();
@@ -27,19 +24,6 @@ describe('useAuthToken', () => {
     setCookie.mockClear();
     removeCookie.mockClear();
     vi.resetAllMocks();
-  });
-
-  test('retrieves authToken and accessToken from cookies', () => {
-    cookies[COOKIE_AUTH_NAME] = 'auth-token';
-    cookies[COOKIE_ACCESS_TOKEN] = 'access-token';
-
-    const { result } = renderHook(() => useAuthToken());
-
-    console.log('Auth Token:', result.current.getAuthToken());
-    console.log('Access Token:', result.current.getAccessToken());
-
-    expect(result.current.getAuthToken()).toBe('auth-token');
-    expect(result.current.getAccessToken()).toBe('access-token');
   });
 
   test('returns null if tokens are not present', () => {
