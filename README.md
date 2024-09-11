@@ -146,3 +146,23 @@ docker-compose up -d
 ```
 
 This command will fetch all necessary libraries and dependencies, set up the environment, and start the services as defined in your docker-compose.yml file. Follow any additional setup or configuration instructions provided in the README file.
+
+## GitHub Actions
+
+The project uses GitHub Actions for Continuous Integration (CI). The CI pipeline is defined in the `.github/workflows/ci.yml` file. It ensures that the code is built, tested, and validated automatically on each push and pull request.
+
+### CI Workflow
+
+The workflow performs the following steps:
+
+**Checkout Code**: Retrieves the latest code from the repository.
+**Set Up Node.js**: Installs the specified Node.js version.
+**Install Dependencies**: Installs all project dependencies.
+**Run Tests**: Executes tests using Vitest.
+**Build Application**: Builds the frontend and backend components (if applicable).
+
+### Configuration
+
+You can view and manage the CI configuration in the `.github/workflows/ci.yml` file. The pipeline is configured to stop and exit if any step fails, ensuring that issues are addressed promptly.
+
+For more details, visit the [GitHub Actions page](https://github.com/SAINIAbhishek/fullstack_task-app/actions)
