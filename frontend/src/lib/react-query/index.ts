@@ -1,10 +1,10 @@
-import { DefaultOptions, QueryCache, QueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { DefaultOptions, QueryCache, QueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 const queryConfig: DefaultOptions = {
   queries: {
     refetchOnWindowFocus: false,
-    retry: false
+    retry: false,
   },
 };
 
@@ -16,5 +16,5 @@ const queryCacheConfig = new QueryCache({
 
 export const queryClient = new QueryClient({
   defaultOptions: queryConfig,
-  queryCache: queryCacheConfig
+  queryCache: queryCacheConfig,
 });

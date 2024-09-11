@@ -1,20 +1,20 @@
-# FullStack Task Application
+# FullStack Task Application [![Fullstack Tasks Application Pipeline](https://github.com/SAINIAbhishek/fullstack_task-app/actions/workflows/ci.yml/badge.svg)](https://github.com/SAINIAbhishek/fullstack_task-app/actions/workflows/ci.yml)
 
-The purpose of this project is to demonstrate a fully functional FullStack Task Application keeping security in mind. The client-side, or frontend component, is developed using React.js while the server-side, or backend component, is built using Node.js.
-
-<hr />
+The purpose of this project is to demonstrate a fully functional FullStack Task Application with a focus on security. The client-side, or frontend component, is developed using React.js, while the server-side, or backend component, is built using Node.js.
 
 ![Signin page](signin.png)
 ![Register page](register.png)
 ![Home page](home.png)
 
+---
+
 ## Frontend (React + TypeScript + Vite + Tailwind CSS)
 
-The project's organization aligns with established industry standards, employing a feature-based directory structure and maintaining a uniform naming convention.
+The project's organization follows industry standards, employing a feature-based directory structure and maintaining a consistent naming convention.
 
-Additionally, the application employs the Context API and Hooks to effectively manage its state.
+The application uses the Context API and Hooks for effective state management.
 
-## Stacks:
+### Stacks
 
 - TypeScript
 - Formik
@@ -28,56 +28,52 @@ Additionally, the application employs the Context API and Hooks to effectively m
 - Prettier
 - React i18next
 - Testing with Vitest & React Testing Library
-- Docker image (<a href="https://hub.docker.com/r/sainiabhishek/fullstack_task-frontend" target="_blank">Frontend Image</a>)
+- Docker image ([Frontend Image](https://hub.docker.com/r/sainiabhishek/fullstack_task-frontend))
 
-<hr>
+### How to Setup the Frontend
 
-### How to setup the Frontend part
+- Clone the project and navigate to the frontend directory in your terminal.
+- Run the following command to install all necessary dependencies:
 
-- Clone the project and, in the terminal, navigate to the frontend directory. Then, run the following command to install all the dependencies needed for the project
-
-```
+```bash
 npm run install:packages
 ```
 
-- duplicate the .env.example file and rename the copy to .env file. Modify the variables as needed.
+- Duplicate the `.env.example` file and rename the copy to `.env`. Modify the variables as needed.
 
-### How to run the project
+### How to Run the Frontend
 
-- After installing the dependencies, you can go to the package.json file and click on the play button next to the 'dev' script under the scripts object.
-- Alternatively, in the terminal, you can execute the following command:
+- After installing the dependencies, you can either:
+  - Go to the `package.json` file and click on the play button next to the `dev` script under the "scripts" section.
+  - Or, run the following command in your terminal:
 
-```
+```bash
 npm run dev
 ```
 
-<hr />
+---
 
 ## Backend (Node + Express + Winston + TypeScript + JWT)
 
-A tasks project backend api. It is design while keeping the different environments in the mind.
+The backend API for the tasks project is designed with various environments in mind. The project structure adheres to best practices and conventions for Node.js applications.
 
-The project structure follows the best practices and conventions of a Node.js application.
+### Features
 
-The project has directories based on the functionality and type while justifying the directory name.
+- **TypeScript:** Enhances development with static typing, leading to more reliable and maintainable code.
+- **Request Limiter:** Prevents abuse or overload of routes by limiting request rates, enhancing security.
+- **Centralized Error Handling:** Streamlines error management and maintains a consistent user experience.
+- **API Versioning:** Organizes routes and ensures compatibility, preventing breaking changes for existing clients.
+- **Role-Based Access Control:** Provides fine-grained access management based on user roles.
+- **JWT Authentication:** Secures user authentication and authorization using JSON Web Tokens.
+- **Password Reset via Email:** Enhances account security and recovery options through email notifications.
+- **MongoDB with Mongoose:** Utilizes MongoDB for its speed and scalability, with Mongoose simplifying database interactions.
+- **ESLint:** Enforces coding standards and best practices for improved code quality.
+- **Prettier:** Formats code consistently according to predefined rules.
+- **Cookies for Tokens:** Uses cookies to store tokens securely, improving authentication and session management.
+- **Logging:** Utilizes Winston for robust and flexible logging, aiding in debugging and monitoring.
+- **Middleware for Exception Handling:** Improves error management within async Express routes.
 
-Following are the API features of this project:
-
-- **TypeScript:** This backend is written in TypeScript, enhancing the development experience by adding static typing to JavaScript. This results in more reliable and maintainable codebases, helps catch potential errors during development, and provides better code completion and tooling support.
-- **Request Limiter**: This feature prevents abuse or overload of the login route, forgot password route by limiting the number of requests, enhancing security and preventing potential attacks.
-- **Centralized Error Handling:** Centralized error handling and response management streamline the codebase, making it easier to maintain and ensuring a consistent user experience.
-- **API Versioning:** Implementing a versioning system for routes helps with organization and ensures compatibility when evolving the API, preventing breaking changes for existing clients.
-- **Role-Based Access Control:** Role-based access control enhances security by granting or restricting permissions based on user roles, allowing fine-grained access management.
-- **JWT Authentication:** JSON Web Tokens (JWT) are used for user authentication and authorization, adding a layer of security to the application by securely transmitting user data.
-- **Password Reset via Email:** Functionality to send email notifications for password resets enhances user account security and recovery options.
-- **MongoDB with Mongoose:** MongoDB is a NoSQL database that is fast and scalable, making it suitable for modern web applications. Mongoose is an ODM (Object-Document Mapper) for MongoDB that simplifies database interactions.
-- **ESLint:** ESLint enforces coding standards and best practices, improving code quality and maintaining consistency while catching potential issues early in development.
-- **Prettier:** Prettier automatically formats code according to predefined rules, ensuring a consistent code style throughout the project.
-- **Cookies for Tokens**: Using cookies to store tokens information enhances user authentication and session management, providing a secure way to maintain user sessions.
-- **Logging:** Winston is used for logging purposes, providing a robust and flexible logging solution that helps with debugging and monitoring the application.
-- **Middleware for Exception Handling:** Middleware for handling exceptions within async Express routes and forwarding them to Express error handlers improves error management, ensuring the smooth operation of the application.
-
-## API Stacks:
+### API Stacks
 
 - Node.js
 - Express.js
@@ -91,60 +87,82 @@ Following are the API features of this project:
 - Rate Limiter
 - Roles
 - Nodemailer
-- Docker image (<a href="https://hub.docker.com/r/sainiabhishek/fullstack_task-api" target="_blank">API Image</a>)
+- Docker image ([API Image](https://hub.docker.com/r/sainiabhishek/fullstack_task-api))
 
-## Setup MAILTRAP
+### Setup MAILTRAP
 
-To test the email functionality I've used the Mailtrap service: <a href="https://mailtrap.io/" target="_blank">Mailtrap</a>.
-You can also create your credentials and place them in the .env file under the **Mailtrap(Email service) Info**.
+To test email functionality, use Mailtrap: [Mailtrap](https://mailtrap.io/). Create your credentials and place them in the `.env` file under **Mailtrap (Email Service) Info**.
 
-## How to setup the backend part
+### How to Setup the Backend
 
-- Clone the project and in the terminal of the server directory run the below cmd to install all the dependencies needed for the project or click on the play button next to it.
+- Clone the project and navigate to the server directory in your terminal.
+- Run the following command to install all necessary dependencies:
 
-```
+```bash
 npm run install:packages
 ```
 
-- Duplicate the file **.env.example** of a server and save a copy as **.env** in the server directory and change the variables according to your needs.
+- Duplicate the `.env.example` file and save the copy as `.env` in the server directory. Modify the variables as needed.
 
-## How to run the backend part
+### How to Run the Backend
 
-After installing the dependencies either you can go to the package.json file of the server and click on the play button on script 'watch' under the scripts object or in the terminal you can write the below cmd or click on the play button next to it.
+- After installing the dependencies, you can either:
+  - Go to the `package.json` file of the server and click on the play button next to the `watch` script under the "scripts" section.
+  - Or, run the following command in your terminal:
 
-```
+```bash
 npm run watch
 ```
 
-## Access the API at
+### Access the API
 
-```
+```bash
 http://localhost:3001/api/v1/
 ```
 
-### Secrets
+### Generating Secrets
 
-To generate a secret token and refresh to add in the .env file of the server you can open the terminal and run the below commands
+- To generate a secret token and refresh token for the `.env` file, open your terminal and run:
 
-```
+```bash
 node
 ```
 
-```
+- Then, in the Node.js REPL:
+
+```bash
 require('crypto').randomBytes(64).toString('hex')
 ```
 
-## How to run the project using Docker compose
+### Running the Project with Docker Compose
 
-- Ensure that Docker is installed on your computer. 
-- Navigate to each directory where a .env.example file is present. Copy or rename the .env.example file to .env. Open the newly created .env file and fill in the required values based on your environment.
+- Ensure Docker is installed on your computer.
+- Navigate to each directory where a `.env.example` file is present. Copy or rename the `.env.example` file to `.env`, and fill in the required values based on your environment.
 - Open your terminal and navigate to the root directory of your project.
-- Execute the following command in the terminal:
+- Run the following command:
 
+```bash
+docker-compose up -d
 ```
-docker-compose up -d  
-```
 
-This command will fetch all the necessary libraries and dependencies, set up the environment, and start the services as defined in your docker-compose.yml file.
+This command will fetch all necessary libraries and dependencies, set up the environment, and start the services as defined in your docker-compose.yml file. Follow any additional setup or configuration instructions provided in the README file.
 
-Once the process is complete, the application should be up and running. Follow any additional setup or configuration instructions provided in the Readme file.
+## GitHub Actions
+
+The project uses GitHub Actions for Continuous Integration (CI). The CI pipeline is defined in the `.github/workflows/ci.yml` file. It ensures that the code is built, tested, and validated automatically on each push and pull request.
+
+### CI Workflow
+
+The workflow performs the following steps:
+
+**Checkout Code**: Retrieves the latest code from the repository.
+**Set Up Node.js**: Installs the specified Node.js version.
+**Install Dependencies**: Installs all project dependencies.
+**Run Tests**: Executes tests using Vitest.
+**Build Application**: Builds the frontend and backend components (if applicable).
+
+### Configuration
+
+You can view and manage the CI configuration in the `.github/workflows/ci.yml` file. The pipeline is configured to stop and exit if any step fails, ensuring that issues are addressed promptly.
+
+For more details, visit the [GitHub Actions page](https://github.com/SAINIAbhishek/fullstack_task-app/actions)

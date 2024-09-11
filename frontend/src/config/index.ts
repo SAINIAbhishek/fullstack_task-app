@@ -13,9 +13,7 @@ export const LOGGING = import.meta.env.APP_LOGGING;
 
 export const COOKIE = {
   auth: import.meta.env.APP_COOKIE_REFRESH_TOKEN || '',
-  maxAge: parseInt(
-    import.meta.env.APP_COOKIE_REFRESH_TOKEN_MAX_AGE_SEC || '0',
-  ),
+  maxAge: parseInt(import.meta.env.APP_COOKIE_REFRESH_TOKEN_MAX_AGE_SEC || '0'),
   accessToken: import.meta.env.APP_COOKIE_ACCESS_TOKEN || '',
   accessTokenMaxAge: parseInt(
     import.meta.env.APP_COOKIE_ACCESS_TOKEN_MAX_AGE_SEC || '0',

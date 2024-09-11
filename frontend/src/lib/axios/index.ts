@@ -1,8 +1,8 @@
 import axios, { Method } from 'axios';
-import { API_BASE_URL, LOGGING, NODE_ENV } from '@/config';
+import { API_BASE_URL, LOGGING } from '@/config';
 import { getAccessToken } from '@/lib/react-cookie';
 
-const isLogEnabled = NODE_ENV !== 'production' && LOGGING == 'true';
+const isLogEnabled = LOGGING === 'true';
 
 const instance = axios.create({
   baseURL: API_BASE_URL,
