@@ -61,6 +61,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: read
+        run: echo "${{ vars.MONGO_DB_HOST }}"
+
       # Install dependencies for the server
       - name: Install Server Dependencies
         run: npm ci
@@ -195,7 +198,7 @@ jobs:
 
   # Step: Build the project
   build:
-    needs: install-dependencies
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -226,6 +229,8 @@ jobs:
         working-directory: ./frontend
         env:
           NODE_ENV: production
+          MONGO_URI: ${{ vars.MONGO_URI }}
+          MONGO_DB_HOST: ${{ vars.MONGO_DB_HOST }}
 
       - name: Save Server Build Artifacts
         uses: actions/upload-artifact@v4
