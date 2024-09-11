@@ -10,216 +10,231 @@ on:
       - "**" # Matches every branch for pull request events
 
 jobs:
-  # Step 1: Set up Node.js environment
+  # Step: Set up Node.js environment
   setup-node:
     runs-on: ubuntu-latest
-    # outputs:
-    #   node-version: ${{ steps.setup-node.outputs.node-version }}
+    outputs:
+      node-version: ${{ steps.setup-node.outputs.node-version }}
     steps:
       # Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: echo
-        run: echo "${{ vars.frontend.APP_API_BASE_URL  }}"
-
       # Set up Node.js environment with a specific version
-      # - name: Setup Node.js
-      #   id: setup-node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "20.17.0" # Specify Node.js version
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.17.0" # Specify Node.js version
 
-  # Step 2: Cache Node.js Modules
-  # cache-dependencies:
-  #   needs: setup-node
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Restore Server Node.js Modules cache
-  #     - name: Restore Server Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: server/node_modules
-  #         # Unique key to identify the cache
-  #         # This key is based on the hash of the package-lock.json file.
-  #         # If dependencies change, the hash will change and a new cache will be created.
-  #         key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
-  #         # Restore keys provide fallback cache options.
-  #         # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
-  #         restore-keys: |
-  #           ${{ runner.os }}-server-node-
+  # Step: Cache Node.js Modules
+  cache-dependencies:
+    needs: setup-node
+    runs-on: ubuntu-latest
+    steps:
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          # Unique key to identify the cache
+          # This key is based on the hash of the package-lock.json file.
+          # If dependencies change, the hash will change and a new cache will be created.
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+          # Restore keys provide fallback cache options.
+          # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
+          restore-keys: ${{ runner.os }}-server-node-
 
-  #     # Restore Frontend Node.js Modules cache
-  #     - name: Restore Frontend Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: frontend/node_modules
-  #         key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-frontend-node-
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-frontend-node-
 
-  # Step 3: Install Dependencies
-  # install-dependencies:
-  #   needs: cache-dependencies
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Install Dependencies
+  install-dependencies:
+    needs: cache-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     # Install dependencies for the server
-  #     - name: Install Server Dependencies
-  #       run: npm ci
-  #       working-directory: ./server
+      # Install dependencies for the server
+      - name: Install Server Dependencies
+        run: npm ci
+        working-directory: ./server
 
-  #     # Install dependencies for the frontend
-  #     - name: Install Frontend Dependencies
-  #       run: npm ci
-  #       working-directory: ./frontend
+      # Install dependencies for the frontend
+      - name: Install Frontend Dependencies
+        run: npm ci
+        working-directory: ./frontend
 
-  #     # Save Server Node.js Modules cache
-  #     - name: Save Server Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: server/node_modules
-  #         key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+      # Save Server Node.js Modules cache
+      - name: Save Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
 
-  #     # Save Frontend Node.js Modules cache
-  #     - name: Save Frontend Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: frontend/node_modules
-  #         key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+      # Save Frontend Node.js Modules cache
+      - name: Save Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
-  # Step 4: Lint the code
-  # lint:
-  #   needs: install-dependencies # Wait for dependencies to be installed before linting
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checkout the code again to ensure a fresh working directory
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Lint the code
+  lint:
+    needs: install-dependencies # Wait for dependencies to be installed before linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Install Server Dependencies
-  #       run: npm ci
-  #       working-directory: ./server
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
 
-  #     - name: Install Frontend Dependencies
-  #       run: npm ci
-  #       working-directory: ./frontend
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     # Lint the server code
-  #     - name: Lint Server Code
-  #       run: npm run eslint
-  #       working-directory: ./server
+      # Lint the server code
+      - name: Lint Server Code
+        run: npm run eslint
+        working-directory: ./server
 
-  #     # Lint the frontend code
-  #     - name: Lint Frontend Code
-  #       run: npm run lint
-  #       working-directory: ./frontend
+      # Lint the frontend code
+      - name: Lint Frontend Code
+        run: npm run lint
+        working-directory: ./frontend
 
-  # # Step 5: Formatting job
-  # format:
-  #   needs: install-dependencies # Dependencies must be installed before formatting
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Formatting job
+  format:
+    needs: install-dependencies # Dependencies must be installed before formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Install Frontend Dependencies
-  #       run: npm ci
-  #       working-directory: ./frontend
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     # Format the frontend code with Prettier
-  #     - name: Check Frontend Code Formatting with Prettier
-  #       run: npm run prettier
-  #       working-directory: ./frontend
+      # Format the frontend code with Prettier
+      - name: Check Frontend Code Formatting with Prettier
+        run: npm run prettier
+        working-directory: ./frontend
 
-  # # Step 6: Security audit for both server and frontend
-  # security-audit:
-  #   needs: install-dependencies # Run only after tests have passed
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Security audit for both server and frontend
+  security-audit:
+    needs: install-dependencies # Run only after tests have passed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Install Server Dependencies
-  #       run: npm ci
-  #       working-directory: ./server
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
 
-  #     - name: Install Frontend Dependencies
-  #       run: npm ci
-  #       working-directory: ./frontend
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     # Run npm audit for server
-  #     - name: Run Server npm audit
-  #       run: npm run audit
-  #       working-directory: ./server
-  #       continue-on-error: true
+      # Run npm audit for server
+      - name: Run Server npm audit
+        run: npm run audit
+        working-directory: ./server
+        continue-on-error: true
 
-  #     # Run npm audit for frontend
-  #     - name: Run Frontend npm audit
-  #       run: npm run audit
-  #       working-directory: ./frontend
-  #       continue-on-error: true
+      # Run npm audit for frontend
+      - name: Run Frontend npm audit
+        run: npm run audit
+        working-directory: ./frontend
+        continue-on-error: true
 
-  # # Step 7: Run unit tests
-  # test:
-  #   needs: [lint, format, security-audit]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checkout the code
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Run unit tests
+  test:
+    needs: [lint, format, security-audit]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Install Frontend Dependencies
-  #       run: npm ci
-  #       working-directory: ./frontend
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     # Run frontend unit tests
-  #     - name: Run Frontend Unit Tests
-  #       run: npm run test:coverage
-  #       working-directory: ./frontend
-  #       env:
-  #         CI: true # Ensures Vitest runs in Continuous Integration mode
+      # Run frontend unit tests
+      - name: Run Frontend Unit Tests
+        run: npm run test:coverage
+        working-directory: ./frontend
+        env:
+          CI: true # Ensures Vitest runs in Continuous Integration mode
 
-  # Step 8: Build the project
-  # build:
-  #   needs: install-dependencies
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # Checkout the code
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Build the project
+  build:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Install Server Dependencies
-  #       run: npm ci
-  #       working-directory: ./server
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
 
-  #     - name: Build Server for Production
-  #       run: npm run build
-  #       working-directory: ./server
-  #       env:
-  #         NODE_ENV: production
+      - name: Build Server for Production
+        run: npm run build
+        working-directory: ./server
+        env:
+          NODE_ENV: production
 
-  #     - name: Install Frontend Dependencies
-  #       run: npm ci
-  #       working-directory: ./frontend
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     - name: Build Frontend for Production
-  #       run: npm run build:prod
-  #       working-directory: ./frontend
-  #       env:
-  #         APP_API_BASE_URL: ${{ vars.frontend.APP_API_BASE_URL }}
-  #         LOGGING: ${{ vars.frontend.LOGGING }}
+      - name: Build Frontend for Production
+        run: npm run build:prod
+        working-directory: ./frontend
+        env:
+          NODE_ENV: production
 
-  #     - name: Save Server Build Artifacts
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: server-build
-  #         path: server/build
+      - name: Save Server Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-build
+          path: server/build
 
-  #     - name: Save Frontend Build Artifacts
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: frontend-build
-  #         path: frontend/dist
+      - name: Save Frontend Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist
