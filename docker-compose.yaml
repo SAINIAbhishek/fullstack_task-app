@@ -49,7 +49,7 @@ services:
       args:
         NODE_ENV: production
     # This is the name we’ll use to refer to this image in Docker commands or to push to a Docker registry.
-    image: sainiabhishek/fullstack_task-api:1.1.0
+    image: sainiabhishek/fullstack_task-api:1.1.1
     container_name: api
     env_file: ./server/.env
     restart: always
@@ -80,7 +80,7 @@ services:
       args:
         NODE_ENV: production
     # This is the name we’ll use to refer to this image in Docker commands or to push to a Docker registry.
-    image: sainiabhishek/fullstack_task-frontend:1.1.1
+    image: sainiabhishek/fullstack_task-frontend:1.2.0
     container_name: frontend
     restart: always
     environment:
