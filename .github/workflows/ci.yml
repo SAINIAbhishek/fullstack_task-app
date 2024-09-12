@@ -10,84 +10,29 @@ on:
       - "**" # Matches every branch for pull request events
 
 jobs:
-  # Step: Set up Node.js environment
-  setup-node:
-    runs-on: ubuntu-latest
-    outputs:
-      node-version: ${{ steps.setup-node.outputs.node-version }}
-    steps:
-      # Checkout the code from the repository
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # Step: Cache and Install Frontend Dependencies
+  frontend:
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "frontend/package-lock.json"
+      cache-path: "frontend/node_modules"
+      cache-key-prefix: "frontend"
+      working-directory: "frontend"
 
-      # Set up Node.js environment with a specific version
-      - name: Setup Node.js
-        id: setup-node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20.17.0" # Specify Node.js version
-
-  # Step: Cache Node.js Modules
-  cache-dependencies:
-    needs: setup-node
-    runs-on: ubuntu-latest
-    steps:
-      # Restore Server Node.js Modules cache
-      - name: Restore Server Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: server/node_modules
-          # Unique key to identify the cache
-          # This key is based on the hash of the package-lock.json file.
-          # If dependencies change, the hash will change and a new cache will be created.
-          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
-          # Restore keys provide fallback cache options.
-          # If the exact key isn't found, the runner will attempt to restore from these fallback keys.
-          restore-keys: ${{ runner.os }}-server-node-
-
-      # Restore Frontend Node.js Modules cache
-      - name: Restore Frontend Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-frontend-node-
-
-  # Step: Install Dependencies
-  install-dependencies:
-    needs: cache-dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      # Install dependencies for the server
-      - name: Install Server Dependencies
-        run: npm ci
-        working-directory: ./server
-
-      # Install dependencies for the frontend
-      - name: Install Frontend Dependencies
-        run: npm ci
-        working-directory: ./frontend
-
-      # Save Server Node.js Modules cache
-      - name: Save Server Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: server/node_modules
-          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
-
-      # Save Frontend Node.js Modules cache
-      - name: Save Frontend Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+  # Step: Cache and Install Server Dependencies
+  server:
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "server/package-lock.json"
+      cache-path: "server/node_modules"
+      cache-key-prefix: "server"
+      working-directory: "server"
 
   # Step: Lint the code
   lint:
-    needs: install-dependencies # Wait for dependencies to be installed before linting
+    needs: [frontend, server] # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -98,14 +43,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: server/node_modules
-          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+          key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
 
       # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
         uses: actions/cache@v3
         with:
           path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
       # Lint the server code
       - name: Lint Server Code
@@ -119,7 +64,7 @@ jobs:
 
   # Step: Formatting job
   format:
-    needs: install-dependencies # Dependencies must be installed before formatting
+    needs: [frontend, server] # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -130,7 +75,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
       # Format the frontend code with Prettier
       - name: Check Frontend Code Formatting with Prettier
@@ -139,7 +84,7 @@ jobs:
 
   # Step: Security audit for both server and frontend
   security-audit:
-    needs: install-dependencies # Run only after tests have passed
+    needs: [frontend, server] # Run only after tests have passed
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -150,14 +95,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: server/node_modules
-          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+          key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
 
       # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
         uses: actions/cache@v3
         with:
           path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
       # Run npm audit for server
       - name: Run Server npm audit
@@ -172,7 +117,7 @@ jobs:
         continue-on-error: true
 
   # Step: Run unit tests
-  test:
+  test-frontend:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
     steps:
@@ -184,7 +129,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
       # Run frontend unit tests
       - name: Run Frontend Unit Tests
@@ -193,9 +138,39 @@ jobs:
         env:
           CI: true # Ensures Vitest runs in Continuous Integration mode
 
-  # Step: Build the project
-  build:
-    needs: test
+  # Step: Build the Frontend project
+  build-frontend:
+    needs: test-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
+
+      - name: Build Frontend for Production
+        run: npm run build:prod
+        working-directory: ./frontend
+        env:
+          NODE_ENV: production
+          APP_API_BASE_URL: ${{ vars.APP_API_BASE_URL }}
+          APP_LOGGING: ${{ vars.APP_LOGGING }}
+          APP_PORT: ${{ vars.FRONTEND_APP_PORT }}
+
+      - name: Save Frontend Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist
+
+  # Step: Build the Server project
+  build-server:
+    needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -206,7 +181,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: server/node_modules
-          key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+          key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
 
       - name: Build Server for Production
         run: npm run build
@@ -226,30 +201,8 @@ jobs:
           MAILTRAP_TESTING_USERNAME: ${{ secrets.MAILTRAP_TESTING_USERNAME}}
           REFRESH_TOKEN_SECRET_KEY: ${{ secrets.REFRESH_TOKEN_SECRET_KEY}}
 
-      # Restore Frontend Node.js Modules cache
-      - name: Restore Frontend Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-
-      - name: Build Frontend for Production
-        run: npm run build:prod
-        working-directory: ./frontend
-        env:
-          NODE_ENV: production
-          APP_API_BASE_URL: ${{ vars.APP_API_BASE_URL }}
-          APP_LOGGING: ${{ vars.APP_LOGGING }}
-          APP_PORT: ${{ vars.FRONTEND_APP_PORT }}
-
       - name: Save Server Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: server-build
           path: server/build
-
-      - name: Save Frontend Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build
-          path: frontend/dist
