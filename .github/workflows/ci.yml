@@ -14,11 +14,8 @@ jobs:
   cache-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
@@ -46,11 +43,8 @@ jobs:
     needs: cache-dependencies
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js with Custom Version
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
         with:
           node-version: "20.17.0"
 
@@ -83,11 +77,8 @@ jobs:
     needs: install-dependencies # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
@@ -118,11 +109,8 @@ jobs:
     needs: install-dependencies # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
@@ -141,11 +129,8 @@ jobs:
     needs: install-dependencies # Run only after tests have passed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
@@ -178,11 +163,8 @@ jobs:
     needs: [lint, format, security-audit]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
@@ -203,11 +185,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
