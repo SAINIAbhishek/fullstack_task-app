@@ -62,90 +62,82 @@ jobs:
         run: npm run lint
         working-directory: ./frontend
 
-  # # Step: Formatting job
-  # format:
-  #   needs: install-dependencies # Dependencies must be installed before formatting
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Formatting job
+  format:
+    needs: [frontend, server] # Dependencies must be installed before formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Setup Node.js
-  #       uses: setup-node.yml
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     # Restore Frontend Node.js Modules cache
-  #     - name: Restore Frontend Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: frontend/node_modules
-  #         key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+      # Format the frontend code with Prettier
+      - name: Check Frontend Code Formatting with Prettier
+        run: npm run prettier
+        working-directory: ./frontend
 
-  #     # Format the frontend code with Prettier
-  #     - name: Check Frontend Code Formatting with Prettier
-  #       run: npm run prettier
-  #       working-directory: ./frontend
+  # Step: Security audit for both server and frontend
+  security-audit:
+    needs: [frontend, server] # Run only after tests have passed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  # # Step: Security audit for both server and frontend
-  # security-audit:
-  #   needs: install-dependencies # Run only after tests have passed
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
 
-  #     - name: Setup Node.js
-  #       uses: ./.github/workflows/setup-node.yml
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     # Restore Server Node.js Modules cache
-  #     - name: Restore Server Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: server/node_modules
-  #         key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
+      # Run npm audit for server
+      - name: Run Server npm audit
+        run: npm run audit
+        working-directory: ./server
+        continue-on-error: true
 
-  #     # Restore Frontend Node.js Modules cache
-  #     - name: Restore Frontend Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: frontend/node_modules
-  #         key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
+      # Run npm audit for frontend
+      - name: Run Frontend npm audit
+        run: npm run audit
+        working-directory: ./frontend
+        continue-on-error: true
 
-  #     # Run npm audit for server
-  #     - name: Run Server npm audit
-  #       run: npm run audit
-  #       working-directory: ./server
-  #       continue-on-error: true
+  # Step: Run unit tests
+  test:
+    needs: [lint, format, security-audit]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     # Run npm audit for frontend
-  #     - name: Run Frontend npm audit
-  #       run: npm run audit
-  #       working-directory: ./frontend
-  #       continue-on-error: true
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
-  # # Step: Run unit tests
-  # test:
-  #   needs: [lint, format, security-audit]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+      # Run frontend unit tests
+      - name: Run Frontend Unit Tests
+        run: npm run test:coverage
+        working-directory: ./frontend
+        env:
+          CI: true # Ensures Vitest runs in Continuous Integration mode
 
-  #     - name: Setup Node.js
-  #       uses: ./.github/workflows/setup-node.yml
-
-  #     # Restore Frontend Node.js Modules cache
-  #     - name: Restore Frontend Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: frontend/node_modules
-  #         key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-
-  #     # Run frontend unit tests
-  #     - name: Run Frontend Unit Tests
-  #       run: npm run test:coverage
-  #       working-directory: ./frontend
-  #       env:
-  #         CI: true # Ensures Vitest runs in Continuous Integration mode
 
   # # Step: Build the project
   # build:
