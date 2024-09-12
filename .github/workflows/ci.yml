@@ -17,7 +17,8 @@ jobs:
       node-version: "20.17.0"
       lock-file: "frontend/package-lock.json"
       cache-path: "frontend/node_modules"
-      cache-key-prefix: "frontend-node"
+      cache-key-prefix: "frontend"
+      working-directory: "frontend"
 
   # # Step: Cache Node.js Modules
   # install-dependencies:
