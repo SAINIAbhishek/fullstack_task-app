@@ -11,7 +11,7 @@ on:
 
 jobs:
   # Step: Cache and Install Frontend Dependencies
-  frontend-dependencies:
+  frontend:
     uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
     with:
       node-version: "20.17.0"
@@ -20,63 +20,47 @@ jobs:
       cache-key-prefix: "frontend"
       working-directory: "frontend"
 
-  # # Step: Cache Node.js Modules
-  # install-dependencies:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+  # Step: Cache and Install Server Dependencies
+  server:
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "server/package-lock.json"
+      cache-path: "server/node_modules"
+      cache-key-prefix: "server"
+      working-directory: "server"
 
-  #     - name: Cache and Install Server Dependencies
-  #       uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
-  #       with:
-  #         node-version: '20.17.0'
-  #         lock-file: 'server/package-lock.json'
-  #         cache-path: 'server/node_modules'
-  #         cache-key-prefix: 'server-node'
+  # Step: Lint the code
+  lint:
+    needs: [frontend, server] # Wait for dependencies to be installed before linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-  #     - name: Cache and Install Frontend Dependencies
-  #       uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
-  #       with:
-  #         node-version: '20.17.0'
-  #         lock-file: 'frontend/package-lock.json'
-  #         cache-path: 'frontend/node_modules'
-  #         cache-key-prefix: 'frontend-node'
+      # Restore Server Node.js Modules cache
+      - name: Restore Server Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
 
-  # # Step: Lint the code
-  # lint:
-  #   needs: install-dependencies # Wait for dependencies to be installed before linting
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v3
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
-  #     - name: Setup Node.js
-  #       uses: ./.github/workflows/setup-node.yml
+      # Lint the server code
+      - name: Lint Server Code
+        run: npm run eslint
+        working-directory: ./server
 
-  #     # Restore Server Node.js Modules cache
-  #     - name: Restore Server Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: server/node_modules
-  #         key: ${{ runner.os }}-server-node-${{ hashFiles('server/package-lock.json') }}
-
-  #     # Restore Frontend Node.js Modules cache
-  #     - name: Restore Frontend Node.js Modules Cache
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: frontend/node_modules
-  #         key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-
-  #     # Lint the server code
-  #     - name: Lint Server Code
-  #       run: npm run eslint
-  #       working-directory: ./server
-
-  #     # Lint the frontend code
-  #     - name: Lint Frontend Code
-  #       run: npm run lint
-  #       working-directory: ./frontend
+      # Lint the frontend code
+      - name: Lint Frontend Code
+        run: npm run lint
+        working-directory: ./frontend
 
   # # Step: Formatting job
   # format:
