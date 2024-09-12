@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: setup-node.yml
+        uses: ./setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
