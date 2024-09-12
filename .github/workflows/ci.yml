@@ -10,28 +10,37 @@ on:
       - "**" # Matches every branch for pull request events
 
 jobs:
-  # Step: Cache Node.js Modules
-  install-dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # Step: Cache and Install Frontend Dependencies
+  frontend-dependencies:
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "frontend/package-lock.json"
+      cache-path: "frontend/node_modules"
+      cache-key-prefix: "frontend-node"
 
-      - name: Cache and Install Server Dependencies
-        uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
-        with:
-          node-version: '20.17.0'
-          lock-file: 'server/package-lock.json'
-          cache-path: 'server/node_modules'
-          cache-key-prefix: 'server-node'
+  # # Step: Cache Node.js Modules
+  # install-dependencies:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
 
-      - name: Cache and Install Frontend Dependencies
-        uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
-        with:
-          node-version: '20.17.0'
-          lock-file: 'frontend/package-lock.json'
-          cache-path: 'frontend/node_modules'
-          cache-key-prefix: 'frontend-node'
+  #     - name: Cache and Install Server Dependencies
+  #       uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
+  #       with:
+  #         node-version: '20.17.0'
+  #         lock-file: 'server/package-lock.json'
+  #         cache-path: 'server/node_modules'
+  #         cache-key-prefix: 'server-node'
+
+  #     - name: Cache and Install Frontend Dependencies
+  #       uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
+  #       with:
+  #         node-version: '20.17.0'
+  #         lock-file: 'frontend/package-lock.json'
+  #         cache-path: 'frontend/node_modules'
+  #         cache-key-prefix: 'frontend-node'
 
   # # Step: Lint the code
   # lint:
