@@ -12,10 +12,6 @@ jobs:
   setup-node:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       # Setup Node.js with the specified or default version
       - name: Setup Node.js
         uses: actions/setup-node@v3
