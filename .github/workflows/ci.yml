@@ -10,28 +10,13 @@ on:
       - "**" # Matches every branch for pull request events
 
 jobs:
-  # Step: Set up Node.js environment
-  setup-node:
-    runs-on: ubuntu-latest
-    outputs:
-      node-version: ${{ steps.setup-node.outputs.node-version }}
-    steps:
-      # Checkout the code from the repository
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      # Set up Node.js environment with a specific version
-      - name: Setup Node.js
-        id: setup-node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20.17.0" # Specify Node.js version
-
   # Step: Cache Node.js Modules
   cache-dependencies:
-    needs: setup-node
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node.yml
+
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
         uses: actions/cache@v3
@@ -60,6 +45,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Setup Node.js with Custom Version
+        uses: ./.github/workflows/setup-node.yml
+        with:
+          node-version: "20.17.0"
 
       # Install dependencies for the server
       - name: Install Server Dependencies
@@ -93,6 +83,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node.yml
+
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
         uses: actions/cache@v3
@@ -125,6 +118,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node.yml
+
       # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
         uses: actions/cache@v3
@@ -144,6 +140,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
@@ -179,6 +178,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node.yml
+
       # Restore Frontend Node.js Modules cache
       - name: Restore Frontend Node.js Modules Cache
         uses: actions/cache@v3
@@ -200,6 +202,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node.yml
 
       # Restore Server Node.js Modules cache
       - name: Restore Server Node.js Modules Cache
