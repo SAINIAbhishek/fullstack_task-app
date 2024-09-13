@@ -18,7 +18,7 @@ jobs:
       lock-file: "frontend/package-lock.json"
       cache-path: "frontend/node_modules"
       cache-key-prefix: "frontend"
-      working-directory: "frontend"
+      working-directory: "./frontend"
 
   # Step: Cache and Install Server Dependencies
   npm-server:
@@ -28,11 +28,31 @@ jobs:
       lock-file: "server/package-lock.json"
       cache-path: "server/node_modules"
       cache-key-prefix: "server"
-      working-directory: "server"
+      working-directory: "./server"
 
-  # Step: Lint the code
-  lint:
-    needs: [npm-frontend, npm-server] # Wait for dependencies to be installed before linting
+  # Step: Lint the Frontnend code
+  lint-frontend:
+    needs: [npm-frontend] # Wait for dependencies to be installed before linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Restore Frontend Node.js Modules cache
+      - name: Restore Frontend Node.js Modules Cache
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
+
+      # Lint the frontend code
+      - name: Lint Frontend Code
+        run: npm run lint
+        working-directory: ./frontend
+
+  # Step: Lint the Server code
+  lint-server:
+    needs: [npm-server] # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -45,24 +65,12 @@ jobs:
           path: server/node_modules
           key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
 
-      # Restore Frontend Node.js Modules cache
-      - name: Restore Frontend Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
-
       # Lint the server code
       - name: Lint Server Code
         run: npm run eslint
         working-directory: ./server
 
-      # Lint the frontend code
-      - name: Lint Frontend Code
-        run: npm run lint
-        working-directory: ./frontend
-
-  # Step: Formatting job
+  # Step: Formatting Frontend job
   format-frontend:
     needs: [npm-frontend] # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
@@ -82,16 +90,16 @@ jobs:
         run: npm run prettier
         working-directory: ./frontend
 
-  # # Step: Security audit Frontend
-  # security-frontend:
-  #   needs: [npm-frontend]
-  #   uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
-  #   with:
-  #     node-version: "20.17.0"
-  #     lock-file: "frontend/package-lock.json"
-  #     cache-path: "frontend/node_modules"
-  #     cache-key-prefix: "frontend"
-  #     working-directory: "frontend"
+  # Step: Security audit Frontend
+  security-frontend:
+    needs: [npm-frontend]
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "frontend/package-lock.json"
+      cache-path: "frontend/node_modules"
+      cache-key-prefix: "frontend"
+      working-directory: "./frontend"
 
   # # Step: Security audit Server
   # security-server:
@@ -106,7 +114,7 @@ jobs:
 
   # Step: Run unit tests
   test-frontend:
-    needs: [lint, format-frontend]
+    needs: [lint-frontend, format-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -158,7 +166,7 @@ jobs:
 
   # Step: Build the Server project
   build-server:
-    needs: [lint]
+    needs: [lint-server]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
