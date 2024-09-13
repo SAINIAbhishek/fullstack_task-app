@@ -101,16 +101,16 @@ jobs:
       cache-key-prefix: "frontend"
       working-directory: "./frontend"
 
-  # # Step: Security audit Server
-  # security-server:
-  #   needs: [npm-server]
-  #   uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
-  #   with:
-  #     node-version: "20.17.0"
-  #     lock-file: "server/package-lock.json"
-  #     cache-path: "server/node_modules"
-  #     cache-key-prefix: "server"
-  #     working-directory: "server"
+  # Step: Security audit Server
+  security-server:
+    needs: [npm-server]
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "server/package-lock.json"
+      cache-path: "server/node_modules"
+      cache-key-prefix: "server"
+      working-directory: "./server"
 
   # Step: Run unit tests
   test-frontend:
