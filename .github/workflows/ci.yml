@@ -84,6 +84,7 @@ jobs:
 
   # Step: Security audit Frontend
   security-frontend:
+    needs: [npm-frontend]
     uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
     with:
       node-version: "20.17.0"
@@ -94,6 +95,7 @@ jobs:
 
   # Step: Security audit Server
   security-server:
+    needs: [npm-server]
     uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
     with:
       node-version: "20.17.0"
