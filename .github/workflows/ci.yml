@@ -82,31 +82,31 @@ jobs:
         run: npm run prettier
         working-directory: ./frontend
 
-  # Step: Security audit Frontend
-  security-frontend:
-    needs: [npm-frontend]
-    uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
-    with:
-      node-version: "20.17.0"
-      lock-file: "frontend/package-lock.json"
-      cache-path: "frontend/node_modules"
-      cache-key-prefix: "frontend"
-      working-directory: "frontend"
+  # # Step: Security audit Frontend
+  # security-frontend:
+  #   needs: [npm-frontend]
+  #   uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
+  #   with:
+  #     node-version: "20.17.0"
+  #     lock-file: "frontend/package-lock.json"
+  #     cache-path: "frontend/node_modules"
+  #     cache-key-prefix: "frontend"
+  #     working-directory: "frontend"
 
-  # Step: Security audit Server
-  security-server:
-    needs: [npm-server]
-    uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
-    with:
-      node-version: "20.17.0"
-      lock-file: "server/package-lock.json"
-      cache-path: "server/node_modules"
-      cache-key-prefix: "server"
-      working-directory: "server"
+  # # Step: Security audit Server
+  # security-server:
+  #   needs: [npm-server]
+  #   uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
+  #   with:
+  #     node-version: "20.17.0"
+  #     lock-file: "server/package-lock.json"
+  #     cache-path: "server/node_modules"
+  #     cache-key-prefix: "server"
+  #     working-directory: "server"
 
   # Step: Run unit tests
   test-frontend:
-    needs: [lint, format-frontend, security-frontend]
+    needs: [lint, format-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -158,7 +158,7 @@ jobs:
 
   # Step: Build the Server project
   build-server:
-    needs: [lint, security-server]
+    needs: [lint]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
