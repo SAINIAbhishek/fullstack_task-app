@@ -11,7 +11,7 @@ on:
 
 jobs:
   # Step: Cache and Install Frontend Dependencies
-  frontend:
+  npm-frontend:
     uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
     with:
       node-version: "20.17.0"
@@ -21,7 +21,7 @@ jobs:
       working-directory: "frontend"
 
   # Step: Cache and Install Server Dependencies
-  server:
+  npm-server:
     uses: SAINIAbhishek/shared-workflows/.github/workflows/cache-install-dependencies.yml@main
     with:
       node-version: "20.17.0"
@@ -32,7 +32,7 @@ jobs:
 
   # Step: Lint the code
   lint:
-    needs: [frontend, server] # Wait for dependencies to be installed before linting
+    needs: [npm-frontend, npm-server] # Wait for dependencies to be installed before linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -63,8 +63,8 @@ jobs:
         working-directory: ./frontend
 
   # Step: Formatting job
-  format:
-    needs: [frontend, server] # Dependencies must be installed before formatting
+  format-frontend:
+    needs: [npm-frontend] # Dependencies must be installed before formatting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -82,43 +82,29 @@ jobs:
         run: npm run prettier
         working-directory: ./frontend
 
-  # Step: Security audit for both server and frontend
-  security-audit:
-    needs: [frontend, server] # Run only after tests have passed
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # Step: Security audit Frontend
+  security-frontend:
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "frontend/package-lock.json"
+      cache-path: "frontend/node_modules"
+      cache-key-prefix: "frontend"
+      working-directory: "frontend"
 
-      # Restore Server Node.js Modules cache
-      - name: Restore Server Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: server/node_modules
-          key: ${{ runner.os }}-server-${{ hashFiles('server/package-lock.json') }}
-
-      # Restore Frontend Node.js Modules cache
-      - name: Restore Frontend Node.js Modules Cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
-
-      # Run npm audit for server
-      - name: Run Server npm audit
-        run: npm run audit
-        working-directory: ./server
-        continue-on-error: true
-
-      # Run npm audit for frontend
-      - name: Run Frontend npm audit
-        run: npm run audit
-        working-directory: ./frontend
-        continue-on-error: true
+  # Step: Security audit Server
+  security-server:
+    uses: SAINIAbhishek/shared-workflows/.github/workflows/security-audit.yml@main
+    with:
+      node-version: "20.17.0"
+      lock-file: "server/package-lock.json"
+      cache-path: "server/node_modules"
+      cache-key-prefix: "server"
+      working-directory: "server"
 
   # Step: Run unit tests
   test-frontend:
-    needs: [lint, format, security-audit]
+    needs: [lint, format-frontend, security-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -170,7 +156,7 @@ jobs:
 
   # Step: Build the Server project
   build-server:
-    needs: [lint, format, security-audit]
+    needs: [lint, security-server]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
