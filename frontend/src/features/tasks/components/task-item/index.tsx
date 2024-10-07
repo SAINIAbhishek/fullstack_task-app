@@ -20,6 +20,7 @@ import { queryClient } from '@/lib/react-query';
 import { useNavigate } from 'react-router-dom';
 import { TASKS_BASE_ROUTE } from '@/features/tasks/routes';
 import { useTranslation } from 'react-i18next';
+import { TaskType } from '../../types/task.type';
 
 type Props = {
   task: TaskType;
@@ -29,6 +30,7 @@ type Props = {
 const TaskItem = ({ task, queryKey }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const taskId = task._id as string;
 
   const { mutate: deleteMutate } = useMutation({
     mutationFn: API_DELETE_TASK,
@@ -70,7 +72,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
       <div className="task-item__footer">
         <IconBtn
           handleClick={() =>
-            importantMutate({ taskId: task._id, important: !task.important })
+            importantMutate({ taskId: taskId, important: !task.important })
           }
           title={
             task.important ? 'label.unmark_important' : 'label.mark_important'
@@ -83,7 +85,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
 
         <IconBtn
           handleClick={() =>
-            completedMutate({ taskId: task._id, completed: !task.completed })
+            completedMutate({ taskId: taskId, completed: !task.completed })
           }
           title={
             task.completed ? 'label.mark_uncompleted' : 'label.mark_completed'
@@ -106,7 +108,7 @@ const TaskItem = ({ task, queryKey }: Props) => {
         <div className="w-[1px] h-[35px] ml-1 mr-2 bg-gray-700"></div>
 
         <IconBtn
-          handleClick={() => deleteMutate(task._id)}
+          handleClick={() => deleteMutate(taskId)}
           title="label.delete_task"
           className="text-white hover:bg-gray-700">
           <FontAwesomeIcon icon={faTrashCan} />
