@@ -1,11 +1,11 @@
-import { COOKIE } from '@/config';
 import { useCookies } from 'react-cookie';
+import { useCallback, useMemo } from 'react';
+import { COOKIE } from '@/config';
 import {
-  COOKIE_ACCESS_TOKEN,
   COOKIE_AUTH_NAME,
+  COOKIE_ACCESS_TOKEN,
   cookieDefaultOptions,
 } from '@/lib/react-cookie';
-import { useMemo } from 'react';
 
 /**
  * Hook for managing authentication tokens stored in cookies
@@ -16,33 +16,48 @@ const useAuthToken = () => {
     COOKIE_ACCESS_TOKEN,
   ]);
 
-  const { [COOKIE_AUTH_NAME]: authToken, [COOKIE_ACCESS_TOKEN]: accessToken } =
-    cookies;
+  const authTokenOptions = useMemo(
+    () => ({
+      ...cookieDefaultOptions,
+      maxAge: COOKIE.maxAge,
+    }),
+    [],
+  );
 
-  const authTokenOptions = {
-    ...cookieDefaultOptions,
-    maxAge: COOKIE.maxAge,
-  };
+  const accessTokenOptions = useMemo(
+    () => ({
+      ...cookieDefaultOptions,
+      maxAge: COOKIE.accessTokenMaxAge,
+    }),
+    [],
+  );
 
-  const accessTokenOptions = {
-    ...cookieDefaultOptions,
-    maxAge: COOKIE.accessTokenMaxAge,
-  };
+  const authToken = cookies[COOKIE_AUTH_NAME] || null;
+  const accessToken = cookies[COOKIE_ACCESS_TOKEN] || null;
 
-  const getAuthToken = () => authToken || null;
-  const getAccessToken = () => accessToken || null;
+  const getAuthToken = useCallback(() => authToken, [authToken]);
+  const getAccessToken = useCallback(() => accessToken, [accessToken]);
 
-  const setAuthToken = (token: string) =>
-    setCookie(COOKIE_AUTH_NAME, token, authTokenOptions);
+  const setAuthToken = useCallback(
+    (token: string) => setCookie(COOKIE_AUTH_NAME, token, authTokenOptions),
+    [setCookie, authTokenOptions],
+  );
 
-  const setAccessToken = (token: string) =>
-    setCookie(COOKIE_ACCESS_TOKEN, token, accessTokenOptions);
+  const setAccessToken = useCallback(
+    (token: string) =>
+      setCookie(COOKIE_ACCESS_TOKEN, token, accessTokenOptions),
+    [setCookie, accessTokenOptions],
+  );
 
-  const removeAuthToken = () =>
-    removeCookie(COOKIE_AUTH_NAME, authTokenOptions);
+  const removeAuthToken = useCallback(
+    () => removeCookie(COOKIE_AUTH_NAME, authTokenOptions),
+    [removeCookie, authTokenOptions],
+  );
 
-  const removeAccessToken = () =>
-    removeCookie(COOKIE_ACCESS_TOKEN, accessTokenOptions);
+  const removeAccessToken = useCallback(
+    () => removeCookie(COOKIE_ACCESS_TOKEN, accessTokenOptions),
+    [removeCookie, accessTokenOptions],
+  );
 
   return useMemo(
     () => ({
@@ -53,8 +68,14 @@ const useAuthToken = () => {
       removeAccessToken,
       getAccessToken,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [authToken, accessToken],
+    [
+      getAuthToken,
+      setAuthToken,
+      removeAuthToken,
+      setAccessToken,
+      removeAccessToken,
+      getAccessToken,
+    ],
   );
 };
 

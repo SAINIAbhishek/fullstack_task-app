@@ -29,12 +29,8 @@ const AuthProvider = ({ children }: Props) => {
   const { setAuthToken, removeAuthToken, setAccessToken, removeAccessToken } =
     useAuthToken();
 
-  const { mutate: loginMutate } = useMutation({
-    mutationFn: API_LOGIN_USER,
-  });
-
+  const { mutate: loginMutate } = useMutation({ mutationFn: API_LOGIN_USER });
   const { mutate: logoutMutate } = useMutation({ mutationFn: API_LOGOUT_USER });
-
   const { mutate: refreshMutate } = useMutation({
     mutationFn: API_REFRESH_TOKEN,
   });
