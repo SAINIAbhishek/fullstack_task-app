@@ -1,18 +1,13 @@
+import { handleSanitizedChange } from '@/utils/sanitize-input';
 import { ErrorMessage, Field } from 'formik';
 import { FormikValues } from 'formik/dist/types';
 import { useTranslation } from 'react-i18next';
 
-const TextareaField = ({
-  name,
-  label,
-  onBlur,
-  onChange,
-  value,
-  error,
-  touched,
-  ...props
-}: FormikValues) => {
+const TextareaField = (props: FormikValues) => {
   const { t } = useTranslation();
+
+  const { name, label, onBlur, onChange, value, error, touched, ...rest } =
+    props;
 
   return (
     <div>
@@ -25,14 +20,14 @@ const TextareaField = ({
         as="textarea"
         name={name}
         onBlur={onBlur}
-        onChange={onChange}
+        onChange={handleSanitizedChange(onChange)}
         value={value}
         id={name}
         className={`border sm:text-sm rounded-lg placeholder-gray-400 border-gray-600 p-2.5 bg-gray-700 text-white block w-full ${
           error && touched ? 'border-red-500' : 'focus:ring-blue-500'
         }`}
         placeholder={`Enter your ${label.toLowerCase()}`}
-        {...props}
+        {...rest}
       />
       <ErrorMessage
         name={name}
