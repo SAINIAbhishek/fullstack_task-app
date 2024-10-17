@@ -26,3 +26,16 @@ export type UpdateCompletedTaskType = UpdateTaskBaseType & {
 };
 
 export type UpdateTaskType = UpdateTaskBaseType & TaskBaseType;
+
+export type TaskResponse = {
+  task: TaskType;
+};
+
+export type TasksResponse = {
+  tasks: TaskType[];
+  total: number;
+};
+
+export type TaskDeleteResponse = {
+  taskId: string;
+};
