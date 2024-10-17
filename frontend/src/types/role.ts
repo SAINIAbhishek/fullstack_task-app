@@ -1,4 +1,4 @@
-declare enum RolePermissionEnum {
+export enum RolePermissionEnum {
   EDIT = 'EDIT',
   VIEW = 'VIEW',
   DELETE = 'DELETE',
@@ -6,13 +6,13 @@ declare enum RolePermissionEnum {
   UPDATE = 'UPDATE',
 }
 
-declare enum RoleNameEnum {
+export enum RoleNameEnum {
   USER = 'USER',
   ADMIN = 'ADMIN',
   MANAGER = 'MANAGER',
 }
 
-declare type Role = {
+export type RoleType = {
   readonly _id: string;
   readonly name: RoleNameEnum;
   readonly permissions: RolePermissionEnum[];

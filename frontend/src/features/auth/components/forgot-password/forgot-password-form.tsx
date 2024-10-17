@@ -35,10 +35,11 @@ const ForgotPasswordForm = () => {
   const handleSubmit = (value: ForgotPasswordType) => {
     mutate(value, {
       onSuccess: (response) => {
-        toast.success(response.message);
-        if (response && response.data?.passwordResetToken) {
+        const { data, message } = response;
+        toast.success(message);
+        if (data && data.passwordResetToken) {
           navigate({
-            pathname: `${AUTH_BASE_ROUTE}/reset-password/${response.data.passwordResetToken}`,
+            pathname: `${AUTH_BASE_ROUTE}/reset-password/${data.passwordResetToken}`,
             search: `?email=${value.email}`,
           });
         }

@@ -1,8 +1,7 @@
 import axios, { Method } from 'axios';
-import { API_BASE_URL, LOGGING } from '@/config';
+import { API_BASE_URL } from '@/config';
 import { getAccessToken } from '@/lib/react-cookie';
-
-const isLogEnabled = LOGGING === 'true';
+import logger from '@/utils/log';
 
 const instance = axios.create({
   baseURL: API_BASE_URL,
@@ -13,27 +12,34 @@ const instance = axios.create({
   maxContentLength: 5 * 1000 * 1000, // bytes => 5 MB,
 });
 
-// Add a request interceptor
+/**
+ * Request interceptor for logging and error handling
+ */
 instance.interceptors.request.use(
   (config) => {
-    if (isLogEnabled)
-      console.log(
-        'Network Request: ',
-        `${config.baseURL}${config.url}`,
-        config.method,
-      );
+    logger.log(
+      'Network Request:',
+      `${config.baseURL}${config.url}`,
+      config.method,
+    );
     return config;
   },
   async (error) => {
-    if (isLogEnabled) console.error('Network Request Error: ', error);
+    const { request } = error;
+
+    logger.error('Network Request Error: ', request);
+
     return Promise.reject({
-      ...error.request,
-      ...error.request.data,
+      ...request,
+      message: request?.data?.message || 'Request failed',
+      statusCode: request?.data?.statusCode || 500,
     });
   },
 );
 
-// Add a response interceptor
+/**
+ * Response interceptor for handling successful and failed responses
+ */
 instance.interceptors.response.use(
   (response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
@@ -41,20 +47,33 @@ instance.interceptors.response.use(
   },
   async (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
-    if (isLogEnabled) console.error('Network Response Error: ', error);
+    const { response } = error;
+
+    logger.error('Network Response Error: ', response);
+
     return Promise.reject({
-      ...error.response,
-      ...error.response.data,
+      ...response,
+      message: response?.data?.message || 'An error occurred',
+      statusCode: response?.data?.statusCode || response?.status || 500,
+      status: response?.status || 500, // HTTP status code
+      data: response?.data || null,
     });
   },
 );
 
+/**
+ * Define the response type for network requests
+ */
 type NetworkResponse<T extends object | null> = {
-  readonly statusCode: string;
+  readonly statusCode: number; // custom code from the server
+  readonly status: number; // HTTP status code
   readonly message: string;
-  readonly data?: T;
+  readonly data?: T | null; // Data is optional and can be null
 };
 
+/**
+ * Define the structure for network request
+ */
 type NetworkRequest<T extends object | null> = {
   url: string;
   method: Method;
@@ -66,7 +85,41 @@ type NetworkAuthRequest<T extends object | null> = NetworkRequest<T> & {
   headers?: { Authorization: string };
 };
 
+// Helper to handle request logic
+async function makeRequest<T extends object | null, R extends object | null>(
+  request: NetworkRequest<T>,
+  authRequired: boolean = false,
+): Promise<NetworkResponse<R>> {
+  try {
+    if (authRequired) {
+      const token = getAccessToken();
+
+      if (token) {
+        (request as NetworkAuthRequest<T>).headers = {
+          Authorization: `Bearer ${token}`,
+        };
+      }
+    }
+    const response = await instance.request<NetworkResponse<R>>({
+      ...request,
+      withCredentials: authRequired,
+    });
+
+    const responseData = response?.data;
+
+    // Ensure response and data are defined, and default to null if not
+    return {
+      ...responseData,
+      data: responseData?.data || null, // Safe check to avoid accessing undefined
+    };
+  } catch (error) {
+    // Handle error and ensure message and statusCode are provided
+    return Promise.reject(error);
+  }
+}
+
 /**
+ * Public request without authentication
  * @T : Request Body Type
  * @R : Response Body type
  */
@@ -74,11 +127,11 @@ export async function publicRequest<
   T extends object | null,
   R extends object | null,
 >(request: NetworkRequest<T>): Promise<NetworkResponse<R>> {
-  const { data } = await instance.request<NetworkResponse<R>>(request);
-  return data;
+  return makeRequest<T, R>(request, false);
 }
 
 /**
+ * Protected request with authentication
  * @T : Request Body Type
  * @R : Response Body type
  */
@@ -86,16 +139,5 @@ export async function protectedRequest<
   T extends object | null,
   R extends object | null,
 >(request: NetworkRequest<T>): Promise<NetworkResponse<R>> {
-  try {
-    (request as NetworkAuthRequest<T>).headers = {
-      Authorization: `Bearer ${getAccessToken()}`,
-    };
-    const { data } = await instance.request<NetworkResponse<R>>({
-      ...request,
-      withCredentials: true,
-    });
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
+  return makeRequest<T, R>(request, true);
 }

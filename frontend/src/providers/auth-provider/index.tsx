@@ -9,6 +9,8 @@ import {
 import toast from 'react-hot-toast';
 import { LoginType } from '@/features/auth/types/login.type';
 import { AuthContextType } from '@/providers/auth-provider/auth-context.type';
+import { UserType } from '@/types/user';
+import { ApiBaseResponse } from '@/types/api-base.type';
 
 type Props = {
   children: React.ReactNode;
@@ -22,7 +24,7 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [user, setUser] = useState<UserType | undefined>(undefined);
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -36,7 +38,7 @@ const AuthProvider = ({ children }: Props) => {
   });
 
   const handleAuthentication = useCallback(
-    (user: User | undefined, token: string) => {
+    (user: UserType | undefined, token: string) => {
       setAccessToken(token);
       setUser(user);
       setIsAuthenticated(true);
@@ -48,7 +50,7 @@ const AuthProvider = ({ children }: Props) => {
     return new Promise((resolve, reject) => {
       refreshMutate(undefined, {
         onSuccess: (response) => {
-          const { tokens, user } = response.data as ApiResponse;
+          const { tokens, user } = response.data as ApiBaseResponse;
           handleAuthentication(user, tokens?.accessToken ?? '');
           resolve(true);
         },
@@ -64,7 +66,7 @@ const AuthProvider = ({ children }: Props) => {
       return new Promise((resolve, reject) => {
         loginMutate(data, {
           onSuccess: (response) => {
-            const { tokens, user } = response.data as ApiResponse;
+            const { tokens, user } = response.data as ApiBaseResponse;
             handleAuthentication(user, tokens?.accessToken ?? '');
             setAuthToken(tokens?.refreshToken ?? '');
             toast.success(response.message);
@@ -84,11 +86,11 @@ const AuthProvider = ({ children }: Props) => {
     return new Promise((resolve, reject) => {
       logoutMutate(undefined, {
         onSuccess: (response) => {
+          toast.success(response.message);
           setIsAuthenticated(false);
           removeAuthToken();
           removeAccessToken();
           setUser(undefined);
-          toast.success(response.message);
           resolve(true);
         },
         onError: (error: Error) => {

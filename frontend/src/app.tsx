@@ -14,18 +14,12 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Toaster for showing notifications */}
       <Toaster position="bottom-left" />
-
-      {/* AuthProvider to manage authentication state */}
       <AuthProvider>
-        {/* AppProvider to manage application-specific state */}
         <AppProvider>
-          {/* AppRoute to handle routing */}
           <AppRoute />
         </AppProvider>
       </AuthProvider>
-
       {/* React Query DevTools for debugging */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

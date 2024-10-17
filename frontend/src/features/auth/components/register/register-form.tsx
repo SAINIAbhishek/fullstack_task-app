@@ -42,8 +42,8 @@ const RegisterForm = () => {
 
   const { mutate, isError } = useMutation({
     mutationFn: API_REGISTER_USER,
-    onSuccess: (data) => {
-      toast.success(data.message);
+    onSuccess: (response) => {
+      toast.success(response.message);
       navigate(`${AUTH_BASE_ROUTE}/login`);
     },
   });

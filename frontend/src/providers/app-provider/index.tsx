@@ -31,7 +31,11 @@ const AppProvider = ({ children }: Props) => {
     checkAuth();
   }, [checkAuth]);
 
-  return <MainLayout>{isLoading ? <Spinner /> : <>{children}</>}</MainLayout>;
+  return (
+    <MainLayout>
+      {isLoading ? <Spinner /> : <React.Fragment>{children}</React.Fragment>}
+    </MainLayout>
+  );
 };
 
 export default AppProvider;
