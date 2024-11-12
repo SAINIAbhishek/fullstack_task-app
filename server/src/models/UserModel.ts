@@ -56,7 +56,7 @@ const UserSchema = new Schema<User>(
     terms: {
       type: Schema.Types.Boolean,
       select: false,
-      default: true,
+      default: false,
     },
     passwordUpdatedAt: {
       type: Schema.Types.Date,
@@ -82,7 +82,7 @@ const UserSchema = new Schema<User>(
         },
       ],
       required: true,
-      select: false,
+      select: true,
     },
   },
   {

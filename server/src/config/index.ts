@@ -3,6 +3,7 @@ export const PORT = process.env.PORT;
 export const CORS_URL = process.env.CORS_URL?.split(',') || [];
 export const API_VERSION = process.env.API_VERSION;
 export const FRONTEND_RESET_URL = process.env.FRONTEND_RESET_URL;
+export const MAILTRAP_EMAIL_ENV = process.env.MAILTRAP_EMAIL_ENV || 'testing';
 
 export const DATE_FORMAT = process.env.DATE_FORMAT || 'yyyy-MM-dd';
 export const DATE_FULL_FORMAT =
@@ -15,14 +16,22 @@ export const MAILTRAP_EMAIL = {
     host: process.env.MAILTRAP_TESTING_HOST || '',
     port: parseInt(process.env.MAILTRAP_TESTING_PORT || ''),
   },
+  prod: {
+    username: process.env.MAILTRAP_USERNAME || '',
+    password: process.env.MAILTRAP_PASSWORD || '',
+    host: process.env.MAILTRAP_HOST || '',
+    port: parseInt(process.env.MAILTRAP_PORT || ''),
+  },
 };
 
 export const LIMITER = {
   loginWS: parseInt(process.env.LIMITER_LOGIN_WS || '120000'),
+  ipWS: parseInt(process.env.LIMITER_IP_WS || '900000'),
   forgotPasswordWS: parseInt(
     process.env.LIMITER_FORGOT_PASSWORD_WS || '120000'
   ),
   loginMaxAttempt: parseInt(process.env.LIMITER_LOGIN_ATTEMPT || '5'),
+  ipMaxAttempt: parseInt(process.env.LIMITER_IP_ATTEMPT || '100'),
   forgotPasswordMaxAttempt: parseInt(
     process.env.LIMITER_FORGOT_PASSWORD_ATTEMPT || '2'
   ),
@@ -40,10 +49,12 @@ export const DB = {
   username: process.env.MONGO_DB_USERNAME || '',
   pwd: process.env.MONGO_DB_PWD || '',
   port: process.env.MONGO_DB_PORT || '',
-  minPoolSize: parseInt(process.env.DB_MIN_POOL_SIZE || '5'),
-  maxPoolSize: parseInt(process.env.DB_MAX_POOL_SIZE || '10'),
-  connectTimeoutMS: parseInt(process.env.DB_CONNECT_TIMEOUT_MS || '60000'),
-  socketTimeoutMS: parseInt(process.env.DB_SOCKET_TIMEOUT_MS || '45000'),
+  minPoolSize: parseInt(process.env.MONGO_DB_MIN_POOL_SIZE || '5'),
+  maxPoolSize: parseInt(process.env.MONGO_DB_MAX_POOL_SIZE || '10'),
+  connectTimeoutMS: parseInt(
+    process.env.MONGO_DB_CONNECT_TIMEOUT_MS || '60000'
+  ),
+  socketTimeoutMS: parseInt(process.env.MONGO_DB_SOCKET_TIMEOUT_MS || '45000'),
 };
 
 export const TOKEN_INFO = {

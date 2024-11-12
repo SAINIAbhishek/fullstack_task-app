@@ -67,7 +67,7 @@ jobs:
 
       # Lint the server code
       - name: Lint Server Code
-        run: npm run eslint
+        run: npm run lint
         working-directory: ./server
 
   # Step: Formatting Frontend job

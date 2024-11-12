@@ -49,7 +49,8 @@ class UserController {
   });
 
   getUser = asyncHandler(async (req, res) => {
-    const user = await UserHelper.findById(req.params.id);
+    const { id } = req.params;
+    const user = (!!id && (await UserHelper.findById(id))) || null;
     if (!user) throw new NotFoundError('User not found');
 
     new SuccessResponse('User fetched successfully', {
@@ -59,23 +60,16 @@ class UserController {
 
   updateUser = asyncHandler(async (req, res) => {
     const { email, firstname, lastname } = req.body;
-    const updateFields: any = {};
+    const updateFields: { [key: string]: any; } = { email, firstname, lastname };
 
-    if (email) {
-      updateFields.email = email;
-    }
-    if (firstname) {
-      updateFields.firstname = firstname;
-    }
-    if (lastname) {
-      updateFields.lastname = lastname;
-    }
-
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: updateFields },
-      { new: true }
+    // Remove undefined fields
+    Object.keys(updateFields).forEach(
+      (key) => updateFields[key] === undefined && delete updateFields[key]
     );
+
+    const { id } = req.params;
+
+    const updatedUser = await UserHelper.findByIdAndUpdate(id, updateFields);
 
     if (!updatedUser) {
       throw new NotFoundError('User not found');
@@ -87,13 +81,16 @@ class UserController {
   });
 
   deleteUser = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
     const result: DeleteResult = await UserModel.deleteOne({
-      _id: req.params.id,
+      _id: id,
     });
-    if (!result.deletedCount) throw new NotFoundError('User not found');
+
+    if (result.deletedCount === 0) throw new NotFoundError('User not found');
 
     new SuccessResponse('User deleted successfully', {
-      userId: req.params.id,
+      userId: id,
     }).send(res);
   });
 }
