@@ -34,7 +34,7 @@ If you are developing a production application, we recommend updating the config
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "jsx": "react-jsx",
     "strict": true,
     "noImplicitAny": true,
@@ -49,7 +49,6 @@ If you are developing a production application, we recommend updating the config
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
     "noEmit": true,
     "types": ["vite/client"],
     "typeRoots": ["./@types", "./node_modules/@types"]
@@ -60,7 +59,7 @@ If you are developing a production application, we recommend updating the config
 
 - **target: "ESNext":** Set the JavaScript language version for the output code to the latest ECMAScript features.
 - **module: "ESNext":** Use the latest ECMAScript module features like import and export.
-- **moduleResolution: "bundler":** Tells TypeScript how to resolve modules, optimized for bundlers like Vite.
+- **moduleResolution: "node":** Tells TypeScript to use the latest module system available in JavaScript, which is ECMAScript Modules (ESM).
 - **jsx: "react-jsx":** Enable the React 17 JSX transform without needing to import React in each JSX file.
 - **strict: true:** Enables strict type-checking settings for better type safety.
 - **noImplicitAny: true:** Prevents variables from being implicitly typed as any.
@@ -74,7 +73,6 @@ If you are developing a production application, we recommend updating the config
 - **esModuleInterop: true:** Allows compatibility with CommonJS-style modules.
 - **lib: ["ESNext", "DOM", "DOM.Iterable"]:** Specifies the libraries to include during compilation, ensuring support for the latest JavaScript and DOM features.
 - **resolveJsonModule: true:** Allows importing JSON files as modules.
-- **allowImportingTsExtensions: true:** Enables importing TypeScript files with .ts and .tsx extensions.
 - **noEmit: true:** Prevents TypeScript from emitting JavaScript files during compilation, useful when using a bundler.
 - **types: ["vite/client"]:** Specifies types related to Vite’s client-side environment for better type checking.
 - **typeRoots: ["./@types", "./node_modules/@types"]:** Defines directories where TypeScript should look for type declarations.
