@@ -27,7 +27,6 @@ The application uses the Context API and Hooks for effective state management.
 - Eslint
 - Prettier
 - React i18next
-- Testing with Vitest & React Testing Library
 - Docker image ([Frontend Image](https://hub.docker.com/r/sainiabhishek/fullstack_task-frontend))
 
 ### How to Setup the Frontend
