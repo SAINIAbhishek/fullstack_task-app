@@ -10,7 +10,7 @@ const Tasks = lazy(() => import('@/pages/tasks/tasks/Tasks'));
 
 const AppRoutes = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_relativeSplatPath: true }}>
       <Suspense fallback={<Spinner />}>
         <Routes>
           <Route

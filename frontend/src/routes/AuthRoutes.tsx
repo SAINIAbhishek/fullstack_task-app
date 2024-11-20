@@ -12,14 +12,25 @@ const ResetPassword = lazy(
   () => import('@/pages/auth/reset-password/ResetPassword'),
 );
 
+type RouteProps = {
+  path: string;
+  element: React.ReactNode;
+};
+
+const routes: RouteProps[] = [
+  { path: '/register', element: <Register /> },
+  { path: '/login', element: <Login /> },
+  { path: '/forgot-password', element: <ForgotPassword /> },
+  { path: '/reset-password', element: <ResetPassword /> },
+  { path: '*', element: <Navigate to="/login" /> },
+];
+
 const AuthRoutes = () => {
   return (
     <Routes>
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      {routes.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
     </Routes>
   );
 };

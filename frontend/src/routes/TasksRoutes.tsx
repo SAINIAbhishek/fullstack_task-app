@@ -8,48 +8,34 @@ const NewTask = lazy(() => import('@/pages/tasks/new-task/NewTask'));
 const EditTask = lazy(() => import('@/pages/tasks/edit-task/EditTask'));
 const Tasks = lazy(() => import('@/pages/tasks/tasks/Tasks'));
 
+const taskFilters = {
+  important: { title: 'menu.important_tasks', filter: { important: true } },
+  completed: { title: 'menu.completed_tasks', filter: { completed: true } },
+  uncompleted: {
+    title: 'menu.uncompleted_tasks',
+    filter: { completed: false },
+  },
+  today: { title: 'menu.today_tasks', filter: { date: todayDate() } },
+};
+
 const TasksRoutes = () => {
   return (
     <Routes>
+      {/* Static Routes */}
       <Route path="/new" element={<NewTask />} />
       <Route path="/:id/edit" element={<EditTask />} />
-      <Route
-        path="/important"
-        element={
-          <Tasks
-            title="menu.important_tasks"
-            filter={JSON.stringify({ important: true })}
-          />
-        }
-      />
-      <Route
-        path="/completed"
-        element={
-          <Tasks
-            title="menu.completed_tasks"
-            filter={JSON.stringify({ completed: true })}
-          />
-        }
-      />
-      <Route
-        path="/uncompleted"
-        element={
-          <Tasks
-            title="menu.uncompleted_tasks"
-            filter={JSON.stringify({ completed: false })}
-          />
-        }
-      />
-      <Route
-        path="/today"
-        element={
-          <Tasks
-            title="menu.today_tasks"
-            filter={JSON.stringify({ date: todayDate() })}
-          />
-        }
-      />
-      <Route path="*" element={<Navigate to="/" />} />
+
+      {/* Dynamic Routes for Filters */}
+      {Object.entries(taskFilters).map(([path, { title, filter }]) => (
+        <Route
+          key={path}
+          path={`/${path}`}
+          element={<Tasks title={title} filter={JSON.stringify(filter)} />}
+        />
+      ))}
+
+      {/* Fallback Route for Non-existent Paths */}
+      <Route path="*" element={<Navigate to={TASKS_BASE_ROUTE} />} />
     </Routes>
   );
 };
