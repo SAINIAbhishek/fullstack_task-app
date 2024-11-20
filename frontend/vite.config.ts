@@ -13,7 +13,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: parseInt(env.APP_PORT),
       strictPort: true,
-      historyApiFallback: true,
     },
     preview: {
       port: parseInt(env.APP_PORT),
@@ -36,6 +35,5 @@ export default defineConfig(({ mode }) => {
         reporter: ['text', 'json', 'html'],
       },
     },
-    cacheDir: 'node_modules/.vite_cache',
   };
 });
