@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": ".", // Set the base directory for resolving non-relative module names
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"] // Map the '@/' prefix to the './src/' directory
+      "@/*": ["./src/*"]
     }
   }
 }

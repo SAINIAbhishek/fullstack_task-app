@@ -1,8 +1,9 @@
 {
-  "extends": "./tsconfig.base.json", // Inherit base configuration
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["vitest/globals", "vitest", "@testing-library/jest-dom"], // Include testing-related types
+    "types": ["vitest/globals", "vitest", "@testing-library/jest-dom"],
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "skipLibCheck": false
   }
 }
