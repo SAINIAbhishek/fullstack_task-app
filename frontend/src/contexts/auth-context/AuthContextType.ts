@@ -1,5 +1,5 @@
-import { LoginType } from '@/types/LoginType';
-import { UserType } from '@/types/UserType';
+import type { LoginType } from '@/types/LoginType';
+import type { UserType } from '@/types/UserType';
 
 export type AuthContextType = {
   user: UserType | undefined;

@@ -1,6 +1,6 @@
 import PrimaryButton from '@/components/buttons/primary-btn/PrimaryButton';
 import { Formik } from 'formik';
-import { TaskType } from '../../../../types/TaskType';
+import type { TaskType } from '../../../../types/TaskType';
 import * as yup from 'yup';
 import InputField from '@/components/form/input-field/InputField';
 import TextareaField from '@/components/form/textarea-field/TextareaField';

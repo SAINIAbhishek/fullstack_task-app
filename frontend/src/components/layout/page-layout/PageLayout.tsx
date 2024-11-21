@@ -1,4 +1,3 @@
-import React from 'react';
 import ContentLayout from '@/components/layout/content-layout/ContentLayout';
 
 type Props = {

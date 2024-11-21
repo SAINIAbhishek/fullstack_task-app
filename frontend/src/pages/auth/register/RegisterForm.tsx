@@ -11,7 +11,7 @@ import PrimaryButton from '@/components/buttons/primary-btn/PrimaryButton';
 import LinkButton from '@/components/buttons/link-btn/LinkButton';
 import { useTranslation } from 'react-i18next';
 import { AUTH_BASE_ROUTE } from '@/routes/AuthRoutes';
-import { RegisterType } from '@/types/RegisterType';
+import type { RegisterType } from '@/types/RegisterType';
 
 const initialValues: RegisterType = {
   email: '',

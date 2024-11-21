@@ -9,7 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import useAuthContext from '@/contexts/auth-context/useAuthContext';
 import { AUTH_BASE_ROUTE } from '@/routes/AuthRoutes';
-import { LoginType } from '@/types/LoginType';
+import type { LoginType } from '@/types/LoginType';
 
 const initialValues: LoginType = {
   email: '',

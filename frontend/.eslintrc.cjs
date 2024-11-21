@@ -18,7 +18,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true, // Enable JSX syntax parsing
     },
-    project: ['./tsconfig.json', './vite.config.ts'], // Use TypeScript project settings for type checking
+    project: ['./tsconfig.json', './tsconfig.test.json'], // Use TypeScript project settings for type checking
     tsconfigRootDir: __dirname, // Set the root directory for TypeScript config files relative to this file
   },
   plugins: ['react-refresh', 'prettier', 'react-query'],
@@ -29,11 +29,12 @@ module.exports = {
     ],
     'no-use-before-define': 'off', // TypeScript handles this rule well
     semi: ['error', 'always'], // Enforce semicolons at the end of statements
-    '@typescript-eslint/ban-ts-ignore': 'off', // Allow @ts-ignore (use cautiously)
-    '@typescript-eslint/no-explicit-any': 'off', // Allow 'any' type (can be tightened later)
+    "prefer-const": "error", // Prefer using const over let for variables that are never reassigned
     'react/no-unescaped-entities': 'off', // Allow unescaped characters in JSX (like `&`)
     'react-hooks/rules-of-hooks': 'error', // Enforce React Hooks rules
     'react-hooks/exhaustive-deps': 'warn', // Warn about missing dependencies in hooks
-    '@typescript-eslint/no-unsafe-argument': 'warn',
-  },
+    '@typescript-eslint/no-unsafe-argument': 'warn', // Warn when unsafe arguments are passed to functions.
+    '@typescript-eslint/no-unused-vars': ['error'], // Error when there are unused variables in the code
+    '@typescript-eslint/consistent-type-imports': 'warn', // Warn when TypeScript types are not imported consistently
+  }
 };

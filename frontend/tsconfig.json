@@ -4,6 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react-jsx",
+    "allowJs": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -21,7 +22,13 @@
     "types": ["vite/client"],
     "typeRoots": ["./@types", "./node_modules/@types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "./vite.config.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "./vite.config.ts",
+    "./tailwind.config.js",
+    "./postcss.config.js"
+  ],
   "exclude": ["node_modules", "dist"],
   "extends": "./tsconfig.paths.json",
   "references": []

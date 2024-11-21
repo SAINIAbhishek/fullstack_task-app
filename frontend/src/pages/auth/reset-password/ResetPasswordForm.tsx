@@ -10,7 +10,7 @@ import LinkButton from '@/components/buttons/link-btn/LinkButton';
 import { useTranslation } from 'react-i18next';
 import InputField from '@/components/form/input-field/InputField';
 import { AUTH_BASE_ROUTE } from '@/routes/AuthRoutes';
-import { ResetPasswordType } from '@/types/ResetPasswordType';
+import type { ResetPasswordType } from '@/types/ResetPasswordType';
 
 type Props = {
   email: string;

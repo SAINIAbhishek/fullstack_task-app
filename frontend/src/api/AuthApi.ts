@@ -1,9 +1,9 @@
-import { RegisterType } from '@/types/RegisterType';
+import type { RegisterType } from '@/types/RegisterType';
 import { protectedRequest, publicRequest } from '@/lib/axios/Axios';
-import { LoginType } from '@/types/LoginType';
-import { ResetPasswordType } from '@/types/ResetPasswordType';
-import { ApiBaseResponse } from '@/types/ApiBaseType';
-import {
+import type { LoginType } from '@/types/LoginType';
+import type { ResetPasswordType } from '@/types/ResetPasswordType';
+import type { ApiBaseResponse } from '@/types/ApiBaseType';
+import type {
   ForgotPasswordResponse,
   ForgotPasswordType,
 } from '@/types/ForgotPasswordType';

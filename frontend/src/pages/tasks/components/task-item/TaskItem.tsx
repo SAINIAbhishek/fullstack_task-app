@@ -19,7 +19,7 @@ import toast from 'react-hot-toast';
 import { queryClient } from '@/lib/react-query/ReactQuery';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { TaskType } from '../../../../types/TaskType';
+import type { TaskType } from '../../../../types/TaskType';
 import { TASKS_BASE_ROUTE } from '@/routes/TasksRoutes';
 
 type Props = {

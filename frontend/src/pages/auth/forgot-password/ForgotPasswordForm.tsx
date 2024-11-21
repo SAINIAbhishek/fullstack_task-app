@@ -10,7 +10,7 @@ import LinkButton from '@/components/buttons/link-btn/LinkButton';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { AUTH_BASE_ROUTE } from '@/routes/AuthRoutes';
-import { ForgotPasswordType } from '@/types/ForgotPasswordType';
+import type { ForgotPasswordType } from '@/types/ForgotPasswordType';
 
 const initialValues: ForgotPasswordType = {
   email: '',

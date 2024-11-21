@@ -1,4 +1,4 @@
-import { UserType } from './UserType';
+import type { UserType } from './UserType';
 
 export type ApiBaseResponse = {
   readonly tokens?: {

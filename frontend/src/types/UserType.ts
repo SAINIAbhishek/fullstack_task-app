@@ -1,4 +1,4 @@
-import { RoleType } from './RoleType';
+import type { RoleType } from './RoleType';
 
 export type UserType = {
   readonly _id: string;

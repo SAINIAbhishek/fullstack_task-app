@@ -1,8 +1,9 @@
-import axios, { AxiosError, AxiosResponse, Method } from 'axios';
+import type { AxiosError, AxiosResponse, Method } from 'axios';
+import axios from 'axios';
 import { CONFIG } from '@/config/Config';
 import { getAccessToken } from '@/lib/react-cookie/ReactCookie';
 import logger from '@/helpers/LogHelper';
-import { ApiResponseError } from '@/types/ApiBaseType';
+import type { ApiResponseError } from '@/types/ApiBaseType';
 
 const instance = axios.create({
   baseURL: CONFIG.API_BASE_URL,

@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import useAuthContext from '@/contexts/auth-context/useAuthContext';
 import TaskForm from '@/pages/tasks/components/task-form/TaskForm';
-import { TaskType } from '@/types/TaskType';
+import type { TaskType } from '@/types/TaskType';
 
 const NewTask = () => {
   const { user } = useAuthContext();

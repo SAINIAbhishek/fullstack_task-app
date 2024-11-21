@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import useAuthToken from '@/hooks/use-auth-token/useAuthToken';
 import { useMutation } from '@tanstack/react-query';
 import {
@@ -7,9 +7,9 @@ import {
   API_REFRESH_TOKEN,
 } from '@/api/AuthApi';
 import toast from 'react-hot-toast';
-import { LoginType } from '@/types/LoginType';
-import { UserType } from '@/types/UserType';
-import { ApiBaseResponse } from '@/types/ApiBaseType';
+import type { LoginType } from '@/types/LoginType';
+import type { UserType } from '@/types/UserType';
+import type { ApiBaseResponse } from '@/types/ApiBaseType';
 import AuthContext from './AuthContext';
 
 type Props = {

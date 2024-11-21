@@ -1,5 +1,5 @@
 import { protectedRequest } from '@/lib/axios/Axios';
-import {
+import type {
   TaskDeleteResponse,
   TaskResponse,
   TasksResponse,

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import TaskForm from '@/pages/tasks/components/task-form/TaskForm';
 import PageLayout from '@/components/layout/page-layout/PageLayout';
 import Spinner from '@/components/spinner/Spinner';
-import { TaskType } from '@/types/TaskType';
+import type { TaskType } from '@/types/TaskType';
 import { formattedDate, todayDate } from '@/helpers/DateHelper';
 import { CONFIG } from '@/config/Config';
 

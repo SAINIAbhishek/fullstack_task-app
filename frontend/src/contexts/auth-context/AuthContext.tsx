@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { AuthContextType } from './AuthContextType';
+import type { AuthContextType } from './AuthContextType';
 
 const defaultContextValue: AuthContextType = {
   user: undefined,
