@@ -36,6 +36,7 @@ If you are developing a production application, we recommend updating the config
     "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react-jsx",
+    "allowJs": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -80,7 +81,13 @@ If you are developing a production application, we recommend updating the config
 ## Includes and Excludes
 
 ```json
-  "include": ["src/**/*.ts", "src/**/*.tsx", "./vite.config.ts"],,
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "./vite.config.ts",
+    "./tailwind.config.js",
+    "./postcss.config.js"
+    ],
   "exclude": ["node_modules", "dist"]
 ```
 
@@ -119,20 +126,15 @@ If you are developing a production application, we recommend updating the config
 
 ```json
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["vitest/globals", "vitest", "@testing-library/jest-dom"],
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "target": "ESNext",
+    "module": "ESNext",
+    "types": ["@testing-library/jest-dom", "node"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "noEmit": true
   }
 }
 ```
-
-## Test Configuration Explanation
-
-- **extends:** Inherits from tsconfig.base.json, so the settings from the base configuration are shared across all configurations.
-- **types:** Specifies additional type definitions for testing. This includes types for Vitest and Jest DOM, which are commonly used in testing React components:
-- **vitest/globals:** Global types for Vitest.
-- **vitest:** Types for Vitest itself.
-- **@testing-library/jest-dom:** Types for testing React components with Jest DOM.
-- **noUnusedLocals and noUnusedParameters:** These are set to false during testing to allow temporary or incomplete code while writing tests, where unused variables and parameters might be present.
